@@ -1,7 +1,3 @@
-'''
-在我們的專案中有一個data 資料夾，裡面存放了一個taipei-attractions.json檔案，包含所有景點的相關資料。請在MySQL 資料庫中，設計你的資料表，在data 資料夾下，額外寫一隻獨立的Python 程式統一將景點資料存放到資料庫中。請特別注意景點圖片的處理，我們會過濾資料中，不是JPG 或PNG 的檔案，景點的每張圖片網址都必須被想辦法儲存在資料庫中。
-'''
-
 import json
 
 import mysql.connector
