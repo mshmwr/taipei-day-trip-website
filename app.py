@@ -183,4 +183,4 @@ def thankyou():
 #         response_data = {"error": True, "message": "serverError"}
 #         return jsonify(response_data), 500
 
-app.run(port=3000)  #伺服器能夠自動綁到公開的 IP 上
+app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
