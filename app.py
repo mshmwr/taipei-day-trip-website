@@ -86,19 +86,20 @@ def attractions():
     maxPage = math.ceil(spotCount / spotNumInPage)
     # nextPage
     nextPage = (page + 1) if ((page + 1) < maxPage) else None
-
     try:
-        # Get 12筆資料/頁
-        startID = 0
+        # Get 12筆資料/頁 (也有可能會是未滿12筆資料/頁)
+        startID = page * spotNumInPage
+
+        numInPage = spotNumInPage if (
+            (startID + spotNumInPage + 1) < spotCount) else (spotCount -
+                                                             startID)
+
         if keyword == None:
             sql = "SELECT * FROM spots ORDER BY spotid LIMIT %s,%s"
-            startID = page * spotNumInPage
-            endID = ((page + 1) * spotNumInPage - 1) if (
-                (page + 1) * spotNumInPage - 1 <= spotCount) else spotCount
-            txt = (startID, endID)
+            txt = (startID, numInPage)
         else:
-            sql = "SELECT * FROM spots WHERE stitle LIKE %s ORDER BY spotid"
-            txt = ("%" + keyword + "%", )
+            sql = "SELECT * FROM spots WHERE stitle LIKE %s ORDER BY spotid LIMIT %s,%s"
+            txt = ("%" + keyword + "%", startID, numInPage)
 
         mycursor.execute(sql, txt)
         result = mycursor.fetchall()
