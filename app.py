@@ -31,13 +31,14 @@ class AttractionEnum(Enum):
     RowNumber = 10
     CAT1 = 11
     CAT2 = 12
-    POI = 13
-    idpt = 14
-    latitude = 15
-    xbody = 16
-    _id = 17
-    avEnd = 18
-    address = 19
+    MEMO_TIME = 13
+    POI = 14
+    idpt = 15
+    latitude = 16
+    xbody = 17
+    _id = 18
+    avEnd = 19
+    address = 20
 
 
 # Pages
