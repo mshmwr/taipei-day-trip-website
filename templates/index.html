@@ -6,8 +6,10 @@
       window.onload = function () {
         attractionGroup = document.getElementById("attractionGroup");
         searchInput = document.getElementById("searchInput");
-        GetAttractionsData(GetUrl(api_attractions, currentPage), undefined);
+        searchBtn = document.getElementById("searchBtn");
         window.addEventListener("scroll", IsScrollBottom, true);
+        searchBtn.addEventListener("click", DoKeywordSearch);
+        GetAttractionsData(GetUrl(api_attractions, currentPage), undefined);
       };
     </script>
   </head>
@@ -48,7 +50,7 @@
               placeholder="輸入景點名稱查詢"
             />
 
-            <button class="searchBtn" onclick="DoKeywordSearch()">
+            <button id="searchBtn" class="searchBtn">
               <div class="searchBtn-icon">
                 <div class="icon-search"></div>
               </div>
@@ -58,49 +60,7 @@
       </div>
     </div>
     <div class="attractions">
-      <div id="attractionGroup" class="attractionGroup">
-        <!-- <p class="noResult">沒有結果</p> -->
-        <!-- <div class="attraction">
-          <div class="att-img"></div>
-          <div class="attInfo">
-            <div class="att-name"><p>平安鐘</p></div>
-            <div class="att-MRT"><p>忠孝復興</p></div>
-            <div class="att-category"><p>公共藝術</p></div>
-          </div>
-          <div class="att-border"></div>
-        </div>
-        <div class="attraction">
-          <div class="att-img"></div>
-          <div class="attInfo">
-            <div class="att-name"><p>平安鐘</p></div>
-            <div class="att-MRT"><p>忠孝復興</p></div>
-            <div class="att-category"><p>公共藝術</p></div>
-          </div>
-          <div class="att-border"></div>
-        </div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction">
-          <div class="att-img"></div>
-          <div class="attInfo">
-            <div class="att-name"><p>平安鐘</p></div>
-            <div class="att-MRT"><p>忠孝復興</p></div>
-            <div class="att-category"><p>公共藝術</p></div>
-          </div>
-          <div class="att-border"></div>
-        </div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div> -->
-      </div>
+      <div id="attractionGroup" class="attractionGroup"></div>
     </div>
     <footer>
       <div class="footerDiv">

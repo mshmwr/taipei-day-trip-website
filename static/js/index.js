@@ -17,6 +17,7 @@ let isBottom = false;
 let loadNextID;
 
 //keyword
+let searchBtn; //window element
 let searchInput; //window element
 let keyword = "";
 

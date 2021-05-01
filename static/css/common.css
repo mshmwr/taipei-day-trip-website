@@ -218,19 +218,16 @@ nav {
   padding: 10px;
 
   position: absolute;
-  /* width: 1200px; */
-  width: 62.5%;
+  width: 62.5%; /* width: 1200px; */
   height: 169px;
-  /* left: 360px; */
-  left: 18.75%;
+  left: 18.75%; /* left: 360px; */
   top: 129px;
 }
 .sloganDiv {
   /* div */
 
   position: static;
-  /* width: 1180px; */
-  width: 98.33%;
+  width: 98.33%; /* width: 1180px; */
   height: 149px;
   left: 0.52%;
   top: 10px;
@@ -246,8 +243,7 @@ nav {
   /* slogan */
 
   position: absolute;
-  /* width: 1180px; */
-  width: 98.33%;
+  width: 98.33%; /* width: 1180px; */
   height: 78px;
   left: 0px;
   top: 0px;
@@ -256,8 +252,7 @@ nav {
   /* 輕鬆享受台北一日悠閒 */
 
   position: absolute;
-  /* width: 1180px; */
-  width: 100%;
+  width: 100%; /* width: 1180px; */
   height: 41px;
   left: 0px;
   top: 0px;
@@ -286,8 +281,7 @@ nav {
   /* 探索每個角落，體驗城市的深度旅遊行程 */
 
   position: absolute;
-  /* width: 1180px; */
-  width: 100%;
+  width: 100%; /* width: 1180px; */
   height: 22px;
   left: 0px;
   top: 56px;
@@ -312,8 +306,7 @@ nav {
   /* search */
 
   position: absolute;
-  /* width: 1180px; */
-  width: 98.33%;
+  width: 98.33%; /* width: 1180px; */
   height: 46px;
   left: 0px;
   top: 103px;
@@ -322,8 +315,7 @@ nav {
   /* Search | Desktop */
 
   position: absolute;
-  width: 460px;
-  /* width: 38.98%; */
+  width: 460px; /* width: 38.98%; */
   height: 46px;
   left: 0px;
   top: 0px;
@@ -334,8 +326,7 @@ nav {
   position: absolute;
   width: 60px;
   height: 46px;
-  left: 400px;
-  /* left: 86.95%; */
+  left: 400px; /* left: 86.95%; */
   top: 0px;
 
   width: 60px;
@@ -357,13 +348,11 @@ nav {
   height: 30px;
   left: 0px;
   top: 0px;
-
   background: url(../img/icon_search.png);
 }
 .searchInput {
   position: absolute;
-  /* width: 400px; */
-  width: 87.95%;
+  width: 87.95%; /* width: 400px; */
   height: 46px;
   left: 0px;
   top: 0px;
@@ -485,26 +474,20 @@ nav {
   /* attractions group */
 
   position: relative; /* position: absolute; */
-  /* width: 1170px; */
-  width: 97.5%;
-  /* height: 786px; */
-  /* left: 15px; */
-  left: 1.25%;
+  width: 97.5%; /* width: 1170px;  height: 786px; */
+  left: 1.25%; /* left: 15px; */
   top: 15px;
   margin: 1.25% 0;
 
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
-  /* background-color: mediumturquoise; */
 }
 .attraction {
   /* Attraction | Desktop */
   display: flex;
   position: relative;
-  /* width: 270px; */
-  width: 22.5%;
+  width: 22.5%; /* width: 270px; */
   height: 242px;
   /* left: 900px;
   top: 544px; */
@@ -518,15 +501,13 @@ nav {
 
 .att-img {
   position: relative;
-  /* width: 268px; */
-  width: 100%;
+  width: 100%; /* width: 268px; */
   height: 160px;
   left: 0px;
   top: 0px;
 
   background-size: cover;
   background-position: 50% 50%;
-
   background-image: url(../img/Picture.png);
   border-radius: var(--borderRad) var(--borderRad) 0 0;
 }
@@ -544,8 +525,7 @@ nav {
   /* mask */
 
   position: absolute;
-  /* width: 268px; */
-  width: 100%;
+  width: 100%; /* width: 268px; */
   height: 160px;
   left: 0px;
   top: 0px;
@@ -558,8 +538,6 @@ nav {
 
 .attInfo {
   position: absolute;
-  /* width: 95%;
-  left: 2.5%; */
   width: 92.59%;
   height: 62px;
   left: 3.7%;
@@ -569,11 +547,9 @@ nav {
   /* 平安鐘 */
 
   position: absolute;
-  /* width: 270px; */
-  width: 100%;
+  width: 100%; /* width: 270px; */
   height: 22px;
-  /* left: 10px; */
-  left: 0px;
+  left: 0px; /* left: 10px; */
   top: 0px;
 
   /* Body - Bold 16(13.3) */
@@ -597,11 +573,9 @@ nav {
   /* 忠孝復興 */
 
   position: absolute;
-  /* width: 125px; */
-  width: 46.3%;
+  width: 46.3%; /* width: 125px; */
   height: 20px;
-  /* left: 10px; */
-  left: 0;
+  left: 0; /* left: 10px; */
   top: 37px;
   /* Body - Reg 16(13.3) */
 
@@ -624,11 +598,9 @@ nav {
   /* 公共藝術 */
 
   position: absolute;
-  /* width: 125px; */
-  width: 46.3%;
+  width: 46.3%; /* width: 125px; */
   height: 20px;
-  /* left: 135px; */
-  left: 50%;
+  left: 50%; /* left: 135px; */
   top: 37px;
 
   /* Body - Reg 16(13.3) */
@@ -653,8 +625,7 @@ nav {
   /* attraction */
 
   position: absolute;
-  /* width: 270px; */
-  width: 100%;
+  width: 100%; /* width: 270px; */
   height: 242px;
   left: 0px;
   top: 0px;
@@ -674,17 +645,13 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* padding: 40px 843px; */
-  padding: 40px 43.91%;
+  padding: 40px 43.91%; /* padding: 40px 843px; */
 
-  /* position: absolute; */
-
-  position: relative;
+  position: relative; /* position: absolute; */
   width: 100%;
   height: 104px;
   /* left: 0px; */
   /* top: 1270px; */
-  /* bottom: 0; */
 
   /* Gray 700 */
 
@@ -693,10 +660,8 @@ footer {
 .footerDiv {
   /* div */
 
-  /* position: static; */
-  position: absolute;
-  width: 235px;
-  /* 234px會造成文字換行 */
+  position: absolute; /* position: static; */
+  width: 235px; /* 234px會造成文字換行 */
   height: 24px;
   /* left: 843px;
   top: 40px; */
@@ -768,10 +733,9 @@ footer {
   .navDiv-text {
     /* 台北一日遊 */
 
-    /* left: 10px; */
-    left: 2.78%;
-    /* top: 10px; */
-    top: 2.78%;
+    left: 2.78%; /* left: 10px; */
+
+    top: 2.78%; /* top: 10px; */
   }
   .navDiv-frame2 {
     /* Frame 2 */
@@ -792,41 +756,32 @@ footer {
     /* Auto Layout */
     width: 94.44%;
     height: 169px;
-    /* left: 10px; */
-    left: 2.78%;
+    left: 2.78%; /* left: 10px; */
     top: 111px;
   }
   .sloganDiv {
     /* div */
-
-    /* width: 320px; */
-    width: 88.89%;
+    width: 88.89%; /* width: 320px; */
     height: 149px;
-    /* left: 10px; */
-    left: 2.78%;
+    left: 2.78%; /* left: 10px; */
     top: 10px;
   }
   .sloganDiv {
-    /* width: 320px; */
-    width: 88.89%;
+    width: 88.89%; /* width: 320px; */
     height: 149px;
-    /* left: 10px; */
-    left: 2.78%;
+    left: 2.78%; /* left: 10px; */
     top: 10px;
     margin: 2.78% 0px;
   }
   .slogan {
-    /* width: 320px; */
-    width: 100%;
+    width: 100%; /* width: 320px; */
   }
   .searchBlock {
-    /* width: 322px; */
-    width: 100.625%;
+    width: 100.625%; /* width: 322px; */
     border-radius: 10px;
   }
   .searchBtn {
-    /* left: 230px; */
-    left: 71.43%;
+    left: 71.43%; /* left: 230px; */
   }
   .searchInput {
     width: 71.43%;
@@ -850,10 +805,8 @@ footer {
     position: relative;
     width: 212px;
     height: 148px;
-    /* left: 148px; */
-    right: 0;
-    /* top: 132px; */
-    bottom: 0;
+    right: 0; /* left: 148px; */
+    bottom: 0; /* top: 132px; */
   }
   .welcome1 {
     position: absolute;
@@ -884,26 +837,16 @@ footer {
   }
   .attInfo {
     position: absolute;
-    /* width: 302px; */
-    width: 94.375%;
+    width: 94.375%; /* width: 302px; */
     height: 62px;
-    /* left: 10px; */
-    left: 3.125%;
+    left: 3.125%; /* left: 10px; */
     top: 210px;
   }
   .att-MRT {
-    /* width: 125px; */
-    width: 41.39%;
+    width: 41.39%; /* width: 125px; */
   }
   .att-category {
     width: 41.39%;
     left: 58.61%;
   }
-  /* .att-img-picture {
-    width: 100%;
-    left: 0;
-  }
-  .att-img-mask {
-    height: 200px;
-  } */
 }
