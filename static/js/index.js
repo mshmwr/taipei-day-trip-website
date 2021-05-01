@@ -1,25 +1,86 @@
+//api
+let webIP = "http://127.0.0.1:3000/";
+let api_attractions = "api/attractions";
+let api_attraction = "api/attraction";
+let currentPage = 0;
+
+//fetch
+let nextPage = 0;
+let isFetchFinished = false;
+let fetchFinishedID;
+let parsedData;
+let isLoadFinished = false;
+
+//scroll to bottom
+let attractionGroup; //window element
+let isBottom = false;
+let loadNextID;
+
+function IsScrollBottom() {
+  let rect = attractionGroup.getBoundingClientRect();
+  if (rect.bottom < window.innerHeight) {
+    isBottom = true; //滾到最底
+  }
+}
+
+function CheckAtTheBottom() {
+  loadNextID = window.setInterval(LoadNextWhenAtTheBottom, 100);
+}
+function LoadNextWhenAtTheBottom() {
+  if (isBottom === true && isLoadFinished === true) {
+    window.clearInterval(loadNextID);
+    isBottom = false;
+    isLoadFinished = false;
+    if (nextPage !== 0 && nextPage !== null) {
+      currentPage = nextPage;
+      GetAttractionsData(GetUrl(api_attractions, currentPage), undefined);
+    }
+  }
+}
+
+function CheckFetch() {
+  fetchFinishedID = window.setInterval(FetchFinished, 100);
+}
+function FetchFinished() {
+  if (isFetchFinished === true) {
+    window.clearInterval(fetchFinishedID);
+    createBoxes(parsedData[1]);
+    isFetchFinished = false;
+    isLoadFinished = true;
+  }
+}
+
+function GetNextPage() {
+  return nextPage;
+}
+
+function SetNextPage(next) {
+  nextPage = next;
+}
+
 function DoKeywordSearch() {
   alert("DoKeywordSearch");
 }
 
-// //透過 fetch 從 api 取得資料
+//透過 fetch 從 api 取得資料
 function GetAttractionsData(url = "", keyword = "") {
   if (url === "") return;
 
+  isFetchFinish = false;
+  CheckFetch();
+  CheckAtTheBottom();
   if (keyword !== "") {
     url += "&" + "keyword=" + keyword;
   }
   fetch(url, {
     mode: "cors",
-    // mode: "no-cors",
   })
     .then((response) => {
       return response.text();
     })
     .then(function (result) {
-      parsedDatas = ParseAttractionsData(result);
-      // console.log("nxtP = " + parsedDatas[0]);
-      createBoxes(parsedDatas[1]);
+      parsedData = ParseAttractionsData(result);
+      isFetchFinished = true;
     });
 }
 
@@ -28,7 +89,8 @@ function ParseAttractionsData(rawData = "") {
   if (rawData === "") return;
 
   let jsonData = JSON.parse(rawData);
-  let nextPage = jsonData.nextPage;
+  nextPage = jsonData.nextPage;
+
   let dataList = jsonData.data;
   let attractionsArr = [];
 
@@ -118,4 +180,9 @@ function createParagraphWithText(paragraphText = "") {
   let textNode = document.createTextNode(paragraphText);
   newParagraph.appendChild(textNode);
   return newParagraph;
+}
+
+function GetUrl(api = "api/attractions", currentPage = 0) {
+  let url = webIP + api + "?" + "page=" + currentPage;
+  return url;
 }

@@ -3,13 +3,10 @@
     <link rel="stylesheet" type="text/css" href="../static/css/common.css" />
     <script src="../static/js/index.js"></script>
     <script type="text/javascript">
-      let webIP = "http://127.0.0.1:3000/";
-      let api_attractions = "api/attractions";
-      let api_attraction = "api/attraction";
-      let curPage = 0;
       window.onload = function () {
-        let url = webIP + api_attractions + "?" + "page=" + curPage;
-        GetAttractionsData(url);
+        attractionGroup = document.getElementById("attractionGroup");
+        GetAttractionsData(GetUrl(api_attractions, currentPage), undefined);
+        window.addEventListener("scroll", IsScrollBottom, true);
       };
     </script>
   </head>
