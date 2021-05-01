@@ -5,6 +5,7 @@
     <script type="text/javascript">
       window.onload = function () {
         attractionGroup = document.getElementById("attractionGroup");
+        searchInput = document.getElementById("searchInput");
         GetAttractionsData(GetUrl(api_attractions, currentPage), undefined);
         window.addEventListener("scroll", IsScrollBottom, true);
       };
@@ -42,6 +43,7 @@
           <div class="searchBlock">
             <input
               type="text"
+              id="searchInput"
               class="searchInput"
               placeholder="輸入景點名稱查詢"
             />
@@ -57,6 +59,7 @@
     </div>
     <div class="attractions">
       <div id="attractionGroup" class="attractionGroup">
+        <!-- <p class="noResult">沒有結果</p> -->
         <!-- <div class="attraction">
           <div class="att-img"></div>
           <div class="attInfo">

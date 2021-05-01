@@ -16,6 +16,29 @@ let attractionGroup; //window element
 let isBottom = false;
 let loadNextID;
 
+//keyword
+let searchInput; //window element
+let keyword = "";
+
+function RemoveChildElement(parentElement, childClassName = "") {
+  if (parentElement === undefined) return;
+  let childArr = parentElement.getElementsByClassName(childClassName);
+  if (childArr.length === 0) return;
+  for (let i = childArr.length - 1; i >= 0; i--) {
+    parentElement.removeChild(childArr[i]);
+  }
+}
+
+function DoKeywordSearch() {
+  if (searchInput === undefined) return;
+  let inputKeyword = searchInput.value;
+  keyword = searchInput.value;
+  currentPage = 0;
+  RemoveChildElement(attractionGroup, "attraction");
+  RemoveChildElement(attractionGroup, "noResult");
+  GetAttractionsData(GetUrl(api_attractions, currentPage), keyword);
+}
+
 function IsScrollBottom() {
   let rect = attractionGroup.getBoundingClientRect();
   if (rect.bottom < window.innerHeight) {
@@ -33,7 +56,7 @@ function LoadNextWhenAtTheBottom() {
     isLoadFinished = false;
     if (nextPage !== 0 && nextPage !== null) {
       currentPage = nextPage;
-      GetAttractionsData(GetUrl(api_attractions, currentPage), undefined);
+      GetAttractionsData(GetUrl(api_attractions, currentPage), keyword);
     }
   }
 }
@@ -44,7 +67,15 @@ function CheckFetch() {
 function FetchFinished() {
   if (isFetchFinished === true) {
     window.clearInterval(fetchFinishedID);
-    createBoxes(parsedData[1]);
+    let attsData = parsedData[1];
+
+    if (attsData.length === 0) {
+      attractionGroup.appendChild(
+        createParagraphWithText("沒有結果", "noResult")
+      );
+    } else {
+      createBoxes(attsData);
+    }
     isFetchFinished = false;
     isLoadFinished = true;
   }
@@ -58,10 +89,6 @@ function SetNextPage(next) {
   nextPage = next;
 }
 
-function DoKeywordSearch() {
-  alert("DoKeywordSearch");
-}
-
 //透過 fetch 從 api 取得資料
 function GetAttractionsData(url = "", keyword = "") {
   if (url === "") return;
@@ -69,7 +96,7 @@ function GetAttractionsData(url = "", keyword = "") {
   isFetchFinish = false;
   CheckFetch();
   CheckAtTheBottom();
-  if (keyword !== "") {
+  if (keyword !== "" && keyword !== undefined) {
     url += "&" + "keyword=" + keyword;
   }
   fetch(url, {
@@ -95,6 +122,8 @@ function ParseAttractionsData(rawData = "") {
   let attractionsArr = [];
 
   // Get each data: img(the first url), name, MRT, category
+  if (dataList === undefined) return [];
+
   let dataListLen = dataList.length;
   for (let i = 0; i < dataListLen; i++) {
     let data = dataList[i];
@@ -125,28 +154,27 @@ function createBox(itemArr, index) {
     index: itemArr中的第幾個項目
   */
 
-  // 取得容器
-  let myAttractionGroup = document.getElementById("attractionGroup");
-
   // 1. 建立新的 <div> 母元素: attraction
   let newDivAttraction = createElementWithClassName(undefined, "attraction");
 
-  // 2. 建立新的 <div> 子元素: att-img, attInfo
+  // 2. 建立新的 <div> 子元素: att-img, attInfo, att-border
   let newDivAttImg = createElementWithClassName(undefined, "att-img");
-  newDivAttImg.style.backgroundImage = "url(" + itemArr[index][0] + ")";
+  newDivAttImg.style.backgroundImage = "url(" + itemArr[index][0] + ")"; //img(the first url)
 
   let newDivAttInfo = createAttInfo(
-    itemArr[index][1],
-    itemArr[index][2],
-    itemArr[index][3]
+    itemArr[index][1], //name
+    itemArr[index][2], //MRT
+    itemArr[index][3] //category
   );
+  let newDivAttBorder = createElementWithClassName(undefined, "att-border");
 
   // 4. 把 子元素 都加入至 母元素
   newDivAttraction.appendChild(newDivAttImg);
   newDivAttraction.appendChild(newDivAttInfo);
+  newDivAttraction.appendChild(newDivAttBorder);
 
-  // 5. 把 box 加入至 myAttractionGroup
-  myAttractionGroup.appendChild(newDivAttraction);
+  // 5. 把 box 加入至 attractionGroup
+  attractionGroup.appendChild(newDivAttraction);
 }
 
 function createAttInfo(nameStr = "", mrtStr = "", categoryStr = "") {
@@ -155,11 +183,13 @@ function createAttInfo(nameStr = "", mrtStr = "", categoryStr = "") {
 
   //2. 建立新的 <div> 子元素: att-name, att-MRT, att-category
   let newDivAttName = createElementWithClassName(undefined, "att-name");
-  newDivAttName.appendChild(createParagraphWithText(nameStr));
+  newDivAttName.appendChild(createParagraphWithText(nameStr, undefined));
   let newDivAttMRT = createElementWithClassName(undefined, "att-MRT");
-  newDivAttMRT.appendChild(createParagraphWithText(mrtStr));
+  newDivAttMRT.appendChild(createParagraphWithText(mrtStr, undefined));
   let newDivAttCategory = createElementWithClassName(undefined, "att-category");
-  newDivAttCategory.appendChild(createParagraphWithText(categoryStr));
+  newDivAttCategory.appendChild(
+    createParagraphWithText(categoryStr, undefined)
+  );
 
   //3. 把 子元素 都加入至 母元素
   newDivAttInfo.appendChild(newDivAttName);
@@ -170,13 +200,14 @@ function createAttInfo(nameStr = "", mrtStr = "", categoryStr = "") {
 }
 
 function createElementWithClassName(elementType = "div", className = "") {
-  let newDiv = document.createElement(elementType);
-  newDiv.className = className;
-  return newDiv;
+  let newElement = document.createElement(elementType);
+  newElement.className = className;
+  return newElement;
 }
 
-function createParagraphWithText(paragraphText = "") {
+function createParagraphWithText(paragraphText = "", className = "") {
   let newParagraph = document.createElement("p");
+  newParagraph.className = className;
   let textNode = document.createTextNode(paragraphText);
   newParagraph.appendChild(textNode);
   return newParagraph;

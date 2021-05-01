@@ -473,24 +473,18 @@ nav {
 
 .attractions {
   /* attractions */
-
-  /* position: absolute; */
-  position: relative;
-  /* width: 1200px; */
-  width: 62.5%;
-  /* height: 816px; */
-  /* left: 360px; */
-  left: 18.75%;
-  /* top: 414px; */
-  top: 20px;
+  position: relative; /* position: absolute; */
+  width: 62.5%; /* width: 1200px; height: 816px;*/
+  left: 18.75%; /* left: 360px; */
+  top: 20px; /* top: 414px; */
   margin-bottom: 40px;
+  min-height: 100%; /* footer置底 */
 }
 
 .attractionGroup {
   /* attractions group */
 
-  /* position: absolute; */
-  position: relative;
+  position: relative; /* position: absolute; */
   /* width: 1170px; */
   width: 97.5%;
   /* height: 786px; */
@@ -519,7 +513,6 @@ nav {
   /* White */
 
   background: #ffffff;
-  background-color: limegreen;
   border-radius: var(--borderRad);
 }
 
@@ -691,6 +684,7 @@ footer {
   height: 104px;
   /* left: 0px; */
   /* top: 1270px; */
+  /* bottom: 0; */
 
   /* Gray 700 */
 
