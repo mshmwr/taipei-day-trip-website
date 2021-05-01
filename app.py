@@ -77,7 +77,7 @@ def attractions():
     # 取得client傳來的參數
     page = int(request.args.get('page'))
     keyword = request.args.get('keyword')
-
+    print("page: "+str(page))
     # 景點總數
     spotCount = 0
     if keyword == None:
@@ -196,4 +196,5 @@ def attractionId(attractionId):
         return jsonify(response_data), 500
 
 
-app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+# app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+app.run(port=3000)  #伺服器能夠自動綁到公開的 IP 上

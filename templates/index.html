@@ -1,8 +1,17 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="./css/common.css" />
-
-    <script type="text/javascript" src="./js/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css" />
+    <script src="../static/js/index.js"></script>
+    <script type="text/javascript">
+      let webIP = "http://127.0.0.1:3000/";
+      let api_attractions = "api/attractions";
+      let api_attraction = "api/attraction";
+      let curPage = 0;
+      window.onload = function () {
+        let url = webIP + api_attractions + "?" + "page=" + curPage;
+        GetAttractionsData(url);
+      };
+    </script>
   </head>
 
   <body>
@@ -40,7 +49,7 @@
               placeholder="輸入景點名稱查詢"
             />
 
-            <button class="searchBtn" onclick="DoSearch()">
+            <button class="searchBtn" onclick="DoKeywordSearch()">
               <div class="searchBtn-icon">
                 <div class="icon-search"></div>
               </div>
@@ -50,13 +59,33 @@
       </div>
     </div>
     <div class="attractions">
-      <div class="attractionGroup">
+      <div id="attractionGroup" class="attractionGroup">
+        <!-- <div class="attraction">
+          <div class="att-img"></div>
+          <div class="attInfo">
+            <div class="att-name"><p>平安鐘</p></div>
+            <div class="att-MRT"><p>忠孝復興</p></div>
+            <div class="att-category"><p>公共藝術</p></div>
+          </div>
+          <div class="att-border"></div>
+        </div>
         <div class="attraction">
           <div class="att-img"></div>
           <div class="attInfo">
-            <div class="att-name">平安鐘</div>
-            <div class="att-MRT">忠孝復興</div>
-            <div class="att-category">公共藝術</div>
+            <div class="att-name"><p>平安鐘</p></div>
+            <div class="att-MRT"><p>忠孝復興</p></div>
+            <div class="att-category"><p>公共藝術</p></div>
+          </div>
+          <div class="att-border"></div>
+        </div>
+        <div class="attraction"></div>
+        <div class="attraction"></div>
+        <div class="attraction">
+          <div class="att-img"></div>
+          <div class="attInfo">
+            <div class="att-name"><p>平安鐘</p></div>
+            <div class="att-MRT"><p>忠孝復興</p></div>
+            <div class="att-category"><p>公共藝術</p></div>
           </div>
           <div class="att-border"></div>
         </div>
@@ -70,11 +99,7 @@
         <div class="attraction"></div>
         <div class="attraction"></div>
         <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
-        <div class="attraction"></div>
+        <div class="attraction"></div> -->
       </div>
     </div>
     <footer>

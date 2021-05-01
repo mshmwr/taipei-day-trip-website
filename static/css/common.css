@@ -1,7 +1,8 @@
 :root {
   --borderRad: 5px;
 }
-body {
+body,
+.attInfo p {
   margin: 0;
   padding: 0;
 }
@@ -507,7 +508,7 @@ nav {
 .attraction {
   /* Attraction | Desktop */
   display: flex;
-  /* position: absolute; */
+  position: relative;
   /* width: 270px; */
   width: 22.5%;
   height: 242px;
@@ -523,9 +524,9 @@ nav {
 }
 
 .att-img {
-  position: absolute;
+  position: relative;
   /* width: 268px; */
-  width: 22.4%;
+  width: 100%;
   height: 160px;
   left: 0px;
   top: 0px;
@@ -562,17 +563,53 @@ nav {
   background-image: url(../img/Picture.png);
 }
 
+.attInfo {
+  position: absolute;
+  /* width: 95%;
+  left: 2.5%; */
+  width: 92.59%;
+  height: 62px;
+  left: 3.7%;
+  top: 173px;
+}
+.att-name {
+  /* 平安鐘 */
+
+  position: absolute;
+  /* width: 270px; */
+  width: 100%;
+  height: 22px;
+  /* left: 10px; */
+  left: 0px;
+  top: 0px;
+
+  /* Body - Bold 16(13.3) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 13px;
+  /* or 83% */
+
+  display: flex;
+  align-items: center;
+
+  /* Gray 700 */
+
+  color: #757575;
+}
+
 .att-MRT {
   /* 忠孝復興 */
 
   position: absolute;
   /* width: 125px; */
-  width: 10.68%;
+  width: 46.3%;
   height: 20px;
   /* left: 10px; */
-  left: 0.85%;
-  top: 210px;
-
+  left: 0;
+  top: 37px;
   /* Body - Reg 16(13.3) */
 
   font-family: "Noto Sans TC";
@@ -595,11 +632,11 @@ nav {
 
   position: absolute;
   /* width: 125px; */
-  width: 10.68%;
+  width: 46.3%;
   height: 20px;
   /* left: 135px; */
-  left: 11.54%;
-  top: 210px;
+  left: 50%;
+  top: 37px;
 
   /* Body - Reg 16(13.3) */
 
@@ -619,40 +656,12 @@ nav {
   color: #757575;
 }
 
-.att-name {
-  /* 平安鐘 */
-
-  position: absolute;
-  /* width: 270px; */
-  width: 23.08%;
-  height: 22px;
-  /* left: 10px; */
-  left: 0.85%;
-  top: 173px;
-
-  /* Body - Bold 16(13.3) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 13px;
-  /* or 83% */
-
-  display: flex;
-  align-items: center;
-
-  /* Gray 700 */
-
-  color: #757575;
-}
-
 .att-border {
   /* attraction */
 
   position: absolute;
   /* width: 270px; */
-  width: 22.5%;
+  width: 100%;
   height: 242px;
   left: 0px;
   top: 0px;
@@ -738,40 +747,21 @@ footer {
     width: 90%;
     left: 5%;
   }
-  .attraction,
-  .att-img,
-  .att-border {
+  .attraction {
     width: 48%;
   }
   .attInfo {
     position: absolute;
-    width: 45%;
+    width: 92.59%;
     height: 62px;
-    /* left: 10px; */
-    left: 1.5%;
+    left: 3.7%;
     top: 173px;
-  }
-  .att-name {
-    width: 82.78%;
-    left: 0px;
-    top: 0px;
-  }
-  .att-MRT {
-    /* width: 125px; */
-    width: 44%;
-    left: 0;
-    top: 37px;
-  }
-  .att-category {
-    width: 44%;
-    left: 56%;
-    top: 37px;
   }
 }
 @media (max-width: 600px) {
   nav {
-    position: absolute;
-    top: 2px;
+    position: fixed;
+    padding-top: 2px;
 
     /* White */
 
@@ -885,30 +875,26 @@ footer {
 }
 
 @media (max-width: 360px) {
-  .attraction,
-  .att-border,
-  .attInfo,
-  .att-img {
+  .attraction {
+    width: 89.44%;
     margin-left: 5.55%;
   }
 
   .attraction,
   .att-border {
-    width: 89.44%;
     height: 280px;
   }
 
   .att-img {
-    width: 89.44%;
     height: 202px;
   }
   .attInfo {
     position: absolute;
     /* width: 302px; */
-    width: 83.88%;
+    width: 94.375%;
     height: 62px;
     /* left: 10px; */
-    left: 2.78%;
+    left: 3.125%;
     top: 210px;
   }
   .att-MRT {

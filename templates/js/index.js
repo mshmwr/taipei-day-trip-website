@@ -1,3 +1,0 @@
-function DoSearch() {
-  alert("DoSearch");
-}
