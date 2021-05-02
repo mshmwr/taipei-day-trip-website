@@ -6,13 +6,21 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-#MySQL
+# MySQL
 import mysql.connector
+import os
+import setting
 
-mydb = mysql.connector.connect(host="localhost",
-                               user="root",
-                               password="wingjan120",
-                               database="taipeiattractions")
+DB_HOST = os.getenv("db_host")
+DB_USER = os.getenv("db_user")
+DB_PASSWORD = os.getenv("db_password")
+DB_DATABASE = os.getenv("db_database")
+
+mydb = mysql.connector.connect(host=DB_HOST,
+                               user=DB_USER,
+                               password=DB_PASSWORD,
+                               database=DB_DATABASE)
+
 mycursor = mydb.cursor()
 
 
@@ -69,7 +77,7 @@ def attractions():
     # 取得client傳來的參數
     page = int(request.args.get('page'))
     keyword = request.args.get('keyword')
-
+    print("page: "+str(page))
     # 景點總數
     spotCount = 0
     if keyword == None:
