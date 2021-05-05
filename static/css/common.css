@@ -206,6 +206,12 @@ nav {
   margin: 10px 0px;
 }
 
+.indexDiv {
+  min-height: 922px; /* min-height: (1080-104-54) px */
+
+  /* footer置底 */
+}
+
 /* --- slogan --- */
 .sloganBlock {
   /* slogan */
@@ -467,7 +473,6 @@ nav {
   left: 18.75%; /* left: 360px; */
   top: 20px; /* top: 414px; */
   margin-bottom: 40px;
-  min-height: 100%; /* footer置底 */
 }
 
 .attractionGroup {
@@ -651,7 +656,7 @@ footer {
   width: 100%;
   height: 104px;
   /* left: 0px; */
-  /* top: 1270px; */
+  /* top: 0px; */
 
   /* Gray 700 */
 
@@ -670,7 +675,7 @@ footer {
 
   flex: none;
   order: 0;
-  flex-grow: 0;
+  flex-grow: 1;
   margin: 0px 0px;
 }
 

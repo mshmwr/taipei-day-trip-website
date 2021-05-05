@@ -1,0 +1,458 @@
+.indexDiv {
+  min-height: 882px; /* min-height: (976-94) px */
+
+  /* footer置底 */
+}
+.attraction-attSection {
+  position: relative; /* position: absolute; */
+  width: 62.5%; /* width: 1200px; height: 400px;*/
+  height: 400px;
+  left: 18.75%; /* left: 360px; */
+  margin-top: 94px;
+}
+
+.attraction-img {
+  position: relative;
+  width: 45%; /* width: 540px; */
+  height: 400px;
+  left: 1.25%; /* left: 15px; */
+  top: 0px;
+
+  border-radius: var(--borderRad);
+  overflow: hidden;
+}
+
+.attraction-img-buttonGroup {
+  /* Button / circle */
+
+  position: relative;
+  width: 72px;
+  height: 12px;
+  top: 378px;
+
+  opacity: 0.75;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin: 0 auto;
+}
+
+.attraction-img-buttonDiv {
+  /* circle */
+
+  /* Auto Layout */
+
+  /* display: flex;
+  flex-direction: row;
+  align-items: flex-start; */
+  /* padding: 0px 6px; */
+
+  /* position: absolute; */
+  width: 33.33%; /* width: 24px; */
+  height: 12px;
+  /* left: 48px; */
+  /* top: 0px; */
+}
+
+.attraction-img-button {
+  /* circle current */
+
+  /* position: absolute; */
+  width: 12px;
+  height: 12px;
+  margin-left: 12.5%; /*  left: 6px; */
+  /* top: 0px; */
+
+  /* White */
+
+  background: #ffffff;
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  /* margin: 0px 10px; */
+  border-radius: 50%;
+}
+
+.attraction-img-leftArrow,
+.attraction-img-rightArrow {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 182px;
+  opacity: 0.75;
+}
+
+.attraction-img-leftArrow {
+  left: 1.85%; /* left: 10px; */
+}
+
+.attraction-img-rightArrow {
+  right: 1.85%; /* left: 494px => right: 10px;*/
+}
+
+.attraction-img-leftArrow-bg,
+.attraction-img-rightArrow-bg {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  left: 0px;
+  top: 0px;
+}
+
+.attraction-img-leftArrow-bg {
+  background: url(../img/btn_leftArrow.png);
+}
+.attraction-img-rightArrow-bg {
+  background: url(../img/btn_rightArrow.png);
+}
+
+.attraction-img-attImg {
+  /* img */
+
+  position: absolute;
+  width: 100%; /* width: 540px; */
+  height: 406px;
+  left: 0px;
+  top: -3px;
+  background: url(../img/img-att.png);
+  background-repeat: no-repeat;
+  border-radius: var(--borderRad);
+}
+
+.attraction-profile {
+  position: absolute;
+  width: 50%; /* width: 600px; */
+  height: 400px;
+  left: 48.75%; /* left: 585px; */
+  top: 0px;
+}
+.attraction-profile-title {
+  /* 平安鐘 */
+
+  position: absolute;
+  width: 100%; /* width: 600px; */
+  height: 33px;
+  left: 0px;
+  top: 0px;
+
+  /* Header 3 - Bold 24(24) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  /* or 100% */
+
+  display: flex;
+  align-items: center;
+
+  /* Gray 800 */
+
+  color: #666666;
+}
+
+.attraction-profile-CATAndMRT {
+  /* 公共藝術 at 忠孝復興 */
+
+  position: absolute;
+  width: 100%; /* width: 600px; */
+  height: 22px;
+  left: 0px;
+  top: 48px;
+}
+
+.attraction-profile-bookingForm {
+  /* booking form */
+
+  position: absolute;
+  width: 100%; /* width: 600px; */
+  height: 302px;
+  left: 0px;
+  top: 90px;
+
+  /* Gray 300 */
+
+  background: #e8e8e8;
+  border-radius: var(--borderRad);
+}
+.attraction-profile-bookingTitle {
+  /* 訂購導覽行程 */
+
+  position: absolute;
+  width: 93.33%; /* width: 560px; */
+  height: 22px;
+  left: 3.33%; /* left: 20px; */
+  top: 15px;
+
+  /* Body - Bold 16(13.3) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 13px;
+  /* or 83% */
+
+  display: flex;
+  align-items: center;
+
+  /* Gray 800 */
+
+  color: #666666;
+}
+.attraction-profile-bookingContent {
+  /* 以此景點為中心的一日行程，帶您探索城市角落故事 */
+
+  position: absolute;
+  width: 93.33%; /* width: 560px; */
+  height: 24px;
+  left: 3.33%; /* left: 20px; */
+  top: 52px;
+
+  /* Body - Reg 16(13.3) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 13px;
+  /* or 83% */
+
+  display: flex;
+  align-items: center;
+
+  /* Gray 800 */
+
+  color: #666666;
+}
+.attraction-profile-booking-date,
+.attraction-profile-booking-time,
+.attraction-profile-booking-price {
+  /* Field / date, time, price */
+
+  position: absolute;
+  width: 93.33%; /* width: 560px; */
+  height: 35px;
+  left: 3.33%; /* left: 20px; */
+}
+.attraction-profile-booking-date {
+  top: 91px;
+}
+.attraction-profile-booking-time {
+  top: 141px;
+}
+.attraction-profile-booking-price {
+  top: 178px;
+}
+
+.attraction-profile-booking-dateText,
+.attraction-profile-booking-timeText,
+.attraction-profile-booking-priceText {
+  /* 選擇日期： */
+
+  position: absolute;
+  width: 81px; /* width: 14.46%; */
+  left: 0px;
+
+  /* Body - Bold 16(13.3) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 13px;
+  /* or 83% */
+
+  display: flex;
+  align-items: center;
+
+  /* Gray 800 */
+
+  color: #666666;
+}
+
+.attraction-profile-booking-dateText {
+  height: 17px;
+  top: 9px;
+}
+.attraction-profile-booking-timeText,
+.attraction-profile-booking-priceText {
+  height: 22px;
+  top: 0px;
+}
+
+.attraction-profile-booking-dateInput {
+  /* input */
+
+  position: absolute;
+  width: 193px; /* width: 34.46%; */
+  height: 35px;
+  left: 86px; /* left: 15.36%;  */
+  top: 0px;
+}
+.attraction-profile-booking-time ul {
+  position: absolute;
+  /* width: 87px; */
+  height: 22px;
+  left: 86px;
+  top: 0;
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.attraction-profile-booking-timeInput li {
+  display: inline;
+  margin-right: 5px;
+}
+
+.attraction-profile-booking-priceContent {
+  /* 新台幣 2000 元 */
+
+  position: absolute;
+  width: 107px;
+  height: 14px;
+  left: 86px;
+  top: 4px;
+
+  /* Body - Reg 16(13.3) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 13px;
+  /* identical to box height, or 83% */
+
+  display: flex;
+  align-items: center;
+
+  /* Gray 800 */
+
+  color: #666666;
+}
+
+.attraction-profile-booking-button {
+  /* Button / booking */
+
+  /* Auto Layout */
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 20px;
+
+  position: absolute;
+  width: 154px;
+  height: 36px;
+  left: 3.33%; /* left: 20px; */
+  top: 225px;
+
+  /* Cyan 800 */
+
+  background: #448899;
+  border-radius: 5px;
+}
+.attraction-profile-booking-buttonText {
+  /* BUTTON */
+
+  position: static;
+  width: 114px;
+  height: 16px;
+  left: 20px;
+  top: 10px;
+
+  /* Button - Reg 19(16) */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 19px;
+  line-height: 16px;
+  /* identical to box height, or 84% */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  /* White */
+
+  color: #ffffff;
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 0px;
+}
+.attraction-border {
+  /* separator / main */
+
+  position: absolute;
+  width: 62.5%; /* width: 1200px;*/
+  height: 0px;
+  left: 18.75%; /* left: 360px; */
+  top: 534px;
+
+  /* Gray 300 */
+
+  border: 1px solid #e8e8e8;
+}
+.attraction-infos {
+  /* infors */
+
+  /* position: relative; */
+  width: 62.5%; /* width: 1200px;*/
+  min-height: 362px;
+  margin: 80px auto 40px auto; /* top: 574px - 400px - 94px; */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.attraction-infos-commonText {
+  /* Gray 800 */
+
+  width: 98.33%; /* width: 1180px; */
+  display: flex;
+  color: #666666;
+  /* left: 10px; */
+
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-size: 16px;
+}
+
+.attraction-infos-title {
+  min-height: 32px;
+  margin: 10px auto 0px auto;
+  font-weight: bold;
+  line-height: 13px;
+  align-items: center;
+}
+.attraction-infos-description {
+  min-height: 96px;
+  margin: 10px auto 0px auto;
+
+  /* Content - Reg 16(Auto) */
+  font-weight: normal;
+  line-height: 23px;
+}
+.attraction-infos-addressContent {
+  min-height: 24px;
+  margin: 0 auto;
+  font-weight: normal;
+  line-height: 23px;
+}
+.attraction-infos-transportContent {
+  min-height: 48px;
+  margin: 0 auto;
+  font-weight: normal;
+  line-height: 23px;
+}
