@@ -28,25 +28,42 @@
     <div class="attractionDiv">
       <div class="attraction-attSection">
         <div class="attraction-img">
-          <div class="attraction-img-attImg"></div>
-          <div class="attraction-img-buttonGroup">
-            <div class="attraction-img-buttonDiv">
-              <button
-                class="attraction-img-button img-button-selected"
-              ></button>
+          <div class="attraction-img-slider" id="img-slider">
+            <div class="mySlides fade">
+              <img
+                src="
+              https://images.newtalk.tw/resize_action2/600/album/news/381/5e79d5ce54eff.jpg"
+              />
             </div>
-            <div class="attraction-img-buttonDiv">
-              <button class="attraction-img-button"></button>
+
+            <div class="mySlides fade">
+              <img
+                src="https://3.share.photo.xuite.net/tva0379/13d6d11/19795424/1118827569_m.jpg"
+                style="width: 100%"
+              />
             </div>
-            <div class="attraction-img-buttonDiv">
-              <button class="attraction-img-button"></button>
+
+            <div class="mySlides fade">
+              <img
+                src="https://resources.matcha-jp.com/resize/720x2000/2020/11/17-109448.jpeg"
+                style="width: 100%"
+              />
             </div>
+            <div
+              class="attraction-img-leftArrow"
+              id="leftArrow"
+              onclick="plusSlides(-1)"
+            ></div>
+            <div
+              class="attraction-img-rightArrow"
+              id="rightArrow"
+              onclick="plusSlides(1)"
+            ></div>
           </div>
-          <div class="attraction-img-leftArrow">
-            <div class="attraction-img-leftArrow-bg"></div>
-          </div>
-          <div class="attraction-img-rightArrow">
-            <div class="attraction-img-rightArrow-bg"></div>
+          <div class="dotGroup">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
           </div>
         </div>
         <div class="attraction-profile">

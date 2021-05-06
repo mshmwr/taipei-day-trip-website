@@ -22,7 +22,7 @@
   overflow: hidden;
 }
 
-.attraction-img-buttonGroup {
+.attraction-img-dotGroup {
   /* Button / circle */
 
   position: relative;
@@ -37,45 +37,22 @@
   align-items: flex-start;
   margin: 0 auto;
 }
-
+/* 
 .attraction-img-buttonDiv {
-  /* circle */
-
-  /* Auto Layout */
-
-  /* display: flex;
-  flex-direction: row;
-  align-items: flex-start; */
-  /* padding: 0px 6px; */
-
-  /* position: absolute; */
-  width: 33.33%; /* width: 24px; */
+  width: 33.33%;
   height: 12px;
-  /* left: 48px; */
-  /* top: 0px; */
 }
 
 .attraction-img-button {
-  /* circle current */
-
-  /* position: absolute; */
   width: 12px;
   height: 12px;
-  margin-left: 12.5%; /*  left: 6px; */
-  /* top: 0px; */
-
-  /* White */
-
+  margin-left: 12.5%;
   background: #ffffff;
-
-  /* Inside Auto Layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
-  /* margin: 0px 10px; */
   border-radius: 50%;
-}
+} */
 
 .attraction-img-leftArrow,
 .attraction-img-rightArrow {
@@ -87,40 +64,13 @@
 }
 
 .attraction-img-leftArrow {
-  left: 1.85%; /* left: 10px; */
+  left: 1.85%;
+  background: url(../img/btn_leftArrow.png);
 }
 
 .attraction-img-rightArrow {
-  right: 1.85%; /* left: 494px => right: 10px;*/
-}
-
-.attraction-img-leftArrow-bg,
-.attraction-img-rightArrow-bg {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  left: 0px;
-  top: 0px;
-}
-
-.attraction-img-leftArrow-bg {
-  background: url(../img/btn_leftArrow.png);
-}
-.attraction-img-rightArrow-bg {
+  right: 1.85%;
   background: url(../img/btn_rightArrow.png);
-}
-
-.attraction-img-attImg {
-  /* img */
-
-  position: absolute;
-  width: 100%; /* width: 540px; */
-  height: 406px;
-  left: 0px;
-  top: -3px;
-  background: url(../img/img-att.png);
-  background-repeat: no-repeat;
-  border-radius: var(--borderRad);
 }
 
 .attraction-profile {
@@ -489,10 +439,7 @@
     margin: 0 auto;
     flex-shrink: 0;
   }
-  .attraction-img-attImg {
-    background-size: cover;
-    background-position: 50% 50%;
-  }
+
   .attraction-profile {
     width: 94.44%;
     position: relative;
@@ -511,5 +458,74 @@
   .attraction-infos {
     width: 91.67%;
     margin: 50px 2.78% 40px 5.56%;
+  }
+}
+
+/* slider */
+.attraction-img-slider {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+  height: 100%;
+}
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/*image fill*/
+.mySlides > img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+/* The dots/bullets/indicators */
+.dotGroup {
+  position: absolute;
+  text-align: center;
+  bottom: 13px;
+  left: 0;
+  width: 100%;
+}
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
   }
 }
