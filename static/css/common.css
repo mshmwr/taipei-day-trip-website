@@ -661,6 +661,7 @@ footer {
   /* Gray 700 */
 
   background: #757575;
+  flex-grow: 1;
 }
 .footerDiv {
   /* div */
@@ -675,7 +676,6 @@ footer {
 
   flex: none;
   order: 0;
-  flex-grow: 1;
   margin: 0px 0px;
 }
 
