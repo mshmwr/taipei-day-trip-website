@@ -30,7 +30,6 @@ let models = {
     //透過 fetch 從 api 取得資料
     console.log("typeof attractionGroup = " + typeof attractionGroup);
     if (url === "") return;
-
     if (keyword !== "" && keyword !== undefined) {
       url += "&" + "keyword=" + keyword;
     }
