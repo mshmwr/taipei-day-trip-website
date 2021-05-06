@@ -466,6 +466,13 @@
     margin-right: auto;
     display: flex;
   }
+  .attraction-border {
+    width: 90%;
+    left: 5%;
+  }
+  .attraction-infos {
+    width: 82.5%;
+  }
 }
 @media (max-width: 700px) {
   .attraction-attSection {
