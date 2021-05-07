@@ -1,22 +1,22 @@
-// //import js file
-// let newscript = document.createElement("script");
-// newscript.setAttribute("type", "text/javascript");
-// newscript.setAttribute("src", "../static/js/index.js");
-// let head = document.getElementsByTagName("head")[0];
-// head.appendChild(newscript);
+//import js file
+let newscript = document.createElement("script");
+newscript.setAttribute("type", "text/javascript");
+newscript.setAttribute("src", "../static/js/dataManager.js");
+let head = document.getElementsByTagName("head")[0];
+head.appendChild(newscript);
 
 let attModels = {
   data: null,
   parsedData: null,
   getAttractionData: function (url = "", attractionId = 0) {
     //透過 fetch 從 api 取得資料 /api/attraction/<attractionId>')
+
     if (url === "") return;
 
     if (attractionId !== 0 && attractionId !== undefined) {
       url += "/" + attractionId;
     }
 
-    console.log("url: " + url);
     return fetch(url, {
       mode: "cors",
     })
@@ -30,7 +30,6 @@ let attModels = {
   parseAttractionData: function () {
     //Get next page (int or null) and attraction datas (Array: [img, name, MRT, category])
     if (this.data === "") return;
-    console.log("this.data = " + this.data);
     let jsonData = JSON.parse(this.data);
     let data = jsonData.data;
     let attractionsArr = [];
@@ -46,7 +45,7 @@ let attModels = {
 
     //images list
     let imgList = [];
-    if (images.length === 0) {
+    if (images.length !== 0) {
       images.forEach((url) => imgList.push(url));
     }
     attractionsArr = [
@@ -65,13 +64,19 @@ let attModels = {
 
 let attDataController = {
   init: function () {
-    let url = "http://127.0.0.1:3000/api/attraction";
-    this.getAttraction(url, 100);
+    // let url = "http://127.0.0.1:3000/api/attraction";
+    let url = webIP + api_attraction;
+    let attRoute = webIP + route_attraction;
+    let thisUrl = window.location.toString();
+    let id = thisUrl.replace(attRoute, "");
+    this.getAttraction(url, id);
   },
   getAttraction: function (url = "", attractionId = 0) {
     attModels.getAttractionData(url, attractionId).then(function () {
       attModels.parseAttractionData();
       attView.fillContent(attModels.parsedData);
+      attView.renderImages(attModels.parsedData[0]);
+      showSlides();
     });
   },
 };
@@ -88,6 +93,50 @@ let attView = {
       attDomList[i].innerHTML = contentList[i];
     }
   },
+  renderImages: function (imageUrls = []) {
+    //get imageUrls length
+    for (let i = 0; i < imageUrls.length; i++) {
+      this.renderImage(imageUrls[i], i);
+      this.renderDot(i);
+    }
+    this.addDotsEvent();
+  },
+  renderImage: function (url = "", index = 0) {
+    //get dom: img-slider = imgSliderDOM
+    //create div: mySlides fade
+    let imgDivElement = document.createElement("div");
+    imgDivElement.className = "mySlides fade";
+
+    //create img: src=url
+    let imgElement = document.createElement("img");
+    imgElement.src = url;
+
+    //appendChild
+    imgDivElement.appendChild(imgElement);
+    imgSliderDOM.appendChild(imgDivElement);
+  },
+  renderDot: function (index = 0) {
+    //get dom: dotGroup = dotGroupDon
+    //create span: dot, onclick
+    let dotspanElement = document.createElement("div");
+    dotspanElement.className = "dot";
+
+    if (index === 0) {
+      dotspanElement.className += " active";
+    }
+
+    //appendChild
+    dotGroupDOM.appendChild(dotspanElement);
+  },
+  addDotsEvent: function () {
+    let dots = document.getElementsByClassName("dot");
+    if (dots.length === 0) return;
+    for (let i = dots.length - 1; i >= 0; i--) {
+      dots[i].onclick = function () {
+        currentSlide(i + 1); //編號是從1開始
+      };
+    }
+  },
 };
 
 //DOMs
@@ -98,6 +147,9 @@ let infosDescriptionDOM;
 let infosAddressContentDOM;
 let infosTransportContentDOM;
 let bookingPriceContentDOM;
+let imgSliderDOM; //slider dom
+let dotGroupDOM; //slider dom
+
 let attDomList = null;
 window.onload = function () {
   profileTitleDOM = document.getElementById("profile-title");
@@ -107,6 +159,8 @@ window.onload = function () {
   infosAddressContentDOM = document.getElementById("infos-addressContent");
   infosTransportContentDOM = document.getElementById("infos-transportContent");
   bookingPriceContentDOM = document.getElementById("booking-priceContent");
+  imgSliderDOM = document.getElementById("img-slider");
+  dotGroupDOM = document.getElementById("dotGroup");
   attDomList = [
     profileTitleDOM,
     profileCATDOM,
@@ -115,7 +169,7 @@ window.onload = function () {
     infosAddressContentDOM,
     infosTransportContentDOM,
   ];
-  // attDataController.init();
+  attDataController.init();
 
   //check radio input
   let radioList = [];
@@ -130,12 +184,10 @@ window.onload = function () {
       });
     });
   }
-
-  showSlides(slideIndex);
 };
 
 //picture slider
-var slideIndex = 1;
+let slideIndex = 1;
 // Next/previous controls
 function plusSlides(n) {
   showSlides((slideIndex += n));
@@ -147,9 +199,9 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
   if (n > slides.length) {
     slideIndex = 1;
   }

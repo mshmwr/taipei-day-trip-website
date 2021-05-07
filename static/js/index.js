@@ -1,8 +1,11 @@
+//import js file
+let newscript = document.createElement("script");
+newscript.setAttribute("type", "text/javascript");
+newscript.setAttribute("src", "../static/js/dataManager.js");
+let head = document.getElementsByTagName("head")[0];
+head.appendChild(newscript);
+
 //api
-let webIP = "http://127.0.0.1:3000/";
-// let webIP = "http://18.219.195.102:3000/";
-let api_attractions = "api/attractions";
-let api_attraction = "api/attraction";
 let currentPage = 0;
 
 //fetch
@@ -52,7 +55,7 @@ let models = {
     let dataList = jsonData.data;
     let attractionsArr = [];
 
-    // Get each data: img(the first url), name, MRT, category
+    // Get each data: img(the first url), name, MRT, category, id
     if (dataList === undefined) return [];
 
     let dataListLen = dataList.length;
@@ -62,7 +65,8 @@ let models = {
       let name = data.name;
       let mrt = data.mrt;
       let category = data.category;
-      attractionsArr.push([img, name, mrt, category]);
+      let id = data.id;
+      attractionsArr.push([img, name, mrt, category, id]);
     }
     this.parsedData = [nextPage, attractionsArr];
   },
@@ -90,6 +94,7 @@ let views = {
   renderBoxes: function (itemArr = []) {
     //view
     let itemArrLen = itemArr.length;
+    console.log("itemArrLen = " + itemArrLen);
     if (itemArrLen === 0) return;
     for (let i = 0; i < itemArrLen; i++) {
       if (i >= itemArrLen) {
@@ -107,9 +112,14 @@ let attractionsViews = {
       itemArr: 景點項目資料
       index: itemArr中的第幾個項目
     */
-    if (itemArr.length === 0 || index === 0) return;
+    if (itemArr.length === 0) return;
     // 1. 建立新的 <div> 母元素: attraction
     let newDivAttraction = createElementWithClassName(undefined, "attraction");
+    let id = itemArr[index][4];
+    let link = webIP + "attraction/" + id;
+    newDivAttraction.onclick = function () {
+      window.location.href = link.toString();
+    };
 
     // 2. 建立新的 <div> 子元素: att-img, attInfo, att-border
     let newDivAttImg = createElementWithClassName(undefined, "att-img");
@@ -129,6 +139,9 @@ let attractionsViews = {
 
     // 5. 把 box 加入至 attractionGroup
     attractionGroup.appendChild(newDivAttraction);
+    console.log(
+      "renderBox: " + index + ", itemArr.name = " + itemArr[index][1]
+    );
   },
 
   createAttInfo: function (nameStr = "", mrtStr = "", categoryStr = "") {
@@ -170,13 +183,7 @@ function DoKeywordSearch() {
 function IsScrollBottom() {
   //controller
   let rect = attractionGroup.getBoundingClientRect();
-  console.log(
-    "(rect.bottom, window.innerHeight) = (" +
-      rect.bottom +
-      ", " +
-      window.innerHeight +
-      ")"
-  );
+
   if (rect.bottom < window.innerHeight) {
     isBottom = true; //滾到最底
   }
@@ -263,5 +270,12 @@ function getUrl(api = "api/attractions", currentPage = 0) {
   return url;
 }
 
-//initial
-dataController.init();
+window.onload = function () {
+  attractionGroup = document.getElementById("attractionGroup");
+  searchInput = document.getElementById("searchInput");
+  searchBtn = document.getElementById("searchBtn");
+  window.addEventListener("scroll", IsScrollBottom, true);
+  searchBtn.addEventListener("click", DoKeywordSearch);
+  //initial
+  dataController.init();
+};

@@ -1,5 +1,7 @@
 :root {
   --borderRad: 5px;
+  --zIndex-nav: 10;
+  --zIndex-sliderArrow: 1;
 }
 body,
 p {
@@ -21,7 +23,7 @@ nav {
   height: 54px;
   left: 0px;
   top: 0px;
-  z-index: 1;
+  z-index: var(--zIndex-nav);
 
   /* White */
 

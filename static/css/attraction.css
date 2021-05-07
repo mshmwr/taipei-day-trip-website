@@ -3,6 +3,9 @@
 
   /* footer置底 */
 }
+.attraction {
+  pointer-events: none;
+}
 .attraction-attSection {
   position: relative; /* position: absolute; */
   width: 62.5%; /* width: 1200px; height: 400px;*/
@@ -37,22 +40,6 @@
   align-items: flex-start;
   margin: 0 auto;
 }
-/* 
-.attraction-img-buttonDiv {
-  width: 33.33%;
-  height: 12px;
-}
-
-.attraction-img-button {
-  width: 12px;
-  height: 12px;
-  margin-left: 12.5%;
-  background: #ffffff;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  border-radius: 50%;
-} */
 
 .attraction-img-leftArrow,
 .attraction-img-rightArrow {
@@ -61,6 +48,9 @@
   height: 36px;
   top: 182px;
   opacity: 0.75;
+  z-index: var(
+    --zIndex-sliderArrow
+  ); /* 讓圖片重新render的時候，不會短暫蓋過arrow */
 }
 
 .attraction-img-leftArrow {
