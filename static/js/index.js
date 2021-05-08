@@ -31,7 +31,6 @@ let models = {
   parsedData: null,
   getAttractionsData: function (url = "", keyword = "") {
     //透過 fetch 從 api 取得資料
-    console.log("typeof attractionGroup = " + typeof attractionGroup);
     if (url === "") return;
     if (keyword !== "" && keyword !== undefined) {
       url += "&" + "keyword=" + keyword;
@@ -94,7 +93,6 @@ let views = {
   renderBoxes: function (itemArr = []) {
     //view
     let itemArrLen = itemArr.length;
-    console.log("itemArrLen = " + itemArrLen);
     if (itemArrLen === 0) return;
     for (let i = 0; i < itemArrLen; i++) {
       if (i >= itemArrLen) {
@@ -116,7 +114,7 @@ let attractionsViews = {
     // 1. 建立新的 <div> 母元素: attraction
     let newDivAttraction = createElementWithClassName(undefined, "attraction");
     let id = itemArr[index][4];
-    let link = webIP + "attraction/" + id;
+    let link = route_attraction + id;
     newDivAttraction.onclick = function () {
       window.location.href = link.toString();
     };
@@ -139,9 +137,6 @@ let attractionsViews = {
 
     // 5. 把 box 加入至 attractionGroup
     attractionGroup.appendChild(newDivAttraction);
-    console.log(
-      "renderBox: " + index + ", itemArr.name = " + itemArr[index][1]
-    );
   },
 
   createAttInfo: function (nameStr = "", mrtStr = "", categoryStr = "") {
@@ -265,8 +260,8 @@ function getNextPage() {
 function setNextPage(next) {
   nextPage = next;
 }
-function getUrl(api = "api/attractions", currentPage = 0) {
-  let url = webIP + api + "?" + "page=" + currentPage;
+function getUrl(api = "/api/attractions?", currentPage = 0) {
+  let url = api + "page=" + currentPage;
   return url;
 }
 

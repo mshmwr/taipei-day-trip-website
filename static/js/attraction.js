@@ -8,15 +8,8 @@ head.appendChild(newscript);
 let attModels = {
   data: null,
   parsedData: null,
-  getAttractionData: function (url = "", attractionId = 0) {
+  getAttractionData: function (url) {
     //透過 fetch 從 api 取得資料 /api/attraction/<attractionId>')
-
-    if (url === "") return;
-
-    if (attractionId !== 0 && attractionId !== undefined) {
-      url += "/" + attractionId;
-    }
-
     return fetch(url, {
       mode: "cors",
     })
@@ -64,19 +57,18 @@ let attModels = {
 
 let attDataController = {
   init: function () {
-    // let url = "http://127.0.0.1:3000/api/attraction";
-    let url = webIP + api_attraction;
-    let attRoute = webIP + route_attraction;
     let thisUrl = window.location.toString();
-    let id = thisUrl.replace(attRoute, "");
-    this.getAttraction(url, id);
+    let url = thisUrl.replace(route_attraction, api_attraction);
+    this.getAttraction(url);
   },
-  getAttraction: function (url = "", attractionId = 0) {
-    attModels.getAttractionData(url, attractionId).then(function () {
+  getAttraction: function (url) {
+    attModels.getAttractionData(url).then(function () {
       attModels.parseAttractionData();
       attView.fillContent(attModels.parsedData);
       attView.renderImages(attModels.parsedData[0]);
-      showSlides();
+      attView.renderBookingPrice();
+      pictureSliderView.setArrowClick();
+      pictureSliderView.showSlides();
     });
   },
 };
@@ -133,8 +125,23 @@ let attView = {
     if (dots.length === 0) return;
     for (let i = dots.length - 1; i >= 0; i--) {
       dots[i].onclick = function () {
-        currentSlide(i + 1); //編號是從1開始
+        pictureSliderView.currentSlide(i + 1); //編號是從1開始
       };
+    }
+  },
+  renderBookingPrice: function () {
+    //check radio input
+    let radioList = [];
+    let priceList = [2000, 2500];
+    if (document.querySelector('input[name="time"]')) {
+      document.querySelectorAll('input[name="time"]').forEach((elem) => {
+        radioList.push(elem.value);
+        elem.addEventListener("change", function (event) {
+          let item = event.target.value;
+          let price = item === radioList[0] ? priceList[0] : priceList[1];
+          bookingPriceContentDOM.innerHTML = price;
+        });
+      });
     }
   },
 };
@@ -149,6 +156,8 @@ let infosTransportContentDOM;
 let bookingPriceContentDOM;
 let imgSliderDOM; //slider dom
 let dotGroupDOM; //slider dom
+let leftArrowDOM;
+let rightArrowDOM;
 
 let attDomList = null;
 window.onload = function () {
@@ -161,6 +170,8 @@ window.onload = function () {
   bookingPriceContentDOM = document.getElementById("booking-priceContent");
   imgSliderDOM = document.getElementById("img-slider");
   dotGroupDOM = document.getElementById("dotGroup");
+  leftArrowDOM = document.getElementById("leftArrow");
+  rightArrowDOM = document.getElementById("rightArrow");
   attDomList = [
     profileTitleDOM,
     profileCATDOM,
@@ -170,51 +181,80 @@ window.onload = function () {
     infosTransportContentDOM,
   ];
   attDataController.init();
-
-  //check radio input
-  let radioList = [];
-  let priceList = [2000, 2500];
-  if (document.querySelector('input[name="time"]')) {
-    document.querySelectorAll('input[name="time"]').forEach((elem) => {
-      radioList.push(elem.value);
-      elem.addEventListener("change", function (event) {
-        let item = event.target.value;
-        let price = item === radioList[0] ? priceList[0] : priceList[1];
-        bookingPriceContentDOM.innerHTML = price;
-      });
-    });
-  }
 };
 
 //picture slider
+let pictureSliderView = {
+  slideIndex: 1,
+  test2: function () {
+    alert("2!!!");
+  },
+  plusSlides: function (n) {
+    this.showSlides((this.slideIndex += n));
+  },
+  currentSlide: function (n) {
+    this.showSlides((this.slideIndex = n));
+  },
+  showSlides: function (n) {
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
+    let dots = document.getElementsByClassName("dot");
 
-let slideIndex = 1;
-// Next/previous controls
-function plusSlides(n) {
-  showSlides((slideIndex += n));
+    if (n > slides.length) {
+      this.slideIndex = 1;
+    }
+    if (n < 1) {
+      this.slideIndex = slides.length;
+    }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[this.slideIndex - 1].style.display = "block";
+    dots[this.slideIndex - 1].className += " active";
+  },
+  setArrowClick: function () {
+    leftArrowDOM.onclick = function () {
+      DoPlusSlides(-1);
+    };
+    rightArrowDOM.onclick = function () {
+      DoPlusSlides(1);
+    };
+  },
+};
+function DoPlusSlides(n) {
+  pictureSliderView.plusSlides(n);
 }
+// let slideIndex = 1;
+// // Next/previous controls
+// function plusSlides(n) {
+//   showSlides((slideIndex += n));
+// }
 
-// Thumbnail image controls
-function currentSlide(n) {
-  showSlides((slideIndex = n));
-}
+// // Thumbnail image controls
+// function currentSlide(n) {
+//   showSlides((slideIndex = n));
+// }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {
-    slideIndex = 1;
-  }
-  if (n < 1) {
-    slideIndex = slides.length;
-  }
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex - 1].style.display = "block";
-  dots[slideIndex - 1].className += " active";
-}
+// function showSlides(n) {
+//   let i;
+//   let slides = document.getElementsByClassName("mySlides");
+//   let dots = document.getElementsByClassName("dot");
+
+//   if (n > slides.length) {
+//     slideIndex = 1;
+//   }
+//   if (n < 1) {
+//     slideIndex = slides.length;
+//   }
+//   for (i = 0; i < slides.length; i++) {
+//     slides[i].style.display = "none";
+//   }
+//   for (i = 0; i < dots.length; i++) {
+//     dots[i].className = dots[i].className.replace(" active", "");
+//   }
+//   slides[slideIndex - 1].style.display = "block";
+//   dots[slideIndex - 1].className += " active";
+// }
