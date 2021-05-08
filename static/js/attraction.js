@@ -187,6 +187,7 @@ window.onload = function () {
 };
 
 //picture slider
+
 let slideIndex = 1;
 // Next/previous controls
 function plusSlides(n) {

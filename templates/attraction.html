@@ -103,34 +103,33 @@
                     >選擇時間：</span
                   >
                 </label>
-                <ul class="attraction-profile-booking-timeInput">
-                  <li>
-                    <label for="morning">
-                      <input
-                        type="radio"
-                        id="morning"
-                        name="time"
-                        value="morning"
-                        class="morning"
-                        checked
-                        required
-                      />
-                      上半天
-                    </label>
-                  </li>
-                  <li>
-                    <label for="afternoon">
-                      <input
-                        type="radio"
-                        id="afternoon"
-                        name="time"
-                        value="afternoon"
-                        class="morning"
-                      />
-                      下半天
-                    </label>
-                  </li>
-                </ul>
+                <div class="attraction-profile-booking-timeInput">
+                  <label for="morning" class="container">
+                    上半天
+                    <input
+                      type="radio"
+                      id="morning"
+                      name="time"
+                      value="morning"
+                      class="morning"
+                      checked="checked"
+                      required
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+
+                  <label for="afternoon" class="container">
+                    <span>下半天</span>
+                    <input
+                      type="radio"
+                      id="afternoon"
+                      name="time"
+                      value="afternoon"
+                      class="afternoon"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
               </div>
 
               <div class="attraction-profile-booking-price">

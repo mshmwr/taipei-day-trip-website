@@ -235,21 +235,6 @@
   left: 86px; /* left: 15.36%;  */
   top: 0px;
 }
-.attraction-profile-booking-time ul {
-  position: absolute;
-  /* width: 87px; */
-  height: 22px;
-  left: 86px;
-  top: 0;
-
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-.attraction-profile-booking-timeInput li {
-  display: inline;
-  margin-right: 5px;
-}
 
 .attraction-profile-booking-priceContent {
   /* 新台幣 2000 元 */
@@ -477,21 +462,23 @@
   bottom: 13px;
   left: 0;
   width: 100%;
+  opacity: 0.75;
 }
 .dot {
   cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbb;
+  height: 12px;
+  width: 12px;
+  margin: 0 6px;
   border-radius: 50%;
+  background-color: #ffffff;
   display: inline-block;
   transition: background-color 0.6s ease;
 }
 
 .active,
 .dot:hover {
-  background-color: #717171;
+  background-color: #000000;
+  border: 1px solid #ffffff;
 }
 
 /* Fading animation */
@@ -518,4 +505,72 @@
   to {
     opacity: 1;
   }
+}
+
+/* input radio */
+.attraction-profile-booking-timeInput {
+  position: absolute;
+  /* width: 87px; */
+  height: 22px;
+  left: 86px;
+  top: 0;
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+/* Hide the browser's default radio button */
+.container {
+  position: relative;
+  padding-left: 26px;
+  margin-left: 5px;
+  cursor: pointer;
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: normal;
+  font-size: var(--check-font-size);
+  color: #666666;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: -3px; /* 置中= -((--checkMark)-fontsize)/2 = -(22-16)/2 */
+  left: 0;
+  height: var(--checkMark);
+  width: var(--checkMark);
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #448899;
 }

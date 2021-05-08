@@ -2,6 +2,8 @@
   --borderRad: 5px;
   --zIndex-nav: 10;
   --zIndex-sliderArrow: 1;
+  --checkMark: 22px;
+  --check-font-size: 16px;
 }
 body,
 p {
