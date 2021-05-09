@@ -15,6 +15,7 @@ DB_HOST = os.getenv("db_host")
 DB_USER = os.getenv("db_user")
 DB_PASSWORD = os.getenv("db_password")
 DB_DATABASE = os.getenv("db_database")
+SECRET_KEY = os.getenv("secret_key")
 
 mydb = mysql.connector.connect(host=DB_HOST,
                                user=DB_USER,
@@ -22,6 +23,7 @@ mydb = mysql.connector.connect(host=DB_HOST,
                                database=DB_DATABASE)
 
 mycursor = mydb.cursor()
+app.secret_key = SECRET_KEY
 
 
 # Enum
@@ -77,7 +79,6 @@ def attractions():
     # 取得client傳來的參數
     page = int(request.args.get('page'))
     keyword = request.args.get('keyword')
-    print("page: "+str(page))
     # 景點總數
     spotCount = 0
     if keyword == None:
@@ -150,7 +151,6 @@ def attractions():
         response_data = {"error": True, "message": "serverError"}
         return jsonify(response_data), 500
 
-
 @app.route('/api/attraction/<attractionId>')
 def attractionId(attractionId):
     # 景點總數
@@ -195,5 +195,95 @@ def attractionId(attractionId):
         response_data = {"error": True, "message": "serverError"}
         return jsonify(response_data), 500
 
+# ----- /api/user
+# [GET]
+@app.route('api/user',methods=['GET'])
+def getUser():
+    email = request.cookies.get("user")
+    print("email: " + email)
+    if email:
+        sql = "SELECT * FROM users WHERE email = %s"
+        adr = (email, )
+        mycursor.execute(sql, adr)
+        result = mycursor.fetchall()
+        id = result[0][0] #id
+        userData = {
+            "data": {
+                "id": 1,
+                "name": "彭彭彭",
+                "email": email
+            }
+        }
+        return 
+    else:
+        return 
 
-app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+# [POST]
+@app.route('api/user',methods=['POST'])
+def registerUser():
+    name=request.form["name"]
+    email=request.form["email"]
+    password=request.form["password"]
+    try:
+        isRegisterFailed = False
+        errorMsg=""
+        # Check the name is registered or not
+        sql = "SELECT * FROM users WHERE name = %s"
+        adr = (name, )
+        mycursor.execute(sql, adr)
+        result = mycursor.fetchall()
+        if len(result) != 0:
+            errMsg += "The account already exists.\n"
+            isRegisterFailed = True
+        # Check the email is registered or not
+        sql = "SELECT * FROM users WHERE email = %s"
+        adr = (email, )
+        mycursor.execute(sql, adr)
+        result = mycursor.fetchall()
+        if len(result) != 0:
+            errMsg += "The account already exists.\n"
+            isRegisterFailed = True
+
+        if isRegisterFailed:
+            return jsonify({"error": True, "message": errMsg}), 400
+        else:
+            sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+            val = (name, email, password)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            return jsonify({"ok": True}), 200
+
+    except:
+        return jsonify({"error": True, "message": "serverError"}), 500
+
+# [PATCH]
+@app.route('api/user',methods=['PATCH'])
+def loginUser():
+    email=request.form["email"]
+    password=request.form["password"]
+    try:
+        email = request.form["email"]
+        password = request.form["password"]
+        sql = "SELECT * FROM users WHERE email = %s and password= %s"
+        adr = (email, password)
+        mycursor.execute(sql, adr)
+        result = mycursor.fetchall()
+
+        if len(result) == 1:
+            email = result[0][1]
+            session["user"] = email #use email as session content
+            return jsonify({"ok": True}), 200
+        else:
+            return jsonify({"error": True, "message": "Email or Password incorrect.\n"}), 400
+
+    except:
+        return jsonify({"error": True, "message": "serverError"}), 500
+
+# [DELETE]
+@app.route('api/user', methods=['DELETE'])
+def deleteUser():
+    session["user"] = False
+    return jsonify({"ok": True}), 200
+
+# app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+app.run(port=3000)
