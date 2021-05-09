@@ -237,6 +237,102 @@ let dataController = {
   },
 };
 
+let dialogModel = {
+  navLoginRegisterDOM: null,
+  dialogDOM: null,
+  closeIconDOM: null,
+  dialogContentDOMs: null,
+  dialogNameDOM: null,
+  doLoginRegisterDOM: null,
+  dialogState: ["login", "register"],
+  currentState: null,
+  contentList: [
+    [
+      "登入會員帳號",
+      "",
+      "輸入電子信箱",
+      "輸入密碼",
+      "登入帳戶",
+      "還沒有帳戶？點此註冊",
+    ],
+    [
+      "註冊會員帳號",
+      "輸入姓名",
+      "輸入電子郵件",
+      "輸入密碼",
+      "註冊新帳戶",
+      "已經有帳戶了？點此登入",
+    ],
+  ],
+  init: function () {
+    this.currentState = this.dialogState[0];
+    this.getDOM();
+  },
+  getDOM: function () {
+    this.navLoginRegisterDOM = document.getElementById("loginRegister");
+    this.dialogContentDOMs = document.getElementsByClassName("dialogContent");
+    this.dialogNameDOM = document.getElementById("dialog-name");
+    this.doLoginRegisterDOM = document.getElementById("doLoginRegister");
+    this.closeIconDOM = document.getElementById("closeIcon");
+    this.dialogDOM = document.getElementById("dialog");
+  },
+};
+
+let dialogView = {
+  showNameInput: function (isShow = true) {
+    if (isShow) {
+      dialogModel.dialogNameDOM.style.display = "none";
+    } else {
+      dialogModel.dialogNameDOM.style.display = "block";
+    }
+  },
+};
+let dialogController = {
+  contentList: null,
+  init: function () {
+    dialogModel.init();
+    this.addClickEvent();
+    this.fillContent();
+  },
+  addClickEvent: function () {
+    dialogModel.navLoginRegisterDOM.addEventListener("click", function () {
+      dialogModel.dialogDOM.style.display = "block";
+    });
+    dialogModel.closeIconDOM.addEventListener("click", function () {
+      dialogModel.dialogDOM.style.display = "none";
+    });
+
+    dialogModel.doLoginRegisterDOM.addEventListener("click", () => {
+      this.switchDialogState();
+      this.fillContent();
+    });
+  },
+  switchDialogState: function () {
+    switch (dialogModel.currentState) {
+      case dialogModel.dialogState[0]:
+        dialogModel.currentState = dialogModel.dialogState[1];
+        break;
+      case dialogModel.dialogState[1]:
+        dialogModel.currentState = dialogModel.dialogState[0];
+        break;
+    }
+  },
+  fillContent: function () {
+    let isLogin = true;
+    if (dialogModel.currentState === dialogModel.dialogState[0]) {
+      //login
+      this.contentList = dialogModel.contentList[0];
+    } else {
+      this.contentList = dialogModel.contentList[1];
+      isLogin = false;
+    }
+    for (let i = 0; i < this.contentList.length; i++) {
+      changeText(dialogModel.dialogContentDOMs[i], this.contentList[i]);
+    }
+    dialogView.showNameInput(isLogin);
+  },
+};
+
 //some useful function
 
 function createElementWithClassName(elementType = "div", className = "") {
@@ -265,12 +361,29 @@ function getUrl(api = "/api/attractions?", currentPage = 0) {
   return url;
 }
 
+//INNERTEXT與TEXTCONTENT的跨瀏覽器處理
+function changeText(elem, changeValue = "") {
+  let hasInnerText =
+    document.getElementsByTagName("body")[0].innerText !== undefined
+      ? true
+      : false;
+
+  if (!hasInnerText) {
+    elem.textContent = changeValue;
+  } else {
+    elem.innerText = changeValue;
+  }
+}
+
 window.onload = function () {
   attractionGroup = document.getElementById("attractionGroup");
   searchInput = document.getElementById("searchInput");
   searchBtn = document.getElementById("searchBtn");
+
   window.addEventListener("scroll", IsScrollBottom, true);
   searchBtn.addEventListener("click", DoKeywordSearch);
+
   //initial
   dataController.init();
+  dialogController.init();
 };
