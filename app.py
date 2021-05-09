@@ -197,7 +197,7 @@ def attractionId(attractionId):
 
 # ----- /api/user
 # [GET]
-@app.route('api/user',methods=['GET'])
+@app.route('/api/user',methods=['GET'])
 def getUser():
     email = request.cookies.get("user")
     print("email: " + email)
@@ -219,7 +219,7 @@ def getUser():
         return 
 
 # [POST]
-@app.route('api/user',methods=['POST'])
+@app.route('/api/user',methods=['POST'])
 def registerUser():
     name=request.form["name"]
     email=request.form["email"]
@@ -257,7 +257,7 @@ def registerUser():
         return jsonify({"error": True, "message": "serverError"}), 500
 
 # [PATCH]
-@app.route('api/user',methods=['PATCH'])
+@app.route('/api/user',methods=['PATCH'])
 def loginUser():
     email=request.form["email"]
     password=request.form["password"]
@@ -280,7 +280,7 @@ def loginUser():
         return jsonify({"error": True, "message": "serverError"}), 500
 
 # [DELETE]
-@app.route('api/user', methods=['DELETE'])
+@app.route('/api/user', methods=['DELETE'])
 def deleteUser():
     session["user"] = False
     return jsonify({"ok": True}), 200
