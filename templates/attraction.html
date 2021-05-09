@@ -1,0 +1,178 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/css/attraction.css"
+    />
+    <script src="../static/js/attraction.js"></script>
+    <script type="text/javascript"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="navDiv">
+        <div class="navDiv-text">台北一日遊</div>
+        <div class="navDiv-frame2">
+          <div class="navDiv-frame1">
+            <div class="navBtn-right">
+              <div class="navBtn-right-text">登入/註冊</div>
+            </div>
+            <div class="navBtn-left">
+              <div class="navBtn-left-text">預定行程</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="attractionDiv">
+      <div class="attraction-attSection">
+        <div class="attraction-img">
+          <div class="attraction-img-slider" id="img-slider">
+            <!-- <div class="mySlides fade">
+              <img
+                src="
+              https://images.newtalk.tw/resize_action2/600/album/news/381/5e79d5ce54eff.jpg"
+              />
+            </div>
+
+            <div class="mySlides fade">
+              <img
+                src="https://3.share.photo.xuite.net/tva0379/13d6d11/19795424/1118827569_m.jpg"
+                style="width: 100%"
+              />
+            </div>
+
+            <div class="mySlides fade">
+              <img
+                src="https://resources.matcha-jp.com/resize/720x2000/2020/11/17-109448.jpeg"
+                style="width: 100%"
+              />
+            </div> -->
+
+            <div class="attraction-img-leftArrow" id="leftArrow"></div>
+            <div class="attraction-img-rightArrow" id="rightArrow"></div>
+          </div>
+          <div class="dotGroup" id="dotGroup">
+            <!-- <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span> -->
+          </div>
+        </div>
+        <div class="attraction-profile">
+          <div class="attraction-profile-title">
+            <p id="profile-title"></p>
+          </div>
+          <div class="attraction-profile-CATAndMRT">
+            <p>
+              <span id="profile-CAT"></span> at
+              <span id="profile-MRT"></span>
+            </p>
+          </div>
+          <div class="attraction-profile-bookingForm">
+            <div class="attraction-profile-bookingTitle">
+              <p>訂購導覽行程</p>
+            </div>
+            <div class="attraction-profile-bookingContent">
+              <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
+            </div>
+            <form>
+              <div class="attraction-profile-booking-date">
+                <label for="date">
+                  <span class="attraction-profile-booking-dateText"
+                    >選擇日期：</span
+                  >
+                </label>
+                <input
+                  id="date"
+                  type="date"
+                  value="2017-06-01"
+                  class="attraction-profile-booking-dateInput"
+                />
+              </div>
+              <div class="attraction-profile-booking-time">
+                <label for="time">
+                  <span class="attraction-profile-booking-timeText"
+                    >選擇時間：</span
+                  >
+                </label>
+                <div class="attraction-profile-booking-timeInput">
+                  <label for="morning" class="container">
+                    上半天
+                    <input
+                      type="radio"
+                      id="morning"
+                      name="time"
+                      value="morning"
+                      class="morning"
+                      checked="checked"
+                      required
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+
+                  <label for="afternoon" class="container">
+                    <span>下半天</span>
+                    <input
+                      type="radio"
+                      id="afternoon"
+                      name="time"
+                      value="afternoon"
+                      class="afternoon"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="attraction-profile-booking-price">
+                <label for="price">
+                  <span class="attraction-profile-booking-priceText"
+                    >導覽費用：</span
+                  >
+                </label>
+                <p class="attraction-profile-booking-priceContent">
+                  新台幣 <span id="booking-priceContent">2000</span> 元
+                </p>
+              </div>
+              <div>
+                <button type="submit" class="attraction-profile-booking-button">
+                  <p class="attraction-profile-booking-buttonText">
+                    開始預訂行程
+                  </p>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-border"></div>
+      <div class="attraction-infos">
+        <div class="attraction-infos-description attraction-infos-commonText">
+          <p id="infos-description"></p>
+        </div>
+        <div class="attraction-infos-title attraction-infos-commonText">
+          <p>景點地址：</p>
+        </div>
+        <div
+          class="attraction-infos-addressContent attraction-infos-commonText"
+        >
+          <p id="infos-addressContent"></p>
+        </div>
+        <div class="attraction-infos-title attraction-infos-commonText">
+          <p>交通方式：</p>
+        </div>
+        <div
+          class="attraction-infos-transportContent attraction-infos-commonText"
+        >
+          <p id="infos-transportContent"></p>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footerDiv">
+        <div class="footer-text">COPYRIGHT © 2021 台北一日遊</div>
+      </div>
+    </footer>
+  </body>
+</html>
