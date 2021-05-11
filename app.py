@@ -200,52 +200,49 @@ def attractionId(attractionId):
 @app.route('/api/user',methods=['GET'])
 def getUser():
     email = request.cookies.get("user")
-    print("email: " + email)
     if email:
         sql = "SELECT * FROM users WHERE email = %s"
         adr = (email, )
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
         id = result[0][0] #id
-        userData = {
-            "data": {
+        userData =  {
                 "id": 1,
                 "name": "彭彭彭",
                 "email": email
-            }
         }
-        return 
+        
+        return jsonify({"data": userData}), 200
     else:
-        return 
+        return jsonify({"data": None}), 200
 
 # [POST]
 @app.route('/api/user',methods=['POST'])
 def registerUser():
-    name=request.form["name"]
-    email=request.form["email"]
-    password=request.form["password"]
+    request_data = request.get_json()
     try:
-        isRegisterFailed = False
+        name = request_data["name"]
+        email = request_data["email"]
+        password = request_data["password"]
+
+        isRegisterFailed = False  
         errorMsg=""
-        # Check the name is registered or not
-        sql = "SELECT * FROM users WHERE name = %s"
-        adr = (name, )
-        mycursor.execute(sql, adr)
-        result = mycursor.fetchall()
-        if len(result) != 0:
-            errMsg += "The account already exists.\n"
+
+        if name=="" or email=="" or password=="":
             isRegisterFailed = True
-        # Check the email is registered or not
-        sql = "SELECT * FROM users WHERE email = %s"
-        adr = (email, )
-        mycursor.execute(sql, adr)
-        result = mycursor.fetchall()
-        if len(result) != 0:
-            errMsg += "The account already exists.\n"
-            isRegisterFailed = True
+            errorMsg += "Error! The column(s) is/are empty."
+        else:
+            # Check the email is registered or not
+            sql = "SELECT * FROM users WHERE email = %s"
+            adr = (email, )
+            mycursor.execute(sql, adr)
+            result = mycursor.fetchall()
+            if len(result) != 0:
+                errorMsg += "The email already exists."
+                isRegisterFailed = True
 
         if isRegisterFailed:
-            return jsonify({"error": True, "message": errMsg}), 400
+            return jsonify({"error": True, "message": errorMsg}), 400
         else:
             sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
             val = (name, email, password)
@@ -259,22 +256,21 @@ def registerUser():
 # [PATCH]
 @app.route('/api/user',methods=['PATCH'])
 def loginUser():
-    email=request.form["email"]
-    password=request.form["password"]
+    request_data = request.get_json()
     try:
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request_data["email"]
+        password = request_data["password"]
+
         sql = "SELECT * FROM users WHERE email = %s and password= %s"
         adr = (email, password)
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
-
         if len(result) == 1:
             email = result[0][1]
             session["user"] = email #use email as session content
             return jsonify({"ok": True}), 200
         else:
-            return jsonify({"error": True, "message": "Email or Password incorrect.\n"}), 400
+            return jsonify({"error": True, "message": "Email or Password incorrect."}), 400
 
     except:
         return jsonify({"error": True, "message": "serverError"}), 500

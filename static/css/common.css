@@ -145,7 +145,7 @@ nav {
 
   /* Body - Reg 16(13.3) */
 
-  font-family: Noto Sans TC;
+  font-family: "Noto Sans TC";
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -815,6 +815,18 @@ footer {
   color: #ffffff;
 
   margin-bottom: 10px;
+}
+.dialogBox-main .dialogMessage {
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 13px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  margin: 0 auto 10px auto;
+  display: none;
 }
 .dialogBox-main .dialogLoginRegister {
   font-family: "Noto Sans TC";

@@ -242,8 +242,16 @@ let dialogModel = {
   dialogDOM: null,
   closeIconDOM: null,
   dialogContentDOMs: null,
-  dialogNameDOM: null,
-  doLoginRegisterDOM: null,
+  dialogMessageDOM: null,
+  dialogMaskDOM: null,
+  contentDOMsEnum: [
+    "title",
+    "name",
+    "email",
+    "password",
+    "button",
+    "loginRegister",
+  ],
   dialogState: ["login", "register"],
   currentState: null,
   contentList: [
@@ -265,61 +273,136 @@ let dialogModel = {
     ],
   ],
   init: function () {
-    this.currentState = this.dialogState[0];
+    let index_login = this.getStateIndex("login");
+    this.currentState = this.dialogState[index_login];
     this.getDOM();
   },
   getDOM: function () {
     this.navLoginRegisterDOM = document.getElementById("loginRegister");
     this.dialogContentDOMs = document.getElementsByClassName("dialogContent");
-    this.dialogNameDOM = document.getElementById("dialog-name");
-    this.doLoginRegisterDOM = document.getElementById("doLoginRegister");
     this.closeIconDOM = document.getElementById("closeIcon");
     this.dialogDOM = document.getElementById("dialog");
+    this.dialogMessageDOM = document.getElementById("dialogMessage");
+    this.dialogMaskDOM = document.getElementById("dialogMask");
+  },
+  getEnumIndex: function (item = "") {
+    return this.contentDOMsEnum.indexOf(item);
+  },
+  getStateIndex: function (item = "") {
+    return this.dialogState.indexOf(item);
   },
 };
 
 let dialogView = {
   showNameInput: function (isShow = true) {
+    let index = dialogModel.getEnumIndex("name");
     if (isShow) {
-      dialogModel.dialogNameDOM.style.display = "none";
+      dialogModel.dialogContentDOMs[index].style.display = "none";
     } else {
-      dialogModel.dialogNameDOM.style.display = "block";
+      dialogModel.dialogContentDOMs[index].style.display = "block";
     }
   },
 };
+
 let dialogController = {
   contentList: null,
+  index_login: dialogModel.getStateIndex("login"),
+  index_name: dialogModel.getEnumIndex("name"),
+  index_email: dialogModel.getEnumIndex("email"),
+  index_password: dialogModel.getEnumIndex("password"),
   init: function () {
     dialogModel.init();
     this.addClickEvent();
     this.fillContent();
   },
   addClickEvent: function () {
+    //get index
+    let index_name = dialogModel.getEnumIndex("name");
+    let index_email = dialogModel.getEnumIndex("email");
+    let index_password = dialogModel.getEnumIndex("password");
+    let index_button = dialogModel.getEnumIndex("button");
+    let index_loginRegister = dialogModel.getEnumIndex("loginRegister");
+
+    //nav: show dialog
     dialogModel.navLoginRegisterDOM.addEventListener("click", function () {
       dialogModel.dialogDOM.style.display = "block";
     });
+
+    //close dialog
     dialogModel.closeIconDOM.addEventListener("click", function () {
       dialogModel.dialogDOM.style.display = "none";
     });
+    dialogModel.dialogMaskDOM.addEventListener("click", function () {
+      dialogModel.dialogDOM.style.display = "none";
+    });
 
-    dialogModel.doLoginRegisterDOM.addEventListener("click", () => {
-      this.switchDialogState();
-      this.fillContent();
+    // login or register button
+    dialogModel.dialogContentDOMs[index_button].addEventListener(
+      "click",
+      () => {
+        let index_login = dialogModel.getStateIndex("login");
+        let isLogin =
+          dialogModel.currentState === dialogModel.dialogState[index_login];
+        if (isLogin) {
+          let data = {
+            email: dialogModel.dialogContentDOMs[index_email].value,
+            password: dialogModel.dialogContentDOMs[index_password].value,
+          };
+          userApiController.doPatch(data);
+        } else {
+          let data = {
+            name: dialogModel.dialogContentDOMs[index_name].value,
+            email: dialogModel.dialogContentDOMs[index_email].value,
+            password: dialogModel.dialogContentDOMs[index_password].value,
+          };
+          userApiController.doPost(data);
+        }
+      }
+    );
+
+    //change to login/register
+    dialogModel.dialogContentDOMs[index_loginRegister].addEventListener(
+      "click",
+      () => {
+        this.switchDialogState();
+        this.fillContent();
+      }
+    );
+
+    //click to hide dialogMessage
+
+    let doms = [
+      dialogModel.dialogContentDOMs[index_name],
+      dialogModel.dialogContentDOMs[index_email],
+      dialogModel.dialogContentDOMs[index_password],
+      dialogModel.dialogContentDOMs[index_loginRegister],
+      dialogModel.navLoginRegisterDOM,
+    ];
+    doms.forEach(function (dom) {
+      dom.addEventListener("click", function () {
+        dialogModel.dialogMessageDOM.style.display = "none";
+      });
     });
   },
   switchDialogState: function () {
+    let index_login = dialogModel.getStateIndex("login");
+    let index_register = dialogModel.getStateIndex("register");
     switch (dialogModel.currentState) {
-      case dialogModel.dialogState[0]:
-        dialogModel.currentState = dialogModel.dialogState[1];
+      case dialogModel.dialogState[index_login]:
+        dialogModel.currentState = dialogModel.dialogState[index_register];
         break;
-      case dialogModel.dialogState[1]:
-        dialogModel.currentState = dialogModel.dialogState[0];
+      case dialogModel.dialogState[index_register]:
+        dialogModel.currentState = dialogModel.dialogState[index_login];
         break;
     }
   },
   fillContent: function () {
     let isLogin = true;
-    if (dialogModel.currentState === dialogModel.dialogState[0]) {
+    let index_login = dialogModel.getStateIndex("login");
+    let index_name = dialogModel.getEnumIndex("name");
+    let index_email = dialogModel.getEnumIndex("email");
+    let index_password = dialogModel.getEnumIndex("password");
+    if (dialogModel.currentState === dialogModel.dialogState[index_login]) {
       //login
       this.contentList = dialogModel.contentList[0];
     } else {
@@ -327,9 +410,180 @@ let dialogController = {
       isLogin = false;
     }
     for (let i = 0; i < this.contentList.length; i++) {
-      changeText(dialogModel.dialogContentDOMs[i], this.contentList[i]);
+      switch (i) {
+        case index_name:
+        case index_email:
+        case index_password:
+          dialogModel.dialogContentDOMs[i].value = "";
+          break;
+
+        default:
+          changeText(dialogModel.dialogContentDOMs[i], this.contentList[i]);
+          break;
+      }
     }
     dialogView.showNameInput(isLogin);
+  },
+};
+
+let userApiModel = {
+  data: null,
+  parsedData: null,
+  apiRoute: "/api/user",
+  requestParameters: {
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "user-agent": "Mozilla/4.0 MDN Example",
+      "content-type": "application/json",
+    },
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer",
+  },
+  apiGet: function () {
+    let parameters = { mode: "cors" };
+    let method = { method: "GET" };
+    parameters = Object.assign(parameters, method);
+    return fetch(this.apiRoute, parameters)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        this.data = result;
+      });
+  },
+  apiPost: function (data = {}) {
+    let parameters = JSON.parse(JSON.stringify(this.requestParameters)); //deep copy
+    let method = {
+      method: "POST",
+    };
+    parameters = { body: JSON.stringify(data), ...method, ...parameters };
+    return fetch(this.apiRoute, parameters)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        this.data = result;
+      });
+  },
+  apiPatch: function (data = {}) {
+    let parameters = JSON.parse(JSON.stringify(this.requestParameters)); //deep copy
+    let method = {
+      method: "PATCH",
+    };
+    parameters = { body: JSON.stringify(data), ...method, ...parameters };
+
+    return fetch(this.apiRoute, parameters)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        this.data = result;
+      });
+  },
+  apiDelete: function () {
+    let parameters = { mode: "cors" };
+    let method = { method: "GET" };
+    parameters = Object.assign(parameters, method);
+    return fetch(this.apiRoute, parameters)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        this.data = result;
+      });
+  },
+
+  parseGetData: function () {
+    //Get user's data
+    if (this.data === "") return;
+    let jsonData = JSON.parse(this.data);
+    let dataDic = jsonData.data;
+    this.parsedData = [dataDic.id, dataDic.name, data.email];
+  },
+  parsePostData: function () {
+    if (this.data === "") return;
+    this.parsedData = JSON.parse(this.data);
+  },
+  parsePatchData: function () {
+    if (this.data === "") return;
+    this.parsedData = JSON.parse(this.data);
+  },
+  parseDeleteData: function () {
+    if (this.data === "") return;
+    this.parsedData = JSON.parse(this.data);
+  },
+};
+
+let userApiController = {
+  doGet: function () {
+    userApiModel.apiGet().then(function () {
+      userApiModel.parseGetData();
+      let parsedData = userApiModel.parsedData;
+      console.log(
+        "(id, name, email) = (" +
+          parsedData.id +
+          ", " +
+          parsedData.name +
+          ", " +
+          parsedData.email +
+          ")"
+      );
+    });
+  },
+  doPost: function (data = {}) {
+    userApiModel.apiPost(data).then(function () {
+      userApiModel.parsePostData();
+      let parsedData = userApiModel.parsedData;
+      if (parsedData["ok"]) {
+        console.log("fetch成功! apiPost");
+        dialogModel.dialogMessageDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.color = "#32cd32";
+        changeText(dialogModel.dialogMessageDOM, "註冊成功");
+      } else if (parsedData["error"]) {
+        dialogModel.dialogMessageDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.color = "#ff0000";
+        changeText(dialogModel.dialogMessageDOM, parsedData["message"]);
+      } else {
+        console.log(
+          "Oh No! Something went wrong with the server or at the 'doPost' state"
+        );
+      }
+    });
+  },
+  doPatch: function (data = {}) {
+    userApiModel.apiPatch(data).then(function () {
+      userApiModel.parsePatchData();
+      let parsedData = userApiModel.parsedData;
+      if (parsedData["ok"]) {
+        console.log("fetch成功! apiPatch");
+        dialogModel.dialogMessageDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.color = "#32cd32";
+        changeText(dialogModel.dialogMessageDOM, "登入成功");
+      } else if (parsedData["error"]) {
+        dialogModel.dialogMessageDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.color = "#ff0000";
+        changeText(dialogModel.dialogMessageDOM, parsedData["message"]);
+      } else {
+        console.log(
+          "Oh No! Something went wrong with the server or at the 'doPatch' state"
+        );
+      }
+    });
+  },
+  doDelete: function () {
+    userApiModel.apiDelete().then(function () {
+      userApiModel.parseDeleteData();
+      let parsedData = userApiModel.parsedData;
+      if (parsedData["ok"]) {
+        console.log("fetch成功! apiDelete");
+      } else {
+        console.log(
+          "Oh No! Something went wrong with the server or at the 'doDelete' state"
+        );
+      }
+    });
   },
 };
 
