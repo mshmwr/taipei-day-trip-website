@@ -10,19 +10,36 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 import mysql.connector
 import os
 import setting
+import mysql.connector.pooling
 
 DB_HOST = os.getenv("db_host")
 DB_USER = os.getenv("db_user")
 DB_PASSWORD = os.getenv("db_password")
 DB_DATABASE = os.getenv("db_database")
+DB_POOLNAME = os.getenv("db_poolname")
 SECRET_KEY = os.getenv("secret_key")
 
-mydb = mysql.connector.connect(host=DB_HOST,
-                               user=DB_USER,
-                               password=DB_PASSWORD,
-                               database=DB_DATABASE)
+# mydb = mysql.connector.connect(host=DB_HOST,
+#                                user=DB_USER,
+#                                password=DB_PASSWORD,
+#                                database=DB_DATABASE)
+# mycursor = mydb.cursor()
 
-mycursor = mydb.cursor()
+
+dbconfig = {
+    "host":DB_HOST,
+    "user": DB_USER,
+    "password":DB_PASSWORD,
+    "database": DB_DATABASE,
+}
+
+cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = DB_POOLNAME,
+                                                      pool_size = 5,
+                                                      **dbconfig)
+
+cnx1 = cnxpool.get_connection()
+mycursor = cnx1
+
 app.secret_key = SECRET_KEY
 
 
@@ -75,7 +92,8 @@ def thankyou():
 # 以下新增
 @app.route('/api/attractions')
 def attractions():
-
+    cnx1 = cnxpool.get_connection()
+    mycursor = cnx1.cursor()
     # 取得client傳來的參數
     page = int(request.args.get('page'))
     keyword = request.args.get('keyword')
@@ -145,7 +163,7 @@ def attractions():
             itemList.append(item)
 
         itemDic.update({'data': itemList})
-
+        cnx1.close()
         return jsonify(itemDic), 200
     except:
         response_data = {"error": True, "message": "serverError"}
@@ -153,6 +171,9 @@ def attractions():
 
 @app.route('/api/attraction/<attractionId>')
 def attractionId(attractionId):
+    
+    cnx1 = cnxpool.get_connection()
+    mycursor = cnx1.cursor()
     # 景點總數
     sql = "SELECT COUNT(spotid) FROM spots"
     mycursor.execute(sql)
@@ -189,10 +210,13 @@ def attractionId(attractionId):
                 result[0][AttractionEnum.longitude.value],  #longitude
                 "images": result_image
             }
-
+            
+            cnx1.close()
             return jsonify({'data': item}), 200
     except:
         response_data = {"error": True, "message": "serverError"}
+        
+        cnx1.close()
         return jsonify(response_data), 500
 
 # ----- /api/user
@@ -201,6 +225,8 @@ def attractionId(attractionId):
 def getUser():
     email = session.get("user")
     if email:
+        cnx1 = cnxpool.get_connection()
+        mycursor = cnx1.cursor()
         sql = "SELECT * FROM users WHERE email = %s"
         adr = (email, )
         mycursor.execute(sql, adr)
@@ -213,6 +239,7 @@ def getUser():
                 "email": email
         }
         
+        cnx1.close()
         return jsonify({"data": userData}), 200
     else:
         return jsonify({"data": None}), 200
@@ -222,6 +249,8 @@ def getUser():
 def registerUser():
     request_data = request.get_json()
     try:
+        cnx1 = cnxpool.get_connection()
+        mycursor = cnx1.cursor()
         name = request_data["name"]
         email = request_data["email"]
         password = request_data["password"]
@@ -251,6 +280,7 @@ def registerUser():
             mydb.commit()
             return jsonify({"ok": True}), 200
 
+        cnx1.close()
     except:
         return jsonify({"error": True, "message": "serverError"}), 500
 
@@ -259,6 +289,8 @@ def registerUser():
 def loginUser():
     request_data = request.get_json()
     try:
+        cnx1 = cnxpool.get_connection()
+        mycursor = cnx1.cursor()
         email = request_data["email"]
         password = request_data["password"]
 
@@ -266,6 +298,8 @@ def loginUser():
         adr = (email, password)
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
+        
+        cnx1.close()
         if len(result) == 1:
             session["user"] = email #use email as session content
             return jsonify({"ok": True}), 200
