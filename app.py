@@ -199,16 +199,17 @@ def attractionId(attractionId):
 # [GET]
 @app.route('/api/user',methods=['GET'])
 def getUser():
-    email = request.cookies.get("user")
+    email = session.get("user")
     if email:
         sql = "SELECT * FROM users WHERE email = %s"
         adr = (email, )
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
         id = result[0][0] #id
+        name = result[0][1] #id
         userData =  {
-                "id": 1,
-                "name": "彭彭彭",
+                "id": id,
+                "name": name,
                 "email": email
         }
         
@@ -266,7 +267,6 @@ def loginUser():
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
         if len(result) == 1:
-            email = result[0][1]
             session["user"] = email #use email as session content
             return jsonify({"ok": True}), 200
         else:
@@ -278,7 +278,8 @@ def loginUser():
 # [DELETE]
 @app.route('/api/user', methods=['DELETE'])
 def deleteUser():
-    session["user"] = False
+    session.pop("user")
+    email = session.get("user")    
     return jsonify({"ok": True}), 200
 
 # app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
