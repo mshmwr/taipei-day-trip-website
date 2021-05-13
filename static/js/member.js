@@ -284,7 +284,6 @@ let userApiController = {
     userApiModel.apiGet().then(function () {
       userApiModel.parseGetData();
       let parsedData = userApiModel.parsedData;
-      console.log("parsedData = " + parsedData);
       let index = parsedData === null ? 0 : 1;
       if (parsedData === null) {
         navModel.isLogin = false;
