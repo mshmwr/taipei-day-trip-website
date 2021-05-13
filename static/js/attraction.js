@@ -21,13 +21,13 @@ let attModels = {
     let attractionsArr = [];
 
     // Get each data: imgList, name, category, mrt, description, address, transport
-    let images = data.images;
-    let name = data.name;
-    let category = data.category;
-    let mrt = data.mrt;
-    let description = data.description;
-    let address = data.address;
-    let transport = data.transport;
+    let images = data.images === null ? "null" : data.images;
+    let name = data.name === null ? "null" : data.name;
+    let category = data.category === null ? "null" : data.category;
+    let mrt = data.mrt === null ? "null" : data.mrt;
+    let description = data.description === null ? "null" : data.description;
+    let address = data.address === null ? "null" : data.address;
+    let transport = data.transport === null ? "null" : data.transport;
 
     //images list
     let imgList = [];
