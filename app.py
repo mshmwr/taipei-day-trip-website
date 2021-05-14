@@ -254,6 +254,7 @@ def registerUser():
         name = request_data["name"]
         email = request_data["email"]
         password = request_data["password"]
+        print("0 (name, email, password) = ("+name+", "+email+", "+password+")")
 
         isRegisterFailed = False  
         errorMsg=""
@@ -263,10 +264,12 @@ def registerUser():
             errorMsg += "Error! The column(s) is/are empty."
         else:
             # Check the email is registered or not
+            print("1 (name, email, password) = ("+name+", "+email+", "+password+")")
             sql = "SELECT * FROM users WHERE email = %s"
             adr = (email, )
             mycursor.execute(sql, adr)
             result = mycursor.fetchall()
+            print("1-1 (name, email, password) = ("+name+", "+email+", "+password+")")
             if len(result) != 0:
                 errorMsg += "The email already exists."
                 isRegisterFailed = True
@@ -274,14 +277,17 @@ def registerUser():
         if isRegisterFailed:
             return jsonify({"error": True, "message": errorMsg}), 400
         else:
+            print("2 (name, email, password) = ("+name+", "+email+", "+password+")")
             sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
             val = (name, email, password)
             mycursor.execute(sql, val)
-            mydb.commit()
+            print("2-1 (name, email, password) = ("+name+", "+email+", "+password+")")
             return jsonify({"ok": True}), 200
 
+        print("3 (name, email, password) = ("+name+", "+email+", "+password+")")
         cnx1.close()
     except:
+        print("4 (name, email, password) = ("+name+", "+email+", "+password+")")
         return jsonify({"error": True, "message": "serverError"}), 500
 
 # [PATCH]
@@ -316,5 +322,5 @@ def deleteUser():
     email = session.get("user")    
     return jsonify({"ok": True}), 200
 
-app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
-# app.run(port=3000)
+# app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+app.run(port=3000)
