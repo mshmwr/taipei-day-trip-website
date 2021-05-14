@@ -38,7 +38,6 @@ cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = DB_POOLNAME,
                                                       **dbconfig)
 
 cnx1 = cnxpool.get_connection()
-mycursor = cnx1
 
 app.secret_key = SECRET_KEY
 
@@ -254,7 +253,6 @@ def registerUser():
         name = request_data["name"]
         email = request_data["email"]
         password = request_data["password"]
-        print("0 (name, email, password) = ("+name+", "+email+", "+password+")")
 
         isRegisterFailed = False  
         errorMsg=""
@@ -264,12 +262,10 @@ def registerUser():
             errorMsg += "Error! The column(s) is/are empty."
         else:
             # Check the email is registered or not
-            print("1 (name, email, password) = ("+name+", "+email+", "+password+")")
             sql = "SELECT * FROM users WHERE email = %s"
             adr = (email, )
             mycursor.execute(sql, adr)
             result = mycursor.fetchall()
-            print("1-1 (name, email, password) = ("+name+", "+email+", "+password+")")
             if len(result) != 0:
                 errorMsg += "The email already exists."
                 isRegisterFailed = True
@@ -277,17 +273,14 @@ def registerUser():
         if isRegisterFailed:
             return jsonify({"error": True, "message": errorMsg}), 400
         else:
-            print("2 (name, email, password) = ("+name+", "+email+", "+password+")")
             sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
             val = (name, email, password)
             mycursor.execute(sql, val)
-            print("2-1 (name, email, password) = ("+name+", "+email+", "+password+")")
+            cnx1.commit()
             return jsonify({"ok": True}), 200
 
-        print("3 (name, email, password) = ("+name+", "+email+", "+password+")")
         cnx1.close()
     except:
-        print("4 (name, email, password) = ("+name+", "+email+", "+password+")")
         return jsonify({"error": True, "message": "serverError"}), 500
 
 # [PATCH]
@@ -299,14 +292,17 @@ def loginUser():
         mycursor = cnx1.cursor()
         email = request_data["email"]
         password = request_data["password"]
+        print("0 (email, password) = ("+email+", "+password+")")
 
         sql = "SELECT * FROM users WHERE email = %s and password= %s"
         adr = (email, password)
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
+        print("1 (email, password) = ("+email+", "+password+")")
         
         cnx1.close()
         if len(result) == 1:
+            print("0 (email, password) = ("+email+", "+password+")")
             session["user"] = email #use email as session content
             return jsonify({"ok": True}), 200
         else:
