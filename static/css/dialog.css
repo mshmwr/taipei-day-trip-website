@@ -128,4 +128,10 @@
   margin: 0 auto 15px auto;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+/* 去掉form的margin */
+.dialogBox-main form {
+  margin-block-end: 0px;
 }
