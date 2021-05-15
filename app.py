@@ -223,13 +223,15 @@ def attractionId(attractionId):
 @app.route('/api/user',methods=['GET'])
 def getUser():
     email = session.get("user")
+    cnx1 = cnxpool.get_connection()
     if email:
-        cnx1 = cnxpool.get_connection()
         mycursor = cnx1.cursor()
         sql = "SELECT * FROM users WHERE email = %s"
         adr = (email, )
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
+        cnx1.close()
+
         id = result[0][0] #id
         name = result[0][1] #id
         userData =  {
@@ -238,17 +240,17 @@ def getUser():
                 "email": email
         }
         
-        cnx1.close()
         return jsonify({"data": userData}), 200
     else:
+        cnx1.close()
         return jsonify({"data": None}), 200
 
 # [POST]
 @app.route('/api/user',methods=['POST'])
 def registerUser():
     request_data = request.get_json()
+    cnx1 = cnxpool.get_connection()
     try:
-        cnx1 = cnxpool.get_connection()
         mycursor = cnx1.cursor()
         name = request_data["name"]
         email = request_data["email"]
@@ -271,44 +273,46 @@ def registerUser():
                 isRegisterFailed = True
 
         if isRegisterFailed:
+            
+            cnx1.close()
             return jsonify({"error": True, "message": errorMsg}), 400
         else:
             sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
             val = (name, email, password)
             mycursor.execute(sql, val)
             cnx1.commit()
+            cnx1.close()
             return jsonify({"ok": True}), 200
 
-        cnx1.close()
     except:
+        
+        cnx1.close()
         return jsonify({"error": True, "message": "serverError"}), 500
 
 # [PATCH]
 @app.route('/api/user',methods=['PATCH'])
 def loginUser():
     request_data = request.get_json()
+    cnx1 = cnxpool.get_connection()
     try:
-        cnx1 = cnxpool.get_connection()
         mycursor = cnx1.cursor()
         email = request_data["email"]
         password = request_data["password"]
-        print("0 (email, password) = ("+email+", "+password+")")
 
         sql = "SELECT * FROM users WHERE email = %s and password= %s"
         adr = (email, password)
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
-        print("1 (email, password) = ("+email+", "+password+")")
         
         cnx1.close()
         if len(result) == 1:
-            print("0 (email, password) = ("+email+", "+password+")")
             session["user"] = email #use email as session content
             return jsonify({"ok": True}), 200
         else:
             return jsonify({"error": True, "message": "Email or Password incorrect."}), 400
 
     except:
+        cnx1.close()
         return jsonify({"error": True, "message": "serverError"}), 500
 
 # [DELETE]
