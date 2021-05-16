@@ -2,13 +2,20 @@
 
 .booking-info {
   position: relative;
-  margin: 94px auto 0px auto;
+  margin: 5px auto 0px auto;
   width: 1000px;
 }
 
-.booking-info-headline {
-  width: 100%;
-  margin: 0px auto 35px auto;
+.bookingContent-noOrder {
+  position: relative;
+  margin: 0px auto 40px auto;
+  width: 1000px;
+  display: none;
+}
+
+.booking-headline {
+  width: 1000px;
+  margin: 94px auto 30px auto;
 }
 
 .booking-info-section {
@@ -160,6 +167,8 @@
   .booking-border {
     width: 60.61%;
   }
+  .booking-headline,
+  .bookingContent-noOrder,
   .booking-info,
   .booking-userContact,
   .booking-userPayment,
@@ -189,6 +198,8 @@
   .booking-deleteImg img {
     float: right;
   }
+  .booking-headline,
+  .bookingContent-noOrder,
   .booking-info,
   .booking-border,
   .booking-userContact,
@@ -196,9 +207,15 @@
   .booking-confirm {
     width: 94.44%;
   }
+  .booking-headline {
+    margin-bottom: 0px;
+  }
   .booking-userContact span,
   .booking-userContact .notice,
   .booking-userPayment span {
     height: auto;
+  }
+  .bookingContent-noOrder {
+    margin-top: 30px;
   }
 }

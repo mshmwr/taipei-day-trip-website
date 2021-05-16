@@ -11,94 +11,101 @@
     <script src="../static/js/components/navbar.js"></script>
     <div class="bookingDiv">
       <script src="../static/js/components/dialog.js"></script>
-      <div class="booking-info">
-        <div class="booking-info-headline">
-          <span>您好，</span><span id="booking-user"></span
-          ><span>，待預訂的行程如下：</span>
-        </div>
-        <div class="booking-info-section">
-          <div class="booking-attractionImg"><img alt="attraction-img" /></div>
-          <div class="booking-texts">
-            <p class="textTitle common-text">
-              <span>台北一日遊：</span><span id="title">平安鐘</span>
-            </p>
-            <p class="textDate common-text">
-              <span class="info">日期：</span>
-              <span id="date">2021-04-23</span>
-            </p>
-            <p class="textTime common-text">
-              <span class="info">時間：</span
-              ><span id="time">早上 9 點到下午 4 點</span>
-            </p>
-            <p class="textFee common-text">
-              <span class="info">費用：</span>
-              <span id="fee">新台幣 2000 元</span>
-            </p>
-            <p class="textAddress common-text">
-              <span class="info">地點：</span>
-              <span id="address">臺北市 大安區忠孝東路4段</span>
-            </p>
-          </div>
+      <div class="booking-headline">
+        <span>您好，</span><span id="booking-user"></span
+        ><span>，待預訂的行程如下：</span>
+      </div>
+      <div class="common-text bookingContent-noOrder">
+        目前沒有任何待預訂的行程
+      </div>
+      <div class="bookingContent">
+        <div class="booking-info">
+          <div class="booking-info-section">
+            <div class="booking-attractionImg">
+              <img alt="attraction-img" />
+            </div>
+            <div class="booking-texts">
+              <p class="textTitle common-text">
+                <span>台北一日遊：</span><span id="title">平安鐘</span>
+              </p>
+              <p class="textDate common-text">
+                <span class="info">日期：</span>
+                <span id="date">2021-04-23</span>
+              </p>
+              <p class="textTime common-text">
+                <span class="info">時間：</span
+                ><span id="time">早上 9 點到下午 4 點</span>
+              </p>
+              <p class="textFee common-text">
+                <span class="info">費用：</span>
+                <span id="fee">新台幣 2000 元</span>
+              </p>
+              <p class="textAddress common-text">
+                <span class="info">地點：</span>
+                <span id="address">臺北市 大安區忠孝東路4段</span>
+              </p>
+            </div>
 
-          <div class="booking-deleteImg"><img alt="delete-icon" /></div>
+            <div class="booking-deleteImg"><img alt="delete-icon" /></div>
+          </div>
         </div>
-      </div>
-      <div class="booking-border"></div>
-      <div class="booking-userContact">
-        <p class="common-text booking-title">您的聯絡資訊</p>
-        <form>
-          <span class="common-text">聯絡姓名：</span>
-          <input type="text" placeholder="聯絡姓名" class="contactContent" />
-          <br />
-          <span class="common-text">連絡信箱：</span>
-          <input
-            type="email"
-            placeholder="電子信箱"
-            id="contact-email"
-            class="contactContent"
-          />
-          <br />
-          <span class="common-text">手機號碼：</span>
-          <input
-            type="tel"
-            placeholder="手機號碼"
-            class="contactContent"
-            size="10"
-            minlength="10"
-            maxlength="10"
-          />
-          <p class="common-text notice">
-            請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
-          </p>
-        </form>
-      </div>
-      <div class="booking-border"></div>
-      <div class="booking-userPayment">
-        <p class="common-text booking-title">信用卡付款資訊</p>
-        <form>
-          <span class="common-text">卡片號碼：</span>
-          <input
-            type="cc-number"
-            placeholder="**** **** **** ****"
-            class="paymentContent"
-          />
-          <br />
-          <span class="common-text">過期時間：</span>
-          <input type="cc-exp" placeholder="MM / YY" class="paymentContent" />
-          <br />
-          <span class="common-text">驗證密碼：</span>
-          <input type="cc-csc" placeholder="CVV" class="paymentContent" />
-        </form>
-      </div>
-      <div class="booking-border"></div>
-      <div class="booking-confirm">
-        <div class="common-text booking-confirmText">
-          總價：<span>新台幣2000元</span>
+        <div class="booking-border"></div>
+        <div class="booking-userContact">
+          <p class="common-text booking-title">您的聯絡資訊</p>
+          <form>
+            <span class="common-text">聯絡姓名：</span>
+            <input type="text" placeholder="聯絡姓名" class="contactContent" />
+            <br />
+            <span class="common-text">連絡信箱：</span>
+            <input
+              type="email"
+              placeholder="電子信箱"
+              id="contact-email"
+              class="contactContent"
+            />
+            <br />
+            <span class="common-text">手機號碼：</span>
+            <input
+              type="tel"
+              placeholder="手機號碼"
+              class="contactContent"
+              size="10"
+              minlength="10"
+              maxlength="10"
+            />
+            <p class="common-text notice">
+              請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
+            </p>
+          </form>
         </div>
-        <div class="booking-confirmButton">
-          <button type="button">
-            <p class="dialogContent">確認訂購並付款</p>
-          </button>
+        <div class="booking-border"></div>
+        <div class="booking-userPayment">
+          <p class="common-text booking-title">信用卡付款資訊</p>
+          <form>
+            <span class="common-text">卡片號碼：</span>
+            <input
+              type="cc-number"
+              placeholder="**** **** **** ****"
+              class="paymentContent"
+            />
+            <br />
+            <span class="common-text">過期時間：</span>
+            <input type="cc-exp" placeholder="MM / YY" class="paymentContent" />
+            <br />
+            <span class="common-text">驗證密碼：</span>
+            <input type="cc-csc" placeholder="CVV" class="paymentContent" />
+          </form>
+        </div>
+        <div class="booking-border"></div>
+        <div class="booking-confirm">
+          <div class="common-text booking-confirmText">
+            總價：<span>新台幣2000元</span>
+          </div>
+          <div class="booking-confirmButton">
+            <button type="button">
+              <p class="dialogContent">確認訂購並付款</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>
