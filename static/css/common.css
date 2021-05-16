@@ -1,10 +1,15 @@
 :root {
   --borderRad: 5px;
-  --zIndex-nav: 10;
+
+  --zIndex-nav: 5;
+  --zIndex-dialog: 10;
+  --zIndex-dialogBox: 11;
   --zIndex-sliderArrow: 1;
+
   --checkMark: 22px;
   --check-font-size: 16px;
 }
+
 body,
 p {
   margin: 0;
@@ -140,7 +145,7 @@ nav {
 
   /* Body - Reg 16(13.3) */
 
-  font-family: Noto Sans TC;
+  font-family: "Noto Sans TC";
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -694,20 +699,13 @@ footer {
   left: 0px;
   top: 5px;
 
-  /* Body - Bold 16(13.3) */
-
   font-family: "Noto Sans TC";
   font-style: normal;
   font-weight: bold;
   font-size: 16px;
   line-height: 13px;
-  /* identical to box height, or 83% */
-
   display: flex;
   align-items: center;
-
-  /* White */
-
   color: #ffffff;
 }
 
@@ -728,6 +726,7 @@ footer {
     top: 173px;
   }
 }
+
 @media (max-width: 600px) {
   nav {
     position: fixed;

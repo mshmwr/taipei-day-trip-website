@@ -367,19 +367,19 @@
 
   /* Content - Reg 16(Auto) */
   font-weight: normal;
-  line-height: 23px;
+  line-height: 26px;
 }
 .attraction-infos-addressContent {
   min-height: 24px;
   margin: 0 auto;
   font-weight: normal;
-  line-height: 23px;
+  line-height: 26px;
 }
 .attraction-infos-transportContent {
   min-height: 48px;
   margin: 0 auto;
   font-weight: normal;
-  line-height: 23px;
+  line-height: 26px;
 }
 
 /* 4. RWD: 螢幕寬度(由大到小) 1200 700 */

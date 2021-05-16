@@ -1,10 +1,3 @@
-//import js file
-let newscript = document.createElement("script");
-newscript.setAttribute("type", "text/javascript");
-newscript.setAttribute("src", "../static/js/dataManager.js");
-let head = document.getElementsByTagName("head")[0];
-head.appendChild(newscript);
-
 let attModels = {
   data: null,
   parsedData: null,
@@ -28,13 +21,13 @@ let attModels = {
     let attractionsArr = [];
 
     // Get each data: imgList, name, category, mrt, description, address, transport
-    let images = data.images;
-    let name = data.name;
-    let category = data.category;
-    let mrt = data.mrt;
-    let description = data.description;
-    let address = data.address;
-    let transport = data.transport;
+    let images = data.images === null ? "null" : data.images;
+    let name = data.name === null ? "null" : data.name;
+    let category = data.category === null ? "null" : data.category;
+    let mrt = data.mrt === null ? "null" : data.mrt;
+    let description = data.description === null ? "null" : data.description;
+    let address = data.address === null ? "null" : data.address;
+    let transport = data.transport === null ? "null" : data.transport;
 
     //images list
     let imgList = [];
@@ -69,6 +62,8 @@ let attDataController = {
       attView.renderBookingPrice();
       pictureSliderView.setArrowClick();
       pictureSliderView.showSlides();
+
+      navController.checkUserLogin();
     });
   },
 };
@@ -181,14 +176,14 @@ window.onload = function () {
     infosTransportContentDOM,
   ];
   attDataController.init();
+
+  dialogController.init();
+  navController.init();
 };
 
 //picture slider
 let pictureSliderView = {
   slideIndex: 1,
-  test2: function () {
-    alert("2!!!");
-  },
   plusSlides: function (n) {
     this.showSlides((this.slideIndex += n));
   },
@@ -227,34 +222,3 @@ let pictureSliderView = {
 function DoPlusSlides(n) {
   pictureSliderView.plusSlides(n);
 }
-// let slideIndex = 1;
-// // Next/previous controls
-// function plusSlides(n) {
-//   showSlides((slideIndex += n));
-// }
-
-// // Thumbnail image controls
-// function currentSlide(n) {
-//   showSlides((slideIndex = n));
-// }
-
-// function showSlides(n) {
-//   let i;
-//   let slides = document.getElementsByClassName("mySlides");
-//   let dots = document.getElementsByClassName("dot");
-
-//   if (n > slides.length) {
-//     slideIndex = 1;
-//   }
-//   if (n < 1) {
-//     slideIndex = slides.length;
-//   }
-//   for (i = 0; i < slides.length; i++) {
-//     slides[i].style.display = "none";
-//   }
-//   for (i = 0; i < dots.length; i++) {
-//     dots[i].className = dots[i].className.replace(" active", "");
-//   }
-//   slides[slideIndex - 1].style.display = "block";
-//   dots[slideIndex - 1].className += " active";
-// }

@@ -1,10 +1,3 @@
-//import js file
-let newscript = document.createElement("script");
-newscript.setAttribute("type", "text/javascript");
-newscript.setAttribute("src", "../static/js/dataManager.js");
-let head = document.getElementsByTagName("head")[0];
-head.appendChild(newscript);
-
 //api
 let currentPage = 0;
 
@@ -12,7 +5,6 @@ let currentPage = 0;
 let nextPage = 0;
 let isfetchFinished = false;
 let fetchFinishedID;
-// let parsedData = null;
 let isLoadFinished = false;
 let isLoading = false;
 
@@ -233,6 +225,7 @@ let dataController = {
     models.getAttractionsData(url, keyword).then(function () {
       models.parseAttractionsData();
       isfetchFinished = true;
+      navController.checkUserLogin();
     });
   },
 };
@@ -269,8 +262,12 @@ window.onload = function () {
   attractionGroup = document.getElementById("attractionGroup");
   searchInput = document.getElementById("searchInput");
   searchBtn = document.getElementById("searchBtn");
+
   window.addEventListener("scroll", IsScrollBottom, true);
   searchBtn.addEventListener("click", DoKeywordSearch);
+
   //initial
   dataController.init();
+  dialogController.init();
+  navController.init();
 };

@@ -44,6 +44,12 @@ mycursor = mydb.cursor()
 #                  "imgurl VARCHAR(255) NOT NULL, " +
 #                  "FOREIGN KEY(spotid) REFERENCES spots(spotid)"+")")
 
+# mycursor.execute("CREATE TABLE users (" +
+#                  "id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, " +
+#                  "name VARCHAR(255) NOT NULL, " +
+#                  "email VARCHAR(255) NOT NULL, " +
+#                  "password VARCHAR(255) NOT NULL" + ")")
+
 # # Debug: Data too long
 # sql = "alter table spots change MEMO_TIME MEMO_TIME longtext"
 # mycursor.execute(sql, )

@@ -10,18 +10,36 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 import mysql.connector
 import os
 import setting
+import mysql.connector.pooling
 
 DB_HOST = os.getenv("db_host")
 DB_USER = os.getenv("db_user")
 DB_PASSWORD = os.getenv("db_password")
 DB_DATABASE = os.getenv("db_database")
+DB_POOLNAME = os.getenv("db_poolname")
+SECRET_KEY = os.getenv("secret_key")
 
-mydb = mysql.connector.connect(host=DB_HOST,
-                               user=DB_USER,
-                               password=DB_PASSWORD,
-                               database=DB_DATABASE)
+# mydb = mysql.connector.connect(host=DB_HOST,
+#                                user=DB_USER,
+#                                password=DB_PASSWORD,
+#                                database=DB_DATABASE)
+# mycursor = mydb.cursor()
 
-mycursor = mydb.cursor()
+
+dbconfig = {
+    "host":DB_HOST,
+    "user": DB_USER,
+    "password":DB_PASSWORD,
+    "database": DB_DATABASE,
+}
+
+cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = DB_POOLNAME,
+                                                      pool_size = 5,
+                                                      **dbconfig)
+
+cnx1 = cnxpool.get_connection()
+
+app.secret_key = SECRET_KEY
 
 
 # Enum
@@ -73,11 +91,11 @@ def thankyou():
 # 以下新增
 @app.route('/api/attractions')
 def attractions():
-
+    cnx1 = cnxpool.get_connection()
+    mycursor = cnx1.cursor()
     # 取得client傳來的參數
     page = int(request.args.get('page'))
     keyword = request.args.get('keyword')
-    print("page: "+str(page))
     # 景點總數
     spotCount = 0
     if keyword == None:
@@ -144,15 +162,17 @@ def attractions():
             itemList.append(item)
 
         itemDic.update({'data': itemList})
-
+        cnx1.close()
         return jsonify(itemDic), 200
     except:
         response_data = {"error": True, "message": "serverError"}
         return jsonify(response_data), 500
 
-
 @app.route('/api/attraction/<attractionId>')
 def attractionId(attractionId):
+    
+    cnx1 = cnxpool.get_connection()
+    mycursor = cnx1.cursor()
     # 景點總數
     sql = "SELECT COUNT(spotid) FROM spots"
     mycursor.execute(sql)
@@ -189,11 +209,118 @@ def attractionId(attractionId):
                 result[0][AttractionEnum.longitude.value],  #longitude
                 "images": result_image
             }
-
+            
+            cnx1.close()
             return jsonify({'data': item}), 200
     except:
         response_data = {"error": True, "message": "serverError"}
+        
+        cnx1.close()
         return jsonify(response_data), 500
 
+# ----- /api/user
+# [GET]
+@app.route('/api/user',methods=['GET'])
+def getUser():
+    email = session.get("user")
+    cnx1 = cnxpool.get_connection()
+    if email:
+        mycursor = cnx1.cursor()
+        sql = "SELECT * FROM users WHERE email = %s"
+        adr = (email, )
+        mycursor.execute(sql, adr)
+        result = mycursor.fetchall()
+        cnx1.close()
+
+        id = result[0][0] #id
+        name = result[0][1] #id
+        userData =  {
+                "id": id,
+                "name": name,
+                "email": email
+        }
+        
+        return jsonify({"data": userData}), 200
+    else:
+        cnx1.close()
+        return jsonify({"data": None}), 200
+
+# [POST]
+@app.route('/api/user',methods=['POST'])
+def registerUser():
+    request_data = request.get_json()
+    cnx1 = cnxpool.get_connection()
+    try:
+        mycursor = cnx1.cursor()
+        name = request_data["name"]
+        email = request_data["email"]
+        password = request_data["password"]
+
+        isRegisterFailed = False  
+        errorMsg=""
+
+        if name=="" or email=="" or password=="":
+            isRegisterFailed = True
+            errorMsg += "Error! The column(s) is/are empty."
+        else:
+            # Check the email is registered or not
+            sql = "SELECT * FROM users WHERE email = %s"
+            adr = (email, )
+            mycursor.execute(sql, adr)
+            result = mycursor.fetchall()
+            if len(result) != 0:
+                errorMsg += "The email already exists."
+                isRegisterFailed = True
+
+        if isRegisterFailed:
+            
+            cnx1.close()
+            return jsonify({"error": True, "message": errorMsg}), 400
+        else:
+            sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+            val = (name, email, password)
+            mycursor.execute(sql, val)
+            cnx1.commit()
+            cnx1.close()
+            return jsonify({"ok": True}), 200
+
+    except:
+        
+        cnx1.close()
+        return jsonify({"error": True, "message": "serverError"}), 500
+
+# [PATCH]
+@app.route('/api/user',methods=['PATCH'])
+def loginUser():
+    request_data = request.get_json()
+    cnx1 = cnxpool.get_connection()
+    try:
+        mycursor = cnx1.cursor()
+        email = request_data["email"]
+        password = request_data["password"]
+
+        sql = "SELECT * FROM users WHERE email = %s and password= %s"
+        adr = (email, password)
+        mycursor.execute(sql, adr)
+        result = mycursor.fetchall()
+        
+        cnx1.close()
+        if len(result) == 1:
+            session["user"] = email #use email as session content
+            return jsonify({"ok": True}), 200
+        else:
+            return jsonify({"error": True, "message": "Email or Password incorrect."}), 400
+
+    except:
+        cnx1.close()
+        return jsonify({"error": True, "message": "serverError"}), 500
+
+# [DELETE]
+@app.route('/api/user', methods=['DELETE'])
+def deleteUser():
+    session.pop("user")
+    email = session.get("user")    
+    return jsonify({"ok": True}), 200
 
 app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+# app.run(port=3000)
