@@ -20,6 +20,13 @@ p {
   box-sizing: border-box;
 }
 
+.common-text {
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-size: 16px;
+  line-height: 13px;
+}
+
 /* --- nav --- */
 nav {
   /* Navigation | Desktop */
@@ -218,7 +225,8 @@ nav {
 }
 
 .indexDiv {
-  min-height: 922px; /* min-height: (1080-104-54) px */
+  /* min-height: 922px;  */
+  /* min-height: (1080-104-54) px */
 
   /* footer置底 */
 }
