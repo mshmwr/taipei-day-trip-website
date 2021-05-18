@@ -202,16 +202,13 @@ let userApiModel = {
     let parameters = { mode: "cors" };
     let method = { method: "GET" };
     parameters = Object.assign(parameters, method);
-    return (
-      fetch(this.apiRoute, parameters)
-        // return fetch(this.apiRoute)
-        .then((response) => {
-          return response.text();
-        })
-        .then((result) => {
-          this.data = result;
-        })
-    );
+    return fetch(this.apiRoute, parameters)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        this.data = result;
+      });
   },
   apiPost: function (data = {}) {
     let parameters = JSON.parse(JSON.stringify(this.requestParameters)); //deep copy
@@ -260,6 +257,9 @@ let userApiModel = {
     let dataDic = jsonData.data;
     if (dataDic === null) this.parsedData = null;
     else {
+      console.log(
+        "getdata():" + dataDic.id + ", " + dataDic.name + ", " + dataDic.email
+      );
       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
     }
   },
@@ -286,10 +286,10 @@ let userApiController = {
       let parsedData = userApiModel.parsedData;
       let index = parsedData === null ? 0 : 1;
       if (parsedData === null) {
-        navModel.isLogin = false;
+        navModel.isUserLogin = false;
         changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
       } else {
-        navModel.isLogin = true;
+        navModel.isUserLogin = true;
         changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
       }
     });
@@ -358,7 +358,7 @@ let userApiController = {
 let navModel = {
   navUserStateDOM: null,
   navDivTextDOM: null,
-  isUserLogin: true,
+  isUserLogin: false,
   userStateTexts: ["登入/註冊", "登出系統"],
   init: function () {
     this.getDom();
@@ -380,7 +380,7 @@ let navController = {
   addClickEvent: function () {
     //nav: show dialog and hide dialogMessage
     navModel.navUserStateDOM.addEventListener("click", function () {
-      if (navModel.isLogin === false) {
+      if (navModel.isUserLogin === false) {
         dialogModel.dialogDOM.style.display = "block";
       } else {
         //logout
