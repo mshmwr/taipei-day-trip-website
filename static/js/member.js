@@ -257,9 +257,6 @@ let userApiModel = {
     let dataDic = jsonData.data;
     if (dataDic === null) this.parsedData = null;
     else {
-      console.log(
-        "getdata():" + dataDic.id + ", " + dataDic.name + ", " + dataDic.email
-      );
       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
     }
   },
@@ -274,25 +271,18 @@ let userApiModel = {
   parseDeleteData: function () {
     if (this.data === "") return;
     this.parsedData = JSON.parse(this.data);
-    console.log("parseDeleteData: ");
-    console.log(this.parsedData);
   },
 };
 
 let userApiController = {
-  doGet: function () {
-    userApiModel.apiGet().then(function () {
+  doGet: async function () {
+    let isGet = false;
+    await userApiModel.apiGet().then(() => {
       userApiModel.parseGetData();
       let parsedData = userApiModel.parsedData;
-      let index = parsedData === null ? 0 : 1;
-      if (parsedData === null) {
-        navModel.isUserLogin = false;
-        changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
-      } else {
-        navModel.isUserLogin = true;
-        changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
-      }
+      isGet = parsedData !== null;
     });
+    return isGet;
   },
   doPost: function (data = {}) {
     userApiModel.apiPost(data).then(function () {
@@ -374,8 +364,13 @@ let navController = {
     navModel.init();
     this.addClickEvent();
   },
-  checkUserLogin: function () {
-    userApiController.doGet();
+  checkUserLogin: async function () {
+    let isGet = await userApiController.doGet();
+    navModel.isUserLogin = isGet;
+
+    //change navbar user state
+    let index = isGet ? 1 : 0;
+    changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
   },
   addClickEvent: function () {
     //nav: show dialog and hide dialogMessage
