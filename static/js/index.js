@@ -1,30 +1,17 @@
 //api
-let currentPage = 0;
 
-//fetch
-let nextPage = 0;
-// let isfetchFinished = false;
-let fetchFinishedID;
-let isLoadFinished = false;
-let isLoading = false;
-
-//scroll to bottom
-let attractionGroup; //window element
-let isBottom = false;
-let loadNextID;
-
-//keyword search
-// let searchBtnDOM; //window element
-let searchInput; //window element
-let keyword = "";
-
-let models = {
+let indexModel = {
   data: null,
   parsedData: null,
   apiRoute: "/api/attractions?",
   boundingClientRect: null,
   isFirst: true,
   searchBtnDOM: null,
+  searchInputDOM: null,
+  keyword: "",
+  attractionGroupDOM: null,
+  nextPage: 0,
+  currentPage: 0,
   requestParameters: {
     cache: "no-cache",
     credentials: "same-origin",
@@ -41,7 +28,7 @@ let models = {
   },
   apiGet: function (keyword = "") {
     //透過 fetch 從 api 取得資料
-    let url = this.apiRoute + "page=" + currentPage;
+    let url = this.apiRoute + "page=" + indexModel.currentPage;
     if (keyword !== "" && keyword !== undefined) {
       url += "&" + "keyword=" + keyword;
     }
@@ -81,14 +68,16 @@ let models = {
   },
   getDOM: function () {
     this.searchBtnDOM = document.getElementById("searchBtn");
+    this.searchInputDOM = document.getElementById("searchInput");
+    this.attractionGroupDOM = document.getElementById("attractionGroup");
   },
 };
 
-let views = {
+let indexView = {
   renderAttractions: function (attsData = []) {
     // render attraction boxes (maximum quantity: 12)
     if (attsData.length === 0) {
-      attractionGroup.appendChild(
+      indexModel.attractionGroupDOM.appendChild(
         createParagraphWithText("沒有結果", "noResult")
       );
     } else {
@@ -148,8 +137,8 @@ let attractionsViews = {
     newDivAttraction.appendChild(newDivAttInfo);
     newDivAttraction.appendChild(newDivAttBorder);
 
-    // 5. 把 box 加入至 attractionGroup
-    attractionGroup.appendChild(newDivAttraction);
+    // 5. 把 box 加入至 indexModel.attractionGroupDOM
+    indexModel.attractionGroupDOM.appendChild(newDivAttraction);
   },
 
   createAttInfo: function (nameStr = "", mrtStr = "", categoryStr = "") {
@@ -178,51 +167,52 @@ let attractionsViews = {
   },
 };
 
-function DoKeywordSearch() {
-  //controller
-  if (searchInput === undefined) return;
-  keyword = searchInput.value;
-  currentPage = 0;
-  views.removeChildElement(attractionGroup, "attraction");
-  views.removeChildElement(attractionGroup, "noResult");
-  dataController.getAttractions(keyword);
-}
-
-//綁定滾輪事件
-function IsScrollBottom() {
-  let rect = attractionGroup.getBoundingClientRect();
-  if (rect.bottom === models.boundingClientRect) return;
-  if (rect.bottom < window.innerHeight) {
-    //滾到最底
-    models.boundingClientRect = rect.bottom;
-
-    if (nextPage === currentPage) return;
-    if (nextPage !== 0 && nextPage !== null) {
-      currentPage = nextPage;
-      dataController.getAttractions(keyword);
-    }
-  }
-}
-
-let dataController = {
+let indexController = {
   init: function () {
-    models.init();
+    window.addEventListener("scroll", this.isScrollBottom, true);
+    indexModel.init();
+    this.addClickEvent();
     this.getAttractions(undefined);
   },
   getAttractions: async function (keyword = "") {
-    await models.apiGet(keyword).then(function () {
-      models.parseGetData();
+    await indexModel.apiGet(keyword).then(function () {
+      indexModel.parseGetData();
 
-      if (models.isFirst) {
-        models.boundingClientRect =
-          attractionGroup.getBoundingClientRect().bottom;
-        models.isFirst = false;
+      if (indexModel.isFirst) {
+        indexModel.boundingClientRect =
+          indexModel.attractionGroupDOM.getBoundingClientRect().bottom;
+        indexModel.isFirst = false;
       }
-      setNextPage(models.parsedData[0]);
-      views.renderAttractions(models.parsedData[1]);
+      indexModel.nextPage = indexModel.parsedData[0];
+      indexView.renderAttractions(indexModel.parsedData[1]);
 
       navController.checkUserLogin();
     });
+  },
+  addClickEvent: function () {
+    indexModel.searchBtnDOM.addEventListener("click", this.doKeywordSearch);
+  },
+  doKeywordSearch: function () {
+    if (indexModel.searchInputDOM === undefined) return;
+    indexModel.keyword = indexModel.searchInputDOM.value;
+    indexModel.currentPage = 0;
+    indexView.removeChildElement(indexModel.attractionGroupDOM, "attraction");
+    indexView.removeChildElement(indexModel.attractionGroupDOM, "noResult");
+    indexController.getAttractions(indexModel.keyword);
+  },
+  isScrollBottom: function () {
+    let rect = indexModel.attractionGroupDOM.getBoundingClientRect();
+    if (rect.bottom === indexModel.boundingClientRect) return;
+    if (rect.bottom < window.innerHeight) {
+      //滾到最底
+      indexModel.boundingClientRect = rect.bottom;
+
+      if (indexModel.nextPage === indexModel.currentPage) return;
+      if (indexModel.nextPage !== 0 && indexModel.nextPage !== null) {
+        indexModel.currentPage = indexModel.nextPage;
+        indexController.getAttractions(indexModel.keyword);
+      }
+    }
   },
 };
 
@@ -234,23 +224,6 @@ function createElementWithClassName(elementType = "div", className = "") {
   return newElement;
 }
 
-function init() {
-  //initial
-  dataController.init();
-  dialogController.init();
-  navController.init();
-}
-
-window.onload = function () {
-  attractionGroup = document.getElementById("attractionGroup");
-  searchInput = document.getElementById("searchInput");
-
-  window.addEventListener("scroll", IsScrollBottom, true);
-  searchBtnDOM.addEventListener("click", DoKeywordSearch);
-
-  init();
-};
-
 function createParagraphWithText(paragraphText = "", className = "") {
   let newParagraph = document.createElement("p");
   newParagraph.className = className;
@@ -259,10 +232,12 @@ function createParagraphWithText(paragraphText = "", className = "") {
   return newParagraph;
 }
 
-function getNextPage() {
-  return nextPage;
+function init() {
+  dialogController.init();
+  navController.init();
+  indexController.init();
 }
 
-function setNextPage(next) {
-  nextPage = next;
-}
+window.onload = function () {
+  init();
+};
