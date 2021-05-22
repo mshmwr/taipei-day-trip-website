@@ -86,6 +86,7 @@
 
 .booking-deleteImg img {
   content: url(../img/icon_delete.png);
+  cursor: pointer;
 }
 
 /* border */
@@ -165,6 +166,7 @@
   line-height: 16px;
   color: #ffffff;
   margin-top: 22px;
+  cursor: pointer;
 }
 /* 4. RWD: 螢幕寬度(由大到小) 1200 700 */
 @media (max-width: 1200px) {

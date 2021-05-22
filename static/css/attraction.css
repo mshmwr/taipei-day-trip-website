@@ -52,6 +52,7 @@
   z-index: var(
     --zIndex-sliderArrow
   ); /* 讓圖片重新render的時候，不會短暫蓋過arrow */
+  cursor: pointer;
 }
 
 .attraction-img-leftArrow {
@@ -316,6 +317,7 @@
   order: 0;
   flex-grow: 0;
   margin: 0px 0px;
+  cursor: pointer;
 }
 .attraction-border {
   /* separator / main */
@@ -474,6 +476,7 @@
   background-color: #ffffff;
   display: inline-block;
   transition: background-color 0.6s ease;
+  cursor: pointer;
 }
 
 .active,
