@@ -3,7 +3,7 @@ let currentPage = 0;
 
 //fetch
 let nextPage = 0;
-let isfetchFinished = false;
+// let isfetchFinished = false;
 let fetchFinishedID;
 let isLoadFinished = false;
 let isLoading = false;
@@ -14,16 +14,34 @@ let isBottom = false;
 let loadNextID;
 
 //keyword search
-let searchBtn; //window element
+// let searchBtnDOM; //window element
 let searchInput; //window element
 let keyword = "";
 
 let models = {
   data: null,
   parsedData: null,
-  getAttractionsData: function (url = "", keyword = "") {
+  apiRoute: "/api/attractions?",
+  boundingClientRect: null,
+  isFirst: true,
+  searchBtnDOM: null,
+  requestParameters: {
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "user-agent": "Mozilla/4.0 MDN Example",
+      "content-type": "application/json",
+    },
+    mode: "cors",
+    redirect: "follow",
+    referrer: "no-referrer",
+  },
+  init: function () {
+    this.getDOM();
+  },
+  apiGet: function (keyword = "") {
     //透過 fetch 從 api 取得資料
-    if (url === "") return;
+    let url = this.apiRoute + "page=" + currentPage;
     if (keyword !== "" && keyword !== undefined) {
       url += "&" + "keyword=" + keyword;
     }
@@ -37,7 +55,7 @@ let models = {
         this.data = result;
       });
   },
-  parseAttractionsData: function () {
+  parseGetData: function () {
     //Get next page (int or null) and attraction datas (Array: [img, name, MRT, category])
     if (this.data === "") return;
     let jsonData = JSON.parse(this.data);
@@ -60,6 +78,9 @@ let models = {
       attractionsArr.push([img, name, mrt, category, id]);
     }
     this.parsedData = [nextPage, attractionsArr];
+  },
+  getDOM: function () {
+    this.searchBtnDOM = document.getElementById("searchBtn");
   },
 };
 
@@ -164,67 +185,42 @@ function DoKeywordSearch() {
   currentPage = 0;
   views.removeChildElement(attractionGroup, "attraction");
   views.removeChildElement(attractionGroup, "noResult");
-  dataController.getAttractions(getUrl(api_attractions, currentPage), keyword);
+  dataController.getAttractions(keyword);
 }
 
+//綁定滾輪事件
 function IsScrollBottom() {
-  //controller
   let rect = attractionGroup.getBoundingClientRect();
-
+  if (rect.bottom === models.boundingClientRect) return;
   if (rect.bottom < window.innerHeight) {
-    isBottom = true; //滾到最底
-  }
-}
-
-function CheckAtTheBottom() {
-  //controller (timer)
-  loadNextID = window.setInterval(LoadNextWhenAtTheBottom, 100);
-}
-function LoadNextWhenAtTheBottom() {
-  //controller
-  if (isBottom === true && isLoadFinished === true) {
-    isBottom = false;
-    isLoadFinished = false;
-    window.clearInterval(loadNextID);
+    //滾到最底
+    models.boundingClientRect = rect.bottom;
 
     if (nextPage === currentPage) return;
     if (nextPage !== 0 && nextPage !== null) {
       currentPage = nextPage;
-      dataController.getAttractions(
-        getUrl(api_attractions, currentPage),
-        keyword
-      );
+      dataController.getAttractions(keyword);
     }
-  }
-}
-
-function checkFetch() {
-  //controller (timer)
-  fetchFinishedID = window.setInterval(fetchFinished, 100);
-}
-function fetchFinished() {
-  //controller
-  if (isfetchFinished === true) {
-    window.clearInterval(fetchFinishedID);
-    setNextPage(models.parsedData[0]);
-    views.renderAttractions(models.parsedData[1]);
-
-    isfetchFinished = false;
-    isLoadFinished = true;
   }
 }
 
 let dataController = {
   init: function () {
-    this.getAttractions(getUrl(api_attractions, currentPage), undefined);
+    models.init();
+    this.getAttractions(undefined);
   },
-  getAttractions: function (url = "", keyword = "") {
-    isfetchFinished = false;
-    checkFetch();
-    CheckAtTheBottom();
-    models.getAttractionsData(url, keyword).then(function () {
-      models.parseAttractionsData();
-      isfetchFinished = true;
+  getAttractions: async function (keyword = "") {
+    await models.apiGet(keyword).then(function () {
+      models.parseGetData();
+
+      if (models.isFirst) {
+        models.boundingClientRect =
+          attractionGroup.getBoundingClientRect().bottom;
+        models.isFirst = false;
+      }
+      setNextPage(models.parsedData[0]);
+      views.renderAttractions(models.parsedData[1]);
+
       navController.checkUserLogin();
     });
   },
@@ -237,6 +233,23 @@ function createElementWithClassName(elementType = "div", className = "") {
   newElement.className = className;
   return newElement;
 }
+
+function init() {
+  //initial
+  dataController.init();
+  dialogController.init();
+  navController.init();
+}
+
+window.onload = function () {
+  attractionGroup = document.getElementById("attractionGroup");
+  searchInput = document.getElementById("searchInput");
+
+  window.addEventListener("scroll", IsScrollBottom, true);
+  searchBtnDOM.addEventListener("click", DoKeywordSearch);
+
+  init();
+};
 
 function createParagraphWithText(paragraphText = "", className = "") {
   let newParagraph = document.createElement("p");
@@ -253,25 +266,3 @@ function getNextPage() {
 function setNextPage(next) {
   nextPage = next;
 }
-function getUrl(api = "/api/attractions?", currentPage = 0) {
-  let url = api + "page=" + currentPage;
-  return url;
-}
-
-function init() {
-  //initial
-  dataController.init();
-  dialogController.init();
-  navController.init();
-}
-
-window.onload = function () {
-  attractionGroup = document.getElementById("attractionGroup");
-  searchInput = document.getElementById("searchInput");
-  searchBtn = document.getElementById("searchBtn");
-
-  window.addEventListener("scroll", IsScrollBottom, true);
-  searchBtn.addEventListener("click", DoKeywordSearch);
-
-  init();
-};
