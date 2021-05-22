@@ -9,6 +9,9 @@ let attModels = {
   infosAddressContentDOM: null,
   infosTransportContentDOM: null,
   bookingPriceContentDOM: null,
+  bookingButtonDOM: null,
+  attractionId: null,
+
   init: function () {
     this.getDOM();
     this.attDomList = [
@@ -34,6 +37,7 @@ let attModels = {
     this.bookingPriceContentDOM = document.getElementById(
       "booking-priceContent"
     );
+    this.bookingButtonDOM = document.getElementById("booking-button");
   },
   getAttractionData: function (url) {
     //透過 fetch 從 api 取得資料 /api/attraction/<attractionId>')
@@ -54,6 +58,7 @@ let attModels = {
     let data = jsonData.data;
     let attractionsArr = [];
 
+    this.attractionId = data.id;
     // Get each data: imgList, name, category, mrt, description, address, transport
     let images = data.images === null ? "null" : data.images;
     let name = data.name === null ? "null" : data.name;
@@ -88,6 +93,7 @@ let attController = {
     let thisUrl = window.location.toString();
     let url = thisUrl.replace(route_attraction, api_attraction);
     this.getAttraction(url);
+    this.addClickEvent();
   },
   getAttraction: function (url) {
     attModels.getAttractionData(url).then(function () {
@@ -99,6 +105,43 @@ let attController = {
       pictureSliderView.showSlides();
 
       navController.checkUserLogin();
+    });
+  },
+
+  addClickEvent: function () {
+    attModels.bookingButtonDOM.addEventListener("click", async () => {
+      if (navModel.isUserLogin === false) {
+        dialogModel.dialogDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.display = "none";
+      } else {
+        //建立景點資訊存到session
+        let form = document.getElementById("form_attraction");
+        let time = "";
+        let dateControl = document.querySelector('input[type="date"]');
+
+        for (let i = 0; i < form.time.length; i++) {
+          if (form.time[i].checked) {
+            time = form.time[i].value;
+            break;
+          }
+        }
+        bookingData = {
+          attractionId: attModels.attractionId,
+          date: dateControl.value, //"2022-01-31",
+          time: time, //"afternoon",
+          price: attModels.bookingPriceContentDOM.textContent,
+        };
+        console.log("bookingData");
+        console.log(bookingData);
+
+        let response = await bookingApiController.doPost(bookingData);
+        if (response["success"]) {
+          document.location.assign("/booking");
+        } else {
+          console.log(response["message"]);
+          alert("勝敗乃兵家常事 大俠請重新來過"); //沒有照正常流程走，有缺資料
+        }
+      }
     });
   },
 };
@@ -169,7 +212,7 @@ let attView = {
         elem.addEventListener("change", function (event) {
           let item = event.target.value;
           let price = item === radioList[0] ? priceList[0] : priceList[1];
-          attModels.bookingPriceContentDOM.innerHTML = price;
+          attModels.bookingPriceContentDOM.textContent = price;
         });
       });
     }

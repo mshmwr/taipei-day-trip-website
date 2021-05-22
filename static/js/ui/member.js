@@ -182,6 +182,9 @@ let dialogController = {
 };
 
 //api
+let userModel = {
+  userName: null,
+};
 
 let userApiModel = {
   data: null,
@@ -258,6 +261,7 @@ let userApiModel = {
     if (dataDic === null) this.parsedData = null;
     else {
       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
+      userModel.userName = dataDic.name;
     }
   },
   parsePostData: function () {
@@ -279,6 +283,7 @@ let userApiController = {
     let isGet = false;
     await userApiModel.apiGet().then(() => {
       userApiModel.parseGetData();
+
       let parsedData = userApiModel.parsedData;
       isGet = parsedData !== null;
     });
@@ -289,7 +294,6 @@ let userApiController = {
       userApiModel.parsePostData();
       let parsedData = userApiModel.parsedData;
       if (parsedData["ok"]) {
-        console.log("fetch成功! apiPost");
         dialogModel.dialogMessageDOM.style.display = "block";
         dialogModel.dialogMessageDOM.style.color = "#32cd32";
         changeText(dialogModel.dialogMessageDOM, "註冊成功");
@@ -309,7 +313,6 @@ let userApiController = {
       userApiModel.parsePatchData();
       let parsedData = userApiModel.parsedData;
       if (parsedData["ok"]) {
-        console.log("fetch成功! apiPatch");
         dialogModel.dialogMessageDOM.style.display = "block";
         dialogModel.dialogMessageDOM.style.color = "#32cd32";
         changeText(dialogModel.dialogMessageDOM, "登入成功");
@@ -330,10 +333,7 @@ let userApiController = {
     userApiModel.apiDelete().then(function () {
       userApiModel.parseDeleteData();
       let parsedData = userApiModel.parsedData;
-      console.log("doDelete: parsedData=");
-      console.log(parsedData);
       if (parsedData["ok"]) {
-        console.log("fetch成功! apiDelete");
         location.reload();
       } else {
         console.log(

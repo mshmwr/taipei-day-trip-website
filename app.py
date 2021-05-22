@@ -34,7 +34,7 @@ dbconfig = {
 }
 
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = DB_POOLNAME,
-                                                      pool_size = 5,
+                                                      pool_size = 10,
                                                       **dbconfig)
 
 cnx1 = cnxpool.get_connection()
@@ -351,7 +351,6 @@ def getBooking():
             mycursor.execute(sql, txt)
             result_image = mycursor.fetchall()
             result_image = [y for x in result_image for y in x]
-            cnx1.close()
 
             # 轉成 JSON 格式
             attraction = {
@@ -369,6 +368,7 @@ def getBooking():
             }
         else:
             bookingData = None
+        cnx1.close()
         return jsonify({"data": bookingData}), 200
     else:
         cnx1.close()
@@ -415,6 +415,8 @@ def deleteBooking():
         booking = session.get("booking") 
         if booking:
             session.pop("booking")
+        
+        booking = session.get("booking") 
         return jsonify({"ok": True}), 200
     else:
         return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403 

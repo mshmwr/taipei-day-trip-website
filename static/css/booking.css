@@ -36,7 +36,7 @@
 
 .booking-attractionImg img {
   width: 100%;
-  content: url(../img/image10.png);
+  /* content: url(../img/image10.png); */
   object-fit: cover;
 }
 
@@ -50,7 +50,7 @@
 .booking-texts .textTitle,
 .booking-texts .textDate,
 .booking-texts .textTime,
-.booking-texts .textFee,
+.booking-texts .textPrice,
 .booking-texts .textAddress {
   height: 24px;
   display: flex;
@@ -70,7 +70,7 @@
 }
 
 .booking-texts .textTime,
-.booking-texts .textFee,
+.booking-texts .textPrice,
 .booking-texts .textAddress {
   margin-top: 10px;
   color: #666666;

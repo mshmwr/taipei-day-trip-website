@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/booking.css" />
     <script src="../static/js/ui/common.js"></script>
     <script src="../static/js/ui/member.js"></script>
+    <script src="../static/js/ui/APIs.js"></script>
     <script src="../static/js/booking.js"></script>
   </head>
   <body>
@@ -12,41 +13,42 @@
     <div class="bookingDiv">
       <script src="../static/js/components/dialog.js"></script>
       <div class="booking-headline">
-        <span>您好，</span><span id="booking-user"></span
+        <span>您好，</span><span id="userName"></span
         ><span>，待預訂的行程如下：</span>
       </div>
-      <div class="common-text bookingContent-noOrder">
+      <div class="common-text bookingContent-noOrder" id="noOrder">
         目前沒有任何待預訂的行程
       </div>
-      <div class="bookingContent">
+      <div class="bookingContent" id="bookingContent">
         <div class="booking-info">
           <div class="booking-info-section">
             <div class="booking-attractionImg">
-              <img alt="attraction-img" />
+              <img alt="attraction-img" id="attractionImg" />
             </div>
             <div class="booking-texts">
               <p class="textTitle common-text">
-                <span>台北一日遊：</span><span id="title">平安鐘</span>
+                <span>台北一日遊：</span><span id="title"></span>
               </p>
               <p class="textDate common-text">
                 <span class="info">日期：</span>
-                <span id="date">2021-04-23</span>
+                <span id="date"></span>
               </p>
               <p class="textTime common-text">
-                <span class="info">時間：</span
-                ><span id="time">早上 9 點到下午 4 點</span>
+                <span class="info">時間：</span><span id="time"></span>
               </p>
-              <p class="textFee common-text">
+              <p class="textPrice common-text">
                 <span class="info">費用：</span>
-                <span id="fee">新台幣 2000 元</span>
+                <span id="price"></span>
               </p>
               <p class="textAddress common-text">
                 <span class="info">地點：</span>
-                <span id="address">臺北市 大安區忠孝東路4段</span>
+                <span id="address"></span>
               </p>
             </div>
 
-            <div class="booking-deleteImg"><img alt="delete-icon" /></div>
+            <div class="booking-deleteImg">
+              <img alt="delete-icon" id="delete-icon" />
+            </div>
           </div>
         </div>
         <div class="booking-border"></div>

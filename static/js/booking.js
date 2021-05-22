@@ -1,84 +1,117 @@
-//api
+let bookingModel = {
+  bookingData: null,
+  titleDOM: null,
+  dateDOM: null,
+  timeDOM: null,
+  priceDOM: null,
+  addressDOM: null,
+  attractionImgDOM: null,
+  deleteIconDOM: null,
+  bookingContentDOM: null,
+  noOrderDOM: null,
+  footerDOM: null,
+  footerHeight: "104px",
+  userNameDOM: null,
+  init: function () {
+    this.getDOM();
+  },
+  getBookingData: async function () {
+    let response = await bookingApiController.doGet();
+    if (response["success"]) {
+      this.bookingData = response["message"];
+      return;
+    }
+    this.bookingData = null;
+    console.log(response["message"]);
+  },
+  getDOM: function () {
+    this.titleDOM = document.getElementById("title");
+    this.dateDOM = document.getElementById("date");
+    this.timeDOM = document.getElementById("time");
+    this.priceDOM = document.getElementById("price");
+    this.addressDOM = document.getElementById("address");
+    this.attractionImgDOM = document.getElementById("attractionImg");
+    this.deleteIconDOM = document.getElementById("delete-icon");
+    this.bookingContentDOM = document.getElementById("bookingContent");
+    this.noOrderDOM = document.getElementById("noOrder");
+    this.footerDOM = document.getElementsByTagName("footer")[0];
+    this.userNameDOM = document.getElementById("userName");
+  },
+};
 
-// let userApiModel = {
-//   data: null,
-//   parsedData: null,
-//   apiRoute: "/api/booking",
-//   requestParameters: {
-//     cache: "no-cache",
-//     credentials: "same-origin",
-//     headers: {
-//       "user-agent": "Mozilla/4.0 MDN Example",
-//       "content-type": "application/json",
-//     },
-//     mode: "cors",
-//     redirect: "follow",
-//     referrer: "no-referrer",
-//   },
-//   apiGet: function () {
-//     let parameters = { mode: "cors" };
-//     let method = { method: "GET" };
-//     parameters = Object.assign(parameters, method);
-//     return fetch(this.apiRoute, parameters)
-//       .then((response) => {
-//         return response.text();
-//       })
-//       .then((result) => {
-//         this.data = result;
-//       });
-//   },
-//   apiPost: function (data = {}) {
-//     let parameters = JSON.parse(JSON.stringify(this.requestParameters)); //deep copy
-//     let method = {
-//       method: "POST",
-//     };
-//     parameters = { body: JSON.stringify(data), ...method, ...parameters };
-//     return fetch(this.apiRoute, parameters)
-//       .then((response) => {
-//         return response.text();
-//       })
-//       .then((result) => {
-//         this.data = result;
-//       });
-//   },
-//   apiDelete: function () {
-//     let parameters = { mode: "cors" };
-//     let method = { method: "DELETE" };
-//     parameters = Object.assign(parameters, method);
-//     return fetch(this.apiRoute, parameters)
-//       .then((response) => {
-//         return response.text();
-//       })
-//       .then((result) => {
-//         this.data = result;
-//       });
-//   },
+let bookingView = {
+  renderBookingContent: async function () {
+    await bookingModel.getBookingData().then(() => {
+      let datas = bookingModel.bookingData["data"];
+      changeText(bookingModel.userNameDOM, userModel.userName);
 
-//   parseGetData: function () {
-//     //Get user's data
-//     if (this.data === "") return;
-//     let jsonData = JSON.parse(this.data);
-//     let dataDic = jsonData.data;
-//     if (dataDic === null) this.parsedData = null;
-//     else {
-//       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
-//     }
-//   },
-//   parsePostData: function () {
-//     if (this.data === "") return;
-//     this.parsedData = JSON.parse(this.data);
-//   },
-//   parseDeleteData: function () {
-//     if (this.data === "") return;
-//     this.parsedData = JSON.parse(this.data);
-//   },
-// };
+      if (datas === null) {
+        bookingModel.bookingContentDOM.style.display = "none";
+        bookingModel.noOrderDOM.style.display = "block";
+        bookingModel.footerDOM.style.height = "100%";
+        return;
+      }
+
+      bookingModel.bookingContentDOM.style.display = "block";
+      bookingModel.noOrderDOM.style.display = "none";
+      bookingModel.footerDOM.style.height = bookingModel.footerHeight;
+      let data_attraction = datas["attraction"];
+      let data_name = data_attraction["name"];
+      let data_address = data_attraction["address"];
+      let data_image = data_attraction["images"];
+
+      let data_date = datas["date"];
+      let data_time =
+        datas["time"] === "morning"
+          ? "早上 9 點到下午 2 點"
+          : "下午 2 點到晚上 9 點";
+      let data_price = "新台幣 " + datas["price"] + " 元";
+
+      changeText(bookingModel.titleDOM, data_name);
+      changeText(bookingModel.dateDOM, data_date);
+      changeText(bookingModel.timeDOM, data_time);
+      changeText(bookingModel.priceDOM, data_price);
+      changeText(bookingModel.addressDOM, data_address);
+      bookingModel.attractionImgDOM.setAttribute("src", data_image);
+    });
+  },
+};
+
+let bookingController = {
+  init: async function () {
+    await navController.checkUserLogin(); //一進入頁面就先確認使用者登入狀態
+    this.checkUserState();
+    bookingModel.init();
+    this.getBooking();
+    this.addClickEvent();
+  },
+  checkUserState: async function () {
+    if (navModel.isUserLogin === false) {
+      document.location.assign("/");
+    }
+  },
+  getBooking: function () {
+    bookingView.renderBookingContent();
+  },
+  addClickEvent: function () {
+    bookingModel.deleteIconDOM.addEventListener("click", () => {
+      this.deleteBooking();
+    });
+  },
+  deleteBooking: async function () {
+    let response = await bookingApiController.doDelete();
+    if (response["success"]) {
+      location.reload();
+      return;
+    }
+    console.log(response["message"]);
+  },
+};
 
 function init() {
   dialogController.init();
   navController.init();
-
-  navController.checkUserLogin(); //一進入頁面就先確認使用者登入狀態
+  bookingController.init();
 }
 
 window.onload = function () {
