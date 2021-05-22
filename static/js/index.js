@@ -172,22 +172,6 @@ let indexController = {
   },
 };
 
-//some useful function
-
-function createElementWithClassName(elementType = "div", className = "") {
-  let newElement = document.createElement(elementType);
-  newElement.className = className;
-  return newElement;
-}
-
-function createParagraphWithText(paragraphText = "", className = "") {
-  let newParagraph = document.createElement("p");
-  newParagraph.className = className;
-  let textNode = document.createTextNode(paragraphText);
-  newParagraph.appendChild(textNode);
-  return newParagraph;
-}
-
 function init() {
   dialogController.init();
   navController.init();
