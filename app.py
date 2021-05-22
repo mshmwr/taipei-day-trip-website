@@ -34,7 +34,7 @@ dbconfig = {
 }
 
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = DB_POOLNAME,
-                                                      pool_size = 5,
+                                                      pool_size = 10,
                                                       **dbconfig)
 
 cnx1 = cnxpool.get_connection()
@@ -318,9 +318,109 @@ def loginUser():
 # [DELETE]
 @app.route('/api/user', methods=['DELETE'])
 def deleteUser():
-    session.pop("user")
-    email = session.get("user")    
+    session.pop("user") 
     return jsonify({"ok": True}), 200
+
+
+
+# ----- /api/booking
+# [GET]
+@app.route('/api/booking',methods=['GET'])
+def getBooking():
+    email = session.get("user")
+    cnx1 = cnxpool.get_connection()
+    if email:
+        booking = session.get("booking")
+        if booking:
+            attractionId = booking["attractionId"] #attractionId
+            date = booking["date"] #date
+            time = booking["time"] #time
+            price = booking["price"] #price
+        
+            mycursor = cnx1.cursor()
+
+            # 根據景點編號取得景點資料
+            sql = "SELECT * FROM spots WHERE spotid=%s"
+            txt = (attractionId, )
+            mycursor.execute(sql, txt)
+            result = mycursor.fetchall()
+
+            # image list
+            sql = "SELECT imgurl FROM images WHERE spotid = %s"
+            txt = (attractionId, )
+            mycursor.execute(sql, txt)
+            result_image = mycursor.fetchall()
+            result_image = [y for x in result_image for y in x]
+
+            # 轉成 JSON 格式
+            attraction = {
+                "id": result[0][AttractionEnum.spotid.value],  #spotid
+                "name": result[0][AttractionEnum.stitle.value],  #stitle
+                "address": result[0][AttractionEnum.address.value],  #address
+                "images": result_image[0] #first url
+            }
+
+            bookingData =  {
+                    "attraction": attraction,
+                    "date": date,
+                    "time": time,
+                    "price": price
+            }
+        else:
+            bookingData = None
+        cnx1.close()
+        return jsonify({"data": bookingData}), 200
+    else:
+        cnx1.close()
+        return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+# [POST]
+@app.route('/api/booking',methods=['POST'])
+def addBooking():
+    request_data = request.get_json()
+    email = session.get("user")
+    if email:
+        try:
+            attractionId = request_data["attractionId"]
+            date = request_data["date"]
+            time = request_data["time"]
+            price = request_data["price"]
+            bookingData = None
+            
+            if attractionId and date and time and price:
+                bookingData = {
+                    "attractionId":attractionId,
+                    "date":date,
+                    "time":time,
+                    "price":price
+                }
+            else:
+                return jsonify({"error": True, "message": "建立失敗，輸入不正確或其他原因"}), 400
+                
+            session["booking"] = bookingData
+
+            return jsonify({"ok": True}), 200
+
+        except:
+            return jsonify({"error": True, "message": "serverError"}), 500
+    else:
+        return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+
+# [DELETE]
+@app.route('/api/booking', methods=['DELETE'])
+def deleteBooking():
+    email = session.get("user") 
+    if email:
+        booking = session.get("booking") 
+        if booking:
+            session.pop("booking")
+        
+        booking = session.get("booking") 
+        return jsonify({"ok": True}), 200
+    else:
+        return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403 
+
 
 app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
 # app.run(port=3000)

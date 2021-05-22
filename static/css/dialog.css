@@ -41,6 +41,7 @@
   left: 300px;
   top: 20px;
   display: flex;
+  cursor: pointer;
 }
 
 .dialogBox-icon img {
@@ -104,6 +105,7 @@
   color: #ffffff;
 
   margin-bottom: 10px;
+  cursor: pointer;
 }
 .dialogBox-main .dialogMessage {
   font-family: "Noto Sans TC";

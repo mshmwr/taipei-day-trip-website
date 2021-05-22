@@ -182,6 +182,9 @@ let dialogController = {
 };
 
 //api
+let userModel = {
+  userName: null,
+};
 
 let userApiModel = {
   data: null,
@@ -202,16 +205,13 @@ let userApiModel = {
     let parameters = { mode: "cors" };
     let method = { method: "GET" };
     parameters = Object.assign(parameters, method);
-    return (
-      fetch(this.apiRoute, parameters)
-        // return fetch(this.apiRoute)
-        .then((response) => {
-          return response.text();
-        })
-        .then((result) => {
-          this.data = result;
-        })
-    );
+    return fetch(this.apiRoute, parameters)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        this.data = result;
+      });
   },
   apiPost: function (data = {}) {
     let parameters = JSON.parse(JSON.stringify(this.requestParameters)); //deep copy
@@ -261,6 +261,7 @@ let userApiModel = {
     if (dataDic === null) this.parsedData = null;
     else {
       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
+      userModel.userName = dataDic.name;
     }
   },
   parsePostData: function () {
@@ -274,32 +275,25 @@ let userApiModel = {
   parseDeleteData: function () {
     if (this.data === "") return;
     this.parsedData = JSON.parse(this.data);
-    console.log("parseDeleteData: ");
-    console.log(this.parsedData);
   },
 };
 
 let userApiController = {
-  doGet: function () {
-    userApiModel.apiGet().then(function () {
+  doGet: async function () {
+    let isGet = false;
+    await userApiModel.apiGet().then(() => {
       userApiModel.parseGetData();
+
       let parsedData = userApiModel.parsedData;
-      let index = parsedData === null ? 0 : 1;
-      if (parsedData === null) {
-        navModel.isLogin = false;
-        changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
-      } else {
-        navModel.isLogin = true;
-        changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
-      }
+      isGet = parsedData !== null;
     });
+    return isGet;
   },
   doPost: function (data = {}) {
     userApiModel.apiPost(data).then(function () {
       userApiModel.parsePostData();
       let parsedData = userApiModel.parsedData;
       if (parsedData["ok"]) {
-        console.log("fetch成功! apiPost");
         dialogModel.dialogMessageDOM.style.display = "block";
         dialogModel.dialogMessageDOM.style.color = "#32cd32";
         changeText(dialogModel.dialogMessageDOM, "註冊成功");
@@ -319,7 +313,6 @@ let userApiController = {
       userApiModel.parsePatchData();
       let parsedData = userApiModel.parsedData;
       if (parsedData["ok"]) {
-        console.log("fetch成功! apiPatch");
         dialogModel.dialogMessageDOM.style.display = "block";
         dialogModel.dialogMessageDOM.style.color = "#32cd32";
         changeText(dialogModel.dialogMessageDOM, "登入成功");
@@ -340,10 +333,7 @@ let userApiController = {
     userApiModel.apiDelete().then(function () {
       userApiModel.parseDeleteData();
       let parsedData = userApiModel.parsedData;
-      console.log("doDelete: parsedData=");
-      console.log(parsedData);
       if (parsedData["ok"]) {
-        console.log("fetch成功! apiDelete");
         location.reload();
       } else {
         console.log(
@@ -358,7 +348,8 @@ let userApiController = {
 let navModel = {
   navUserStateDOM: null,
   navDivTextDOM: null,
-  isUserLogin: true,
+  navBookingDOM: null,
+  isUserLogin: false,
   userStateTexts: ["登入/註冊", "登出系統"],
   init: function () {
     this.getDom();
@@ -366,6 +357,7 @@ let navModel = {
   getDom: function () {
     this.navUserStateDOM = document.getElementById("userState");
     this.navDivTextDOM = document.getElementById("navDiv-text");
+    this.navBookingDOM = document.getElementById("navBooking");
   },
 };
 
@@ -374,13 +366,18 @@ let navController = {
     navModel.init();
     this.addClickEvent();
   },
-  checkUserLogin: function () {
-    userApiController.doGet();
+  checkUserLogin: async function () {
+    let isGet = await userApiController.doGet();
+    navModel.isUserLogin = isGet;
+
+    //change navbar user state
+    let index = isGet ? 1 : 0;
+    changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
   },
   addClickEvent: function () {
     //nav: show dialog and hide dialogMessage
     navModel.navUserStateDOM.addEventListener("click", function () {
-      if (navModel.isLogin === false) {
+      if (navModel.isUserLogin === false) {
         dialogModel.dialogDOM.style.display = "block";
       } else {
         //logout
@@ -388,6 +385,15 @@ let navController = {
         navController.checkUserLogin();
       }
       dialogModel.dialogMessageDOM.style.display = "none";
+    });
+
+    navModel.navBookingDOM.addEventListener("click", function () {
+      if (navModel.isUserLogin === false) {
+        dialogModel.dialogDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.display = "none";
+      } else {
+        document.location.assign("/booking");
+      }
     });
 
     navModel.navDivTextDOM.addEventListener("click", function () {

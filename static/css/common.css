@@ -20,6 +20,13 @@ p {
   box-sizing: border-box;
 }
 
+.common-text {
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-size: 16px;
+  line-height: 13px;
+}
+
 /* --- nav --- */
 nav {
   /* Navigation | Desktop */
@@ -68,6 +75,7 @@ nav {
   /* Cyan 800 */
 
   color: #448899;
+  cursor: pointer;
 }
 .navDiv-frame2 {
   /* Frame 2 */
@@ -162,6 +170,7 @@ nav {
   order: 0;
   flex-grow: 0;
   margin: 10px 0px;
+  cursor: pointer;
 }
 .navBtn-left {
   /* Button / navigation */
@@ -198,7 +207,7 @@ nav {
 
   /* Body - Reg 16(13.3) */
 
-  font-family: Noto Sans TC;
+  font-family: "Noto Sans TC";
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -215,10 +224,12 @@ nav {
   order: 0;
   flex-grow: 0;
   margin: 10px 0px;
+  cursor: pointer;
 }
 
 .indexDiv {
-  min-height: 922px; /* min-height: (1080-104-54) px */
+  /* min-height: 922px;  */
+  /* min-height: (1080-104-54) px */
 
   /* footer置底 */
 }
@@ -351,6 +362,7 @@ nav {
   background-color: #448899;
   border: none;
   border-radius: 0 var(--borderRad) var(--borderRad) 0;
+  cursor: pointer;
 }
 .searchBtn-icon {
   position: absolute;
@@ -513,6 +525,7 @@ nav {
 
   background: #ffffff;
   border-radius: var(--borderRad);
+  cursor: pointer;
 }
 
 .att-img {
@@ -742,10 +755,8 @@ footer {
   }
   .navDiv-text {
     /* 台北一日遊 */
-
-    left: 2.78%; /* left: 10px; */
-
-    top: 2.78%; /* top: 10px; */
+    left: 2.78%;
+    top: 2.78%;
   }
   .navDiv-frame2 {
     /* Frame 2 */

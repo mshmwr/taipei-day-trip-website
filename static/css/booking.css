@@ -1,0 +1,227 @@
+/* booking-info */
+
+.booking-info {
+  position: relative;
+  margin: 5px auto 0px auto;
+  width: 1000px;
+}
+
+.bookingContent-noOrder {
+  position: relative;
+  margin: 0px auto 40px auto;
+  width: 1000px;
+  display: none;
+}
+
+.bookingContent {
+  /* display: none; */
+}
+
+.booking-headline {
+  width: 1000px;
+  margin: 94px auto 30px auto;
+}
+
+.booking-info-section {
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+}
+
+.booking-attractionImg {
+  display: flex;
+  width: 25.51%;
+  height: 200px;
+}
+
+.booking-attractionImg img {
+  width: 100%;
+  /* content: url(../img/image10.png); */
+  object-fit: cover;
+}
+
+.booking-texts {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  margin: 0px auto auto 22px;
+}
+
+.booking-texts .textTitle,
+.booking-texts .textDate,
+.booking-texts .textTime,
+.booking-texts .textPrice,
+.booking-texts .textAddress {
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.booking-texts .info {
+  font-weight: bold;
+}
+.booking-texts .textTitle {
+  font-weight: bold;
+  color: #448899;
+}
+.booking-texts .textDate {
+  margin-top: 20px;
+  color: #666666;
+}
+
+.booking-texts .textTime,
+.booking-texts .textPrice,
+.booking-texts .textAddress {
+  margin-top: 10px;
+  color: #666666;
+}
+
+.booking-deleteImg {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 0px;
+  top: 0px;
+}
+
+.booking-deleteImg img {
+  content: url(../img/icon_delete.png);
+  cursor: pointer;
+}
+
+/* border */
+.booking-border {
+  width: 1200px;
+  border: 1px solid #e8e8e8;
+  margin: 40px auto;
+}
+
+/* booking-userContact */
+
+.booking-userContact,
+.booking-userPayment,
+.booking-confirm {
+  position: relative;
+  margin: 0px auto;
+  width: 1000px;
+}
+
+.booking-title {
+  font-size: 19px;
+  line-height: 16px;
+  font-weight: bold;
+  color: #666666;
+  margin-bottom: 5px;
+}
+
+.booking-userContact span,
+.booking-userContact .notice,
+.booking-userPayment span {
+  height: 24px;
+  color: #666666;
+}
+
+.booking-userContact .contactContent,
+.booking-userPayment .paymentContent {
+  margin-top: 15px;
+  width: 200px;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.booking-userContact .notice {
+  margin-top: 20px;
+  line-height: 23px;
+  font-weight: bold;
+}
+
+/* booking-confirm */
+.booking-confirm {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.booking-confirm .booking-confirmText {
+  font-weight: bold;
+  color: #666666;
+  width: 100%;
+  text-align: right;
+}
+
+.booking-confirm button {
+  height: 36px;
+  background: #448899;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: right;
+  display: block;
+
+  font-weight: normal;
+  font-size: 19px;
+  line-height: 16px;
+  color: #ffffff;
+  margin-top: 22px;
+  cursor: pointer;
+}
+/* 4. RWD: 螢幕寬度(由大到小) 1200 700 */
+@media (max-width: 1200px) {
+  .booking-border {
+    width: 60.61%;
+  }
+  .booking-headline,
+  .bookingContent-noOrder,
+  .booking-info,
+  .booking-userContact,
+  .booking-userPayment,
+  .booking-confirm {
+    width: 52.08%;
+  }
+}
+
+@media (max-width: 700px) {
+  .booking-info-section {
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .booking-attractionImg {
+    width: 100%;
+    margin: 28px auto;
+  }
+  .booking-texts {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .booking-deleteImg {
+    position: relative;
+    width: 100%;
+  }
+  .booking-deleteImg img {
+    float: right;
+  }
+  .booking-headline,
+  .bookingContent-noOrder,
+  .booking-info,
+  .booking-border,
+  .booking-userContact,
+  .booking-userPayment,
+  .booking-confirm {
+    width: 94.44%;
+  }
+  .booking-headline {
+    margin-bottom: 0px;
+  }
+  .booking-userContact span,
+  .booking-userContact .notice,
+  .booking-userPayment span {
+    height: auto;
+  }
+  .bookingContent-noOrder {
+    margin-top: 30px;
+  }
+}

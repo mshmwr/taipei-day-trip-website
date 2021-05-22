@@ -7,10 +7,10 @@
       type="text/css"
       href="../static/css/attraction.css"
     />
-    <script src="../static/js/common.js"></script>
-    <script src="../static/js/member.js"></script>
+    <script src="../static/js/ui/common.js"></script>
+    <script src="../static/js/ui/member.js"></script>
+    <script src="../static/js/ui/APIs.js"></script>
     <script src="../static/js/attraction.js"></script>
-    <script type="text/javascript"></script>
   </head>
   <body>
     <script src="../static/js/components/navbar.js"></script>
@@ -67,7 +67,7 @@
             <div class="attraction-profile-bookingContent">
               <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
             </div>
-            <form>
+            <form id="form_attraction">
               <div class="attraction-profile-booking-date">
                 <label for="date">
                   <span class="attraction-profile-booking-dateText"
@@ -127,7 +127,11 @@
                 </p>
               </div>
               <div>
-                <button type="submit" class="attraction-profile-booking-button">
+                <button
+                  type="button"
+                  class="attraction-profile-booking-button"
+                  id="booking-button"
+                >
                   <p class="attraction-profile-booking-buttonText">
                     開始預訂行程
                   </p>
