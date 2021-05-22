@@ -3,7 +3,6 @@
 let indexModel = {
   data: null,
   parsedData: null,
-  apiRoute: "/api/attractions?",
   boundingClientRect: null,
   isFirst: true,
   searchBtnDOM: null,
@@ -12,59 +11,8 @@ let indexModel = {
   attractionGroupDOM: null,
   nextPage: 0,
   currentPage: 0,
-  requestParameters: {
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "user-agent": "Mozilla/4.0 MDN Example",
-      "content-type": "application/json",
-    },
-    mode: "cors",
-    redirect: "follow",
-    referrer: "no-referrer",
-  },
   init: function () {
     this.getDOM();
-  },
-  apiGet: function (keyword = "") {
-    //透過 fetch 從 api 取得資料
-    let url = this.apiRoute + "page=" + indexModel.currentPage;
-    if (keyword !== "" && keyword !== undefined) {
-      url += "&" + "keyword=" + keyword;
-    }
-    return fetch(url, {
-      mode: "cors",
-    })
-      .then((response) => {
-        return response.text();
-      })
-      .then((result) => {
-        this.data = result;
-      });
-  },
-  parseGetData: function () {
-    //Get next page (int or null) and attraction datas (Array: [img, name, MRT, category])
-    if (this.data === "") return;
-    let jsonData = JSON.parse(this.data);
-    let nextPage = jsonData.nextPage;
-
-    let dataList = jsonData.data;
-    let attractionsArr = [];
-
-    // Get each data: img(the first url), name, MRT, category, id
-    if (dataList === undefined) return [];
-
-    let dataListLen = dataList.length;
-    for (let i = 0; i < dataListLen; i++) {
-      let data = dataList[i];
-      let img = data.images[0];
-      let name = data.name;
-      let mrt = data.mrt;
-      let category = data.category;
-      let id = data.id;
-      attractionsArr.push([img, name, mrt, category, id]);
-    }
-    this.parsedData = [nextPage, attractionsArr];
   },
   getDOM: function () {
     this.searchBtnDOM = document.getElementById("searchBtn");
@@ -168,39 +116,47 @@ let attractionsViews = {
 };
 
 let indexController = {
-  init: function () {
-    window.addEventListener("scroll", this.isScrollBottom, true);
+  init: async function () {
     indexModel.init();
+    // this.isScrollBottom();
+    window.addEventListener(
+      "scroll",
+      () => {
+        this.isScrollBottom();
+      },
+      true
+    );
     this.addClickEvent();
-    this.getAttractions(undefined);
+
+    this.doRender(indexModel.currentPage, undefined);
   },
-  getAttractions: async function (keyword = "") {
-    await indexModel.apiGet(keyword).then(function () {
-      indexModel.parseGetData();
+  doRender: async function (currentPage, keyword) {
+    let response = await indexApiController.doGet(currentPage, keyword);
 
-      if (indexModel.isFirst) {
-        indexModel.boundingClientRect =
-          indexModel.attractionGroupDOM.getBoundingClientRect().bottom;
-        indexModel.isFirst = false;
-      }
-      indexModel.nextPage = indexModel.parsedData[0];
-      indexView.renderAttractions(indexModel.parsedData[1]);
+    if (indexModel.isFirst) {
+      indexModel.boundingClientRect =
+        indexModel.attractionGroupDOM.getBoundingClientRect().bottom;
+      indexModel.isFirst = false;
+    }
+    indexModel.nextPage = response[0];
+    indexView.renderAttractions(response[1]);
 
-      navController.checkUserLogin();
-    });
+    navController.checkUserLogin();
   },
   addClickEvent: function () {
-    indexModel.searchBtnDOM.addEventListener("click", this.doKeywordSearch);
+    indexModel.searchBtnDOM.addEventListener("click", () => {
+      this.doKeywordSearch();
+    });
   },
-  doKeywordSearch: function () {
+  doKeywordSearch: async function () {
     if (indexModel.searchInputDOM === undefined) return;
     indexModel.keyword = indexModel.searchInputDOM.value;
     indexModel.currentPage = 0;
     indexView.removeChildElement(indexModel.attractionGroupDOM, "attraction");
     indexView.removeChildElement(indexModel.attractionGroupDOM, "noResult");
-    indexController.getAttractions(indexModel.keyword);
+    this.doRender(indexModel.currentPage, indexModel.keyword);
   },
-  isScrollBottom: function () {
+  isScrollBottom: async function () {
     let rect = indexModel.attractionGroupDOM.getBoundingClientRect();
     if (rect.bottom === indexModel.boundingClientRect) return;
     if (rect.bottom < window.innerHeight) {
@@ -210,7 +166,7 @@ let indexController = {
       if (indexModel.nextPage === indexModel.currentPage) return;
       if (indexModel.nextPage !== 0 && indexModel.nextPage !== null) {
         indexModel.currentPage = indexModel.nextPage;
-        indexController.getAttractions(indexModel.keyword);
+        this.doRender(indexModel.currentPage, indexModel.keyword);
       }
     }
   },
