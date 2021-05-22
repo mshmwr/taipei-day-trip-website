@@ -13,6 +13,10 @@
   display: none;
 }
 
+.bookingContent {
+  /* display: none; */
+}
+
 .booking-headline {
   width: 1000px;
   margin: 94px auto 30px auto;

@@ -8,7 +8,7 @@ navbar =
         <div class="navBtn-right-text" id="userState">登入/註冊</div>\
       </div>\
       <div class="navBtn-left">\
-        <div class="navBtn-left-text">預定行程</div>\
+        <div class="navBtn-left-text" id="navBooking">預定行程</div>\
       </div>\
     </div>\
   </div>\

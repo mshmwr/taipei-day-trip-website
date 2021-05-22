@@ -348,6 +348,7 @@ let userApiController = {
 let navModel = {
   navUserStateDOM: null,
   navDivTextDOM: null,
+  navBookingDOM: null,
   isUserLogin: false,
   userStateTexts: ["登入/註冊", "登出系統"],
   init: function () {
@@ -356,6 +357,7 @@ let navModel = {
   getDom: function () {
     this.navUserStateDOM = document.getElementById("userState");
     this.navDivTextDOM = document.getElementById("navDiv-text");
+    this.navBookingDOM = document.getElementById("navBooking");
   },
 };
 
@@ -383,6 +385,15 @@ let navController = {
         navController.checkUserLogin();
       }
       dialogModel.dialogMessageDOM.style.display = "none";
+    });
+
+    navModel.navBookingDOM.addEventListener("click", function () {
+      if (navModel.isUserLogin === false) {
+        dialogModel.dialogDOM.style.display = "block";
+        dialogModel.dialogMessageDOM.style.display = "none";
+      } else {
+        document.location.assign("/booking");
+      }
     });
 
     navModel.navDivTextDOM.addEventListener("click", function () {

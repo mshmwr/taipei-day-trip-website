@@ -258,6 +258,13 @@ function getUrl(api = "/api/attractions?", currentPage = 0) {
   return url;
 }
 
+function init() {
+  //initial
+  dataController.init();
+  dialogController.init();
+  navController.init();
+}
+
 window.onload = function () {
   attractionGroup = document.getElementById("attractionGroup");
   searchInput = document.getElementById("searchInput");
@@ -266,8 +273,5 @@ window.onload = function () {
   window.addEventListener("scroll", IsScrollBottom, true);
   searchBtn.addEventListener("click", DoKeywordSearch);
 
-  //initial
-  dataController.init();
-  dialogController.init();
-  navController.init();
+  init();
 };
