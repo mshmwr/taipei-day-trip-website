@@ -64,7 +64,7 @@ let attractionsViews = {
     // 1. 建立新的 <div> 母元素: attraction
     let newDivAttraction = createElementWithClassName(undefined, "attraction");
     let id = itemArr[index][4];
-    let link = route_attraction + id;
+    let link = apiModel.route_attraction + id;
     newDivAttraction.onclick = function () {
       window.location.href = link.toString();
     };
@@ -116,9 +116,8 @@ let attractionsViews = {
 };
 
 let indexController = {
-  init: async function () {
+  init: function () {
     indexModel.init();
-    // this.isScrollBottom();
     window.addEventListener(
       "scroll",
       () => {

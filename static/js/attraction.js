@@ -44,8 +44,7 @@ let attModels = {
 let attController = {
   init: function () {
     attModels.init();
-    let thisUrl = window.location.toString();
-    let url = thisUrl.replace(route_attraction, api_attraction);
+    let url = window.location.pathname;
     this.addClickEvent();
     this.doRender(url);
   },

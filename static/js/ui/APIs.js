@@ -1,4 +1,6 @@
 let apiModel = {
+  route_attraction: "/attraction/",
+  // route_apiAttraction: "/api/attraction/",
   requestParameters: {
     cache: "no-cache",
     credentials: "same-origin",
@@ -71,9 +73,8 @@ let indexApiController = {
 //attractoin api
 let attApiModel = {
   data: null,
-  route_attraction: "/attraction/",
-  api_attraction: "/api/attraction/",
   apiGet: function (url) {
+    url = "/api" + url;
     //透過 fetch 從 api 取得資料 /api/attraction/<attractionId>')
     return fetch(url, {
       mode: "cors",

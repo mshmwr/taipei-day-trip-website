@@ -1,7 +1,3 @@
-//api
-let route_attraction = "/attraction/";
-let api_attraction = "/api/attraction/";
-
 //INNERTEXT與TEXTCONTENT的跨瀏覽器處理
 function changeText(elem, changeValue = "") {
   let hasInnerText =
