@@ -39,52 +39,6 @@ let attModels = {
     );
     this.bookingButtonDOM = document.getElementById("booking-button");
   },
-  getAttractionData: function (url) {
-    //透過 fetch 從 api 取得資料 /api/attraction/<attractionId>')
-    return fetch(url, {
-      mode: "cors",
-    })
-      .then((response) => {
-        return response.text();
-      })
-      .then((result) => {
-        this.data = result;
-      });
-  },
-  parseAttractionData: function () {
-    //Get next page (int or null) and attraction datas (Array: [img, name, MRT, category])
-    if (this.data === "") return;
-    let jsonData = JSON.parse(this.data);
-    let data = jsonData.data;
-    let attractionsArr = [];
-
-    this.attractionId = data.id;
-    // Get each data: imgList, name, category, mrt, description, address, transport
-    let images = data.images === null ? "null" : data.images;
-    let name = data.name === null ? "null" : data.name;
-    let category = data.category === null ? "null" : data.category;
-    let mrt = data.mrt === null ? "null" : data.mrt;
-    let description = data.description === null ? "null" : data.description;
-    let address = data.address === null ? "null" : data.address;
-    let transport = data.transport === null ? "null" : data.transport;
-
-    //images list
-    let imgList = [];
-    if (images.length !== 0) {
-      images.forEach((url) => imgList.push(url));
-    }
-    attractionsArr = [
-      imgList,
-      name,
-      category,
-      mrt,
-      description,
-      address,
-      transport,
-    ];
-
-    this.parsedData = attractionsArr;
-  },
 };
 
 let attController = {
@@ -92,22 +46,20 @@ let attController = {
     attModels.init();
     let thisUrl = window.location.toString();
     let url = thisUrl.replace(route_attraction, api_attraction);
-    this.getAttraction(url);
     this.addClickEvent();
+    this.doRender(url);
   },
-  getAttraction: function (url) {
-    attModels.getAttractionData(url).then(function () {
-      attModels.parseAttractionData();
-      attView.fillContent(attModels.parsedData);
-      attView.renderImages(attModels.parsedData[0]);
-      attView.renderBookingPrice();
-      pictureSliderView.setArrowClick();
-      pictureSliderView.showSlides();
+  doRender: async function (url) {
+    let response = await attApiController.doGet(url);
+    attModels.attractionId = response[0];
+    attView.renderImages(response[1]);
+    attView.fillContent(response[2]);
+    attView.renderBookingPrice();
+    pictureSliderView.setArrowClick();
+    pictureSliderView.showSlides();
 
-      navController.checkUserLogin();
-    });
+    navController.checkUserLogin();
   },
-
   addClickEvent: function () {
     attModels.bookingButtonDOM.addEventListener("click", async () => {
       if (navModel.isUserLogin === false) {
@@ -119,22 +71,23 @@ let attController = {
         let time = "";
         let dateControl = document.querySelector('input[type="date"]');
 
+        //get radio type value
         for (let i = 0; i < form.time.length; i++) {
           if (form.time[i].checked) {
             time = form.time[i].value;
             break;
           }
         }
+
         bookingData = {
           attractionId: attModels.attractionId,
           date: dateControl.value, //"2022-01-31",
           time: time, //"afternoon",
           price: attModels.bookingPriceContentDOM.textContent,
         };
-        console.log("bookingData");
-        console.log(bookingData);
-
         let response = await bookingApiController.doPost(bookingData);
+        console.log("response");
+        console.log(response);
         if (response["success"]) {
           document.location.assign("/booking");
         } else {
@@ -147,17 +100,6 @@ let attController = {
 };
 
 let attView = {
-  fillContent: function (inputList = []) {
-    let contentList = inputList.filter((data) => {
-      // exclude images
-      return typeof data === typeof "";
-    });
-    if (contentList.length !== attModels.attDomList.length) return;
-    let len = contentList.length;
-    for (let i = 0; i < len; i++) {
-      attModels.attDomList[i].innerHTML = contentList[i];
-    }
-  },
   renderImages: function (imageUrls = []) {
     //get imageUrls length
     for (let i = 0; i < imageUrls.length; i++) {
@@ -179,6 +121,17 @@ let attView = {
     //appendChild
     imgDivElement.appendChild(imgElement);
     pictureSliderModel.imgSliderDOM.appendChild(imgDivElement);
+  },
+  fillContent: function (inputList = []) {
+    let contentList = inputList.filter((data) => {
+      // exclude not string type data
+      return typeof data === typeof "";
+    });
+    if (contentList.length !== attModels.attDomList.length) return;
+    let len = contentList.length;
+    for (let i = 0; i < len; i++) {
+      attModels.attDomList[i].innerHTML = contentList[i];
+    }
   },
   renderDot: function (index = 0) {
     //get dom: dotGroup = dotGroupDon
@@ -266,13 +219,13 @@ let pictureSliderView = {
   },
   setArrowClick: function () {
     pictureSliderModel.leftArrowDOM.onclick = () => {
-      this.DoPlusSlides(-1);
+      this.doPlusSlides(-1);
     };
     pictureSliderModel.rightArrowDOM.onclick = () => {
-      this.DoPlusSlides(1);
+      this.doPlusSlides(1);
     };
   },
-  DoPlusSlides: function (n) {
+  doPlusSlides: function (n) {
     pictureSliderView.plusSlides(n);
   },
 };
