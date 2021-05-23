@@ -1,3 +1,5 @@
+import { bookingApiController } from "./api/bookingApi.js";
+
 let bookingModel = {
   bookingData: null,
   titleDOM: null,

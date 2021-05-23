@@ -1,3 +1,6 @@
+import { bookingApiController } from "./api/bookingApi.js";
+import { attApiController } from "./api/attApi.js";
+
 let attModels = {
   data: null,
   parsedData: null,
@@ -78,7 +81,7 @@ let attController = {
           }
         }
 
-        bookingData = {
+        let bookingData = {
           attractionId: attModels.attractionId,
           date: dateControl.value, //"2022-01-31",
           time: time, //"afternoon",

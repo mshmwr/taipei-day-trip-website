@@ -1,4 +1,5 @@
-//api
+import { indexApiController } from "./api/indexApi.js";
+import { apiModel } from "./api/apiParameters.js";
 
 let indexModel = {
   data: null,
