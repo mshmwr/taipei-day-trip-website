@@ -5,7 +5,6 @@ import { dialogController, navController, navModel } from "./ui/member.js";
 
 let attModels = {
   data: null,
-  parsedData: null,
   attDomList: null,
   profileTitleDOM: null,
   profileCATDOM: null,
@@ -16,6 +15,7 @@ let attModels = {
   bookingPriceContentDOM: null,
   bookingButtonDOM: null,
   attractionId: null,
+  calenderDOM: null,
 
   init: function () {
     this.getDOM();
@@ -43,6 +43,7 @@ let attModels = {
       "booking-priceContent"
     );
     this.bookingButtonDOM = document.getElementById("booking-button");
+    this.calenderDOM = document.querySelector('input[type="date"]');
   },
 };
 
@@ -59,6 +60,7 @@ let attController = {
     attView.renderImages(response[1]);
     attView.fillContent(response[2]);
     attView.renderBookingPrice();
+    attView.setDate();
     pictureSliderView.setArrowClick();
     pictureSliderView.showSlides();
 
@@ -73,7 +75,6 @@ let attController = {
         //建立景點資訊存到session
         let form = document.getElementById("form_attraction");
         let time = "";
-        let dateControl = document.querySelector('input[type="date"]');
 
         //get radio type value
         for (let i = 0; i < form.time.length; i++) {
@@ -85,7 +86,7 @@ let attController = {
 
         let bookingData = {
           attractionId: attModels.attractionId,
-          date: dateControl.value, //"2022-01-31",
+          date: attModels.calenderDOM.value, //"2022-01-31",
           time: time, //"afternoon",
           price: attModels.bookingPriceContentDOM.textContent,
         };
@@ -173,11 +174,19 @@ let attView = {
       });
     }
   },
+  setDate: function () {
+    let tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    let localISOTime = new Date(Date.now() - tzoffset)
+      .toISOString()
+      .slice(0, -1);
+    const today = localISOTime.slice(0, 10);
+    attModels.calenderDOM.value = today;
+  },
 };
 
 let pictureSliderModel = {
-  imgSliderDOM: null, //slider dom
-  dotGroupDOM: null, //slider dom
+  imgSliderDOM: null,
+  dotGroupDOM: null,
   leftArrowDOM: null,
   rightArrowDOM: null,
   init: function () {
