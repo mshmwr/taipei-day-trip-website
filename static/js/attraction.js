@@ -1,5 +1,7 @@
+import { changeText } from "./ui/utils.js";
 import { bookingApiController } from "./api/bookingApi.js";
 import { attApiController } from "./api/attApi.js";
+import { dialogController, navController, navModel } from "./ui/member.js";
 
 let attModels = {
   data: null,
@@ -130,7 +132,8 @@ let attView = {
     if (contentList.length !== attModels.attDomList.length) return;
     let len = contentList.length;
     for (let i = 0; i < len; i++) {
-      attModels.attDomList[i].innerHTML = contentList[i];
+      changeText(attModels.attDomList[i], contentList[i]);
+      // attModels.attDomList[i].innerHTML = contentList[i];
     }
   },
   renderDot: function (index = 0) {

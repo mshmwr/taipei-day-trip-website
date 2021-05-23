@@ -1,4 +1,11 @@
+import { changeText } from "./ui/utils.js";
 import { bookingApiController } from "./api/bookingApi.js";
+import {
+  dialogController,
+  navController,
+  navModel,
+  userModel,
+} from "./ui/member.js";
 
 let bookingModel = {
   bookingData: null,

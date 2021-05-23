@@ -1,3 +1,4 @@
+import { changeText } from "./utils.js";
 // 會員系統: nav & dialog & api
 
 let dialogModel = {
@@ -181,11 +182,11 @@ let dialogController = {
   },
 };
 
-//api
 let userModel = {
   userName: null,
 };
 
+//api
 let userApiModel = {
   data: null,
   parsedData: null,
@@ -401,3 +402,5 @@ let navController = {
     });
   },
 };
+
+export { dialogController, navController, navModel, userModel };
