@@ -2,15 +2,14 @@
 
 let indexModel = {
   data: null,
-  parsedData: null,
   boundingClientRect: null,
   isFirst: true,
-  searchBtnDOM: null,
-  searchInputDOM: null,
   keyword: "",
-  attractionGroupDOM: null,
   nextPage: 0,
   currentPage: 0,
+  searchBtnDOM: null,
+  searchInputDOM: null,
+  attractionGroupDOM: null,
   init: function () {
     this.getDOM();
   },

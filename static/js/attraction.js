@@ -85,8 +85,6 @@ let attController = {
           price: attModels.bookingPriceContentDOM.textContent,
         };
         let response = await bookingApiController.doPost(bookingData);
-        console.log("response");
-        console.log(response);
         if (response["success"]) {
           document.location.assign("/booking");
         } else {

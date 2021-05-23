@@ -1,6 +1,5 @@
 let apiModel = {
   route_attraction: "/attraction/",
-  // route_apiAttraction: "/api/attraction/",
   requestParameters: {
     cache: "no-cache",
     credentials: "same-origin",
@@ -17,16 +16,18 @@ let apiModel = {
 //index api
 let indexApiModel = {
   data: null,
-  apiRoute: "/api/attractions?",
+  apiRoute: "",
+  api: "/api/attractions?",
   apiGet: function (currentPage = 0, keyword = "") {
-    //透過 fetch 從 api 取得資料
-    let url = this.apiRoute + "page=" + currentPage;
+    this.apiRoute = this.api + "page=" + currentPage;
     if (keyword !== "" && keyword !== undefined) {
-      url += "&" + "keyword=" + keyword;
+      this.apiRoute += "&" + "keyword=" + keyword;
     }
-    return fetch(url, {
-      mode: "cors",
-    })
+
+    let parameters = JSON.parse(JSON.stringify(apiModel.requestParameters)); //deep copy
+    let method = { method: "GET" };
+    parameters = Object.assign(parameters, method);
+    return fetch(this.apiRoute, parameters)
       .then((response) => {
         return response.text();
       })
@@ -73,12 +74,16 @@ let indexApiController = {
 //attractoin api
 let attApiModel = {
   data: null,
+  api: "/api",
+  apiRoute: "",
   apiGet: function (url) {
-    url = "/api" + url;
+    this.apiRoute = this.api + url;
+
+    let parameters = JSON.parse(JSON.stringify(apiModel.requestParameters)); //deep copy
+    let method = { method: "GET" };
+    parameters = Object.assign(parameters, method);
     //透過 fetch 從 api 取得資料 /api/attraction/<attractionId>')
-    return fetch(url, {
-      mode: "cors",
-    })
+    return fetch(this.apiRoute, parameters)
       .then((response) => {
         return response.text();
       })
@@ -142,9 +147,7 @@ let bookingApiModel = {
   },
   apiPost: function (data = {}) {
     let parameters = JSON.parse(JSON.stringify(apiModel.requestParameters)); //deep copy
-    let method = {
-      method: "POST",
-    };
+    let method = { method: "POST" };
     parameters = { body: JSON.stringify(data), ...method, ...parameters };
     return fetch(this.apiRoute, parameters)
       .then((response) => {
@@ -217,6 +220,7 @@ let bookingApiModel = {
 
 let bookingApiController = {
   doGet: async function () {
+    let response = {};
     let success = false;
     let message = null;
     await bookingApiModel.apiGet().then(() => {
