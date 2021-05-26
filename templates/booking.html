@@ -53,26 +53,35 @@
         <div class="booking-userContact">
           <p class="common-text booking-title">您的聯絡資訊</p>
           <form>
-            <span class="common-text">聯絡姓名：</span>
-            <input type="text" placeholder="聯絡姓名" class="contactContent" />
-            <br />
-            <span class="common-text">連絡信箱：</span>
-            <input
-              type="email"
-              placeholder="電子信箱"
-              id="contact-email"
-              class="contactContent"
-            />
-            <br />
-            <span class="common-text">手機號碼：</span>
-            <input
-              type="tel"
-              placeholder="手機號碼"
-              class="contactContent"
-              size="10"
-              minlength="10"
-              maxlength="10"
-            />
+            <div class="form-group">
+              <label class="common-text">聯絡姓名：</label>
+              <input
+                type="text"
+                placeholder="聯絡姓名"
+                class="contactContent"
+              />
+            </div>
+            <div class="form-group">
+              <label class="common-text">連絡信箱：</label>
+              <input
+                type="email"
+                placeholder="電子信箱"
+                id="contact-email"
+                class="contactContent"
+              />
+            </div>
+            <div class="form-group">
+              <label class="common-text">手機號碼：</label>
+              <input
+                type="tel"
+                placeholder="手機號碼"
+                class="contactContent"
+                size="10"
+                minlength="10"
+                maxlength="10"
+              />
+            </div>
+
             <p class="common-text notice">
               請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
             </p>
@@ -81,7 +90,26 @@
         <div class="booking-border"></div>
         <div class="booking-userPayment">
           <p class="common-text booking-title">信用卡付款資訊</p>
-          <form>
+          <div class="form-group">
+            <label for="card-number" class="common-text"
+              ><span id="cardtype"></span>卡片號碼：</label
+            >
+            <div class="tpfield paymentContent" id="card-number"></div>
+          </div>
+          <div class="form-group">
+            <label for="card-number" class="common-text"
+              ><span id="cardtype"></span>過期時間：</label
+            >
+            <div class="tpfield paymentContent" id="card-expiration-date"></div>
+          </div>
+          <div class="form-group">
+            <label for="card-number" class="common-text"
+              ><span id="cardtype"></span>驗證密碼：</label
+            >
+            <div class="tpfield paymentContent" id="card-ccv"></div>
+          </div>
+
+          <!-- <form>
             <span class="common-text">卡片號碼：</span>
             <input
               type="cc-number"
@@ -94,7 +122,7 @@
             <br />
             <span class="common-text">驗證密碼：</span>
             <input type="cc-csc" placeholder="CVV" class="paymentContent" />
-          </form>
+          </form> -->
         </div>
         <div class="booking-border"></div>
         <div class="booking-confirm">
@@ -102,7 +130,7 @@
             總價：<span>新台幣2000元</span>
           </div>
           <div class="booking-confirmButton">
-            <button type="button">
+            <button type="button" onclick="onSubmit()">
               <p class="dialogContent">確認訂購並付款</p>
             </button>
           </div>
@@ -115,5 +143,96 @@
         <div class="footer-text">COPYRIGHT © 2021 台北一日遊</div>
       </div>
     </footer>
+
+    <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+    <script>
+      let APP_ID = 20406;
+      let APP_KEY =
+        "app_RSflTqgsiw4oyTb3Dmv8MXJWtG29uLONSt20GkG77P1iM9jVgRENIkjQixBj";
+      TPDirect.setupSDK(APP_ID, APP_KEY, "sandbox");
+      // Display ccv field
+      let fields = {
+        number: {
+          // css selector
+          element: "#card-number",
+          placeholder: "**** **** **** ****",
+        },
+        expirationDate: {
+          // DOM object
+          element: document.getElementById("card-expiration-date"),
+          placeholder: "MM / YY",
+        },
+        ccv: {
+          element: "#card-ccv",
+          placeholder: "ccv",
+        },
+      };
+      TPDirect.card.setup({
+        // Display ccv field
+        fields: fields,
+        styles: {
+          // Style all elements
+          input: {
+            color: "gray",
+          },
+          // Styling ccv field
+          "input.ccv": {
+            // 'font-size': '16px'
+          },
+          // Styling expiration-date field
+          "input.expiration-date": {
+            // 'font-size': '16px'
+          },
+          // Styling card-number field
+          "input.card-number": {
+            // 'font-size': '16px'
+          },
+          // style focus state
+          ":focus": {
+            // 'color': 'black'
+          },
+          // style valid state
+          ".valid": {
+            color: "green",
+          },
+          // style invalid state
+          ".invalid": {
+            color: "red",
+          },
+          // Media queries
+          // Note that these apply to the iframe, not the root window.
+          "@media screen and (max-width: 400px)": {
+            input: {
+              color: "orange",
+            },
+          },
+        },
+      });
+      function onSubmit(event) {
+        // event.preventDefault();
+        alert("onSubmit~~~");
+
+        // 取得 TapPay Fields 的 status
+        const tappayStatus = TPDirect.card.getTappayFieldsStatus();
+
+        // 確認是否可以 getPrime
+        if (tappayStatus.canGetPrime === false) {
+          alert("can not get prime");
+          return;
+        }
+
+        // Get prime
+        TPDirect.card.getPrime((result) => {
+          if (result.status !== 0) {
+            alert("get prime error " + result.msg);
+            return;
+          }
+          alert("get prime 成功，prime: " + result.card.prime);
+
+          // send prime to your server, to pay with Pay by Prime API .
+          // Pay By Prime Docs: https://docs.tappaysdk.com/tutorial/zh/back.html#pay-by-prime-api
+        });
+      }
+    </script>
   </body>
 </html>
