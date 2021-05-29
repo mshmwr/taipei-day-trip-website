@@ -42,14 +42,13 @@ cnx1 = cnxpool.get_connection()
 app.secret_key = SECRET_KEY
 
 #Tap pay
-from flask_restful import reqparse, abort, Api, Resource
+
 import requests
 sandBoxUrl = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
 
-# PARTNER_KEY = os.getenv("partner_key")
-# MERCHANT_ID = os.getenv("merchant_id")
-PARTNER_KEY = "partner_JMrocmdQqtzQwWusyUwFikv1uz5ThstkIbCKV7wUzNFWKzvpmiNbfzll"
-MERCHANT_ID ="padax_CTBC"
+PARTNER_KEY = os.getenv("partner_key")
+MERCHANT_ID = os.getenv("merchant_id")
+
 
 # Enum
 class AttractionEnum(Enum):
