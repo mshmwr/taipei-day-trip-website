@@ -415,6 +415,12 @@ let getData = {
   getIsUserLogin: function () {
     return navModel.isUserLogin;
   },
+  getDialogDOMs: function () {
+    return {
+      dialogDOM: dialogModel.dialogDOM,
+      dialogMessageDOM: dialogModel.dialogMessageDOM,
+    };
+  },
 };
 
 export { dialogController, navController, getData };
