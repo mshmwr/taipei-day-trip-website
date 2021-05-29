@@ -69,8 +69,8 @@ let attController = {
   addClickEvent: function () {
     attModels.bookingButtonDOM.addEventListener("click", async () => {
       if (getData.getIsUserLogin() === false) {
-        dialogModel.dialogDOM.style.display = "block";
-        dialogModel.dialogMessageDOM.style.display = "none";
+        getData.getDialogDOMs()["dialogDOM"].style.display = "block";
+        getData.getDialogDOMs()["dialogMessageDOM"].style.display = "none";
       } else {
         //建立景點資訊存到session
         let form = document.getElementById("form_attraction");
