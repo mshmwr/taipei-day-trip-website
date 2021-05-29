@@ -56,8 +56,6 @@ let orderApiModel = {
       return message;
     }
     message = parsedData;
-    console.log("parsePostData");
-    console.log(message);
     return message;
   },
 };
@@ -84,6 +82,7 @@ let orderApiController = {
     await orderApiModel.apiPost(data).then(() => {
       success = true;
       message = orderApiModel.parsePostData();
+      console.log(message);
     });
     response = {
       success: success,

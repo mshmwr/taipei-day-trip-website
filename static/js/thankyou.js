@@ -19,10 +19,7 @@ let thankyouView = {
   renderOrderInfo: async function () {
     //取得目前網址
     let url = window.location.search;
-    console.log("url");
-    console.log(url);
     let orderNumber = url.replace(thankyouModel.queryStr, "");
-    console.log(orderNumber);
 
     let response = await orderApiController.doGet(orderNumber);
     console.log(response);
