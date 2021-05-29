@@ -184,6 +184,7 @@ let dialogController = {
 
 let userModel = {
   userName: null,
+  userEmail: null,
 };
 
 //api
@@ -263,6 +264,7 @@ let userApiModel = {
     else {
       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
       userModel.userName = dataDic.name;
+      userModel.userEmail = dataDic.email;
     }
   },
   parsePostData: function () {
@@ -403,4 +405,16 @@ let navController = {
   },
 };
 
-export { dialogController, navController, navModel, userModel };
+let getData = {
+  getUserName: function () {
+    return userModel.userName;
+  },
+  getUserEmail: function () {
+    return userModel.userEmail;
+  },
+  getIsUserLogin: function () {
+    return navModel.isUserLogin;
+  },
+};
+
+export { dialogController, navController, getData };

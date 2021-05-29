@@ -1,7 +1,7 @@
 import { changeText } from "./ui/utils.js";
 import { bookingApiController } from "./api/bookingApi.js";
 import { attApiController } from "./api/attApi.js";
-import { dialogController, navController, navModel } from "./ui/member.js";
+import { dialogController, navController, getData } from "./ui/member.js";
 
 let attModels = {
   data: null,
@@ -68,7 +68,7 @@ let attController = {
   },
   addClickEvent: function () {
     attModels.bookingButtonDOM.addEventListener("click", async () => {
-      if (navModel.isUserLogin === false) {
+      if (getData.getIsUserLogin() === false) {
         dialogModel.dialogDOM.style.display = "block";
         dialogModel.dialogMessageDOM.style.display = "none";
       } else {

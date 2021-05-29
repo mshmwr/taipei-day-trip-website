@@ -1,0 +1,19 @@
+.order-headline {
+  width: 1000px;
+  margin: 94px auto 30px auto;
+}
+.orderContent {
+  margin: 20px 0;
+}
+/* 4. RWD: 螢幕寬度(由大到小) 1200 700 */
+@media (max-width: 1200px) {
+  .order-headline {
+    width: 52.08%;
+  }
+}
+
+@media (max-width: 700px) {
+  .order-headline {
+    width: 94.44%;
+  }
+}
