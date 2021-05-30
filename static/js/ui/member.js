@@ -1,3 +1,4 @@
+import { changeText } from "./utils.js";
 // 會員系統: nav & dialog & api
 
 let dialogModel = {
@@ -181,11 +182,12 @@ let dialogController = {
   },
 };
 
-//api
 let userModel = {
   userName: null,
+  userEmail: null,
 };
 
+//api
 let userApiModel = {
   data: null,
   parsedData: null,
@@ -262,6 +264,7 @@ let userApiModel = {
     else {
       this.parsedData = [dataDic.id, dataDic.name, dataDic.email];
       userModel.userName = dataDic.name;
+      userModel.userEmail = dataDic.email;
     }
   },
   parsePostData: function () {
@@ -401,3 +404,23 @@ let navController = {
     });
   },
 };
+
+let getData = {
+  getUserName: function () {
+    return userModel.userName;
+  },
+  getUserEmail: function () {
+    return userModel.userEmail;
+  },
+  getIsUserLogin: function () {
+    return navModel.isUserLogin;
+  },
+  getDialogDOMs: function () {
+    return {
+      dialogDOM: dialogModel.dialogDOM,
+      dialogMessageDOM: dialogModel.dialogMessageDOM,
+    };
+  },
+};
+
+export { dialogController, navController, getData };

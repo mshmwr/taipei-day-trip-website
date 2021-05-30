@@ -41,6 +41,14 @@ cnx1 = cnxpool.get_connection()
 
 app.secret_key = SECRET_KEY
 
+#Tap pay
+
+import requests
+sandBoxUrl = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+
+PARTNER_KEY = os.getenv("partner_key")
+MERCHANT_ID = os.getenv("merchant_id")
+
 
 # Enum
 class AttractionEnum(Enum):
@@ -321,8 +329,6 @@ def deleteUser():
     session.pop("user") 
     return jsonify({"ok": True}), 200
 
-
-
 # ----- /api/booking
 # [GET]
 @app.route('/api/booking',methods=['GET'])
@@ -420,6 +426,221 @@ def deleteBooking():
         return jsonify({"ok": True}), 200
     else:
         return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403 
+
+
+# ----- /api/orders
+def pay_by_prime(prime, orderNumber,sendData):
+    url = sandBoxUrl
+    
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": PARTNER_KEY
+    }
+
+    data = {
+        "prime": prime,
+        "partner_key": PARTNER_KEY,
+        "merchant_id": MERCHANT_ID,
+        "details":"TapPay Test",
+        "amount":int(sendData["amount"]),
+        "orderNumber": orderNumber,
+        "currency": "TWD",
+        "cardholder": {
+            "phone_number": sendData["phone_number"],
+            "name": sendData["name"],
+            "email": sendData["email"],
+        },
+        "remember": True
+    }
+    r = requests.post(url, json=data, headers=headers)
+    return r.json()
+
+# [GET]
+@app.route('/api/order/<orderNumber>',methods=['GET'])
+def getDataFromOrderNumber(orderNumber):
+    
+            # 其他回傳的資料如下
+                # number
+                # price: 數字
+                # attractionID: 數字
+                # attractionName
+                # attractionAddress
+                # attractionImage
+                # date
+                # time
+                # contactName
+                # contactEmail
+                # contactPhone
+                # status: 數字
+
+    email = session.get("user")
+    if email:
+        orderData = None
+        number = int(orderNumber)
+        cnx1 = cnxpool.get_connection()
+        mycursor = cnx1.cursor()
+
+        # 根據訂單編號取得訂單資料
+        sql = "SELECT * FROM orders WHERE number=%s"
+        txt = (number, )
+        mycursor.execute(sql, txt)
+        result = mycursor.fetchall()
+
+        if len(result)!=0:
+
+            # 轉成 JSON 格式
+            orderData =  {
+                "number": result[0][1],
+                "price": result[0][2],
+                "trip": {
+                    "attraction": {
+                        "id": result[0][3],
+                        "name": result[0][4],
+                        "address": result[0][5],
+                        "image": result[0][6]
+                    },
+                "date": result[0][7],
+                "time": result[0][8],
+                },
+                "contact": {
+                    "name": result[0][9],
+                    "email": result[0][10],
+                    "phone": result[0][11],
+                },
+                "status": result[0][12],
+            }
+        cnx1.close()
+
+
+        return jsonify({"data": orderData}), 200
+    else:
+        return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+# [POST]
+@app.route('/api/orders',methods=['POST'])
+def addOrder():
+    request_data = request.get_json()
+    # 輸入前端傳來的prime
+    prime = request_data["prime"]
+    
+    # 取得最新一筆訂單的編號
+    cnx1 = cnxpool.get_connection()
+    mycursor = cnx1.cursor()
+    sql = "SELECT * FROM orders ORDER BY orderid DESC LIMIT 0,1"
+    mycursor.execute(sql, )
+    newest_orderid = mycursor.fetchall()
+    cnx1.close()
+    orderId=1
+    if len(newest_orderid)!=0:
+        orderId = int(newest_orderid[0][0])+1
+
+    orderNumber = request_data["order"]["trip"]["date"].replace('-', '') + str(orderId)
+   
+
+    email = session.get("user")
+    if email:
+        try:
+
+            # 要存進DB的資料
+            number = orderNumber
+
+            price = request_data["order"]["price"]
+            dataTrip = request_data["order"]["trip"]
+            dataContact = request_data["order"]["contact"]
+            #attraction
+            dataAttraction = dataTrip["attraction"]
+            attractionId = dataAttraction["id"]
+            attractionName = dataAttraction["name"]
+            attractionAddress = dataAttraction["address"]
+            attractionImage = dataAttraction["image"]
+            date = dataTrip["date"]
+            time = dataTrip["time"]
+
+            contactName = dataContact["name"]
+            contactEmail = dataContact["email"]
+            contactPhone = dataContact["phone"]
+
+            canSaveData=True
+            errorMsg=""
+            if number==0 or price==0 or attractionId==0:
+                errorMsg+="有數字錯誤。"
+                canSaveData=False
+            if not (attractionName and attractionName and attractionAddress and attractionImage):
+                errorMsg+="有景點內容錯誤。"
+                canSaveData=False
+            if not (date and time):
+                errorMsg+="有日期或時間錯誤。"
+                canSaveData=False
+            if not (contactName and contactEmail and contactPhone):
+                errorMsg+="有使用者資料錯誤。"
+                canSaveData=False
+
+                
+            if canSaveData:
+                # 存進DB
+                status = 0
+                cnx1 = cnxpool.get_connection()
+                mycursor = cnx1.cursor()
+                sql = "INSERT INTO orders (number, price, attractionId, attractionName, attractionAddress, attractionImage, date, time, contactName, contactEmail, contactPhone, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                val = (number, price, attractionId, attractionName, attractionAddress, attractionImage, date, time, contactName, contactEmail, contactPhone, status)
+                mycursor.execute(sql, val)
+                cnx1.commit()
+                cnx1.close()
+
+
+
+
+                #進行付款: 輸入前端傳來的資料，拿到status
+                sendData = {
+                    "amount":price, 
+                    "name":contactName, 
+                    "email":contactEmail,
+                    "phone_number":contactPhone
+                }
+                
+                result = pay_by_prime(prime, orderNumber, sendData)
+                responseStatus = result["status"]
+                if responseStatus == 0: #付款成功
+                    status = 1
+
+                    cnx1 = cnxpool.get_connection()
+                    mycursor = cnx1.cursor()
+                    sql = "UPDATE orders SET status = %s WHERE number = %s"
+                    val = (status, number)
+                    mycursor.execute(sql, val)
+                    cnx1.commit()
+                    cnx1.close()
+                    
+                    orderData = {
+                        "number":number,
+                        "payment":{
+                            "status":status,
+                            "message":"付款成功"
+                        }
+                    }
+
+                    session.pop("booking") #刪除儲存在session的訂單資料
+                    return jsonify({"data": orderData}), 200
+
+
+                orderData = {
+                    "number":number,
+                    "payment":{
+                        "status":status,
+                        "message":"付款失敗，錯誤代碼: "+str(responseStatus)
+                    }
+                }
+                return jsonify({"data": orderData}), 200
+
+
+            else:
+                errorMsg = "訂單建立失敗，輸入不正確或其他原因: "+errorMsg
+                return jsonify({"error": True, "message": errorMsg}), 400
+        except:
+            cnx1.close()
+            return jsonify({"error": True, "message": "serverError"}), 500
+    else:
+        return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
 
 
 app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上

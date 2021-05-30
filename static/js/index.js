@@ -1,73 +1,37 @@
-//api
-let currentPage = 0;
+import {
+  createElementWithClassName,
+  createParagraphWithText,
+} from "./ui/utils.js";
+import { indexApiController } from "./api/indexApi.js";
+import { apiModel } from "./api/apiParameters.js";
 
-//fetch
-let nextPage = 0;
-let isfetchFinished = false;
-let fetchFinishedID;
-let isLoadFinished = false;
-let isLoading = false;
+import { dialogController, navController } from "./ui/member.js";
 
-//scroll to bottom
-let attractionGroup; //window element
-let isBottom = false;
-let loadNextID;
-
-//keyword search
-let searchBtn; //window element
-let searchInput; //window element
-let keyword = "";
-
-let models = {
+let indexModel = {
   data: null,
-  parsedData: null,
-  getAttractionsData: function (url = "", keyword = "") {
-    //透過 fetch 從 api 取得資料
-    if (url === "") return;
-    if (keyword !== "" && keyword !== undefined) {
-      url += "&" + "keyword=" + keyword;
-    }
-    return fetch(url, {
-      mode: "cors",
-    })
-      .then((response) => {
-        return response.text();
-      })
-      .then((result) => {
-        this.data = result;
-      });
+  boundingClientRect: null,
+  isFirst: true,
+  keyword: "",
+  nextPage: 0,
+  currentPage: 0,
+  searchBtnDOM: null,
+  searchInputDOM: null,
+  attractionGroupDOM: null,
+  init: function () {
+    this.getDOM();
   },
-  parseAttractionsData: function () {
-    //Get next page (int or null) and attraction datas (Array: [img, name, MRT, category])
-    if (this.data === "") return;
-    let jsonData = JSON.parse(this.data);
-    let nextPage = jsonData.nextPage;
-
-    let dataList = jsonData.data;
-    let attractionsArr = [];
-
-    // Get each data: img(the first url), name, MRT, category, id
-    if (dataList === undefined) return [];
-
-    let dataListLen = dataList.length;
-    for (let i = 0; i < dataListLen; i++) {
-      let data = dataList[i];
-      let img = data.images[0];
-      let name = data.name;
-      let mrt = data.mrt;
-      let category = data.category;
-      let id = data.id;
-      attractionsArr.push([img, name, mrt, category, id]);
-    }
-    this.parsedData = [nextPage, attractionsArr];
+  getDOM: function () {
+    this.searchBtnDOM = document.getElementById("searchBtn");
+    this.searchInputDOM = document.getElementById("searchInput");
+    this.attractionGroupDOM = document.getElementById("attractionGroup");
   },
 };
 
-let views = {
+let indexView = {
   renderAttractions: function (attsData = []) {
     // render attraction boxes (maximum quantity: 12)
     if (attsData.length === 0) {
-      attractionGroup.appendChild(
+      indexModel.attractionGroupDOM.appendChild(
         createParagraphWithText("沒有結果", "noResult")
       );
     } else {
@@ -106,7 +70,7 @@ let attractionsViews = {
     // 1. 建立新的 <div> 母元素: attraction
     let newDivAttraction = createElementWithClassName(undefined, "attraction");
     let id = itemArr[index][4];
-    let link = route_attraction + id;
+    let link = apiModel.route_attraction + id;
     newDivAttraction.onclick = function () {
       window.location.href = link.toString();
     };
@@ -127,8 +91,8 @@ let attractionsViews = {
     newDivAttraction.appendChild(newDivAttInfo);
     newDivAttraction.appendChild(newDivAttBorder);
 
-    // 5. 把 box 加入至 attractionGroup
-    attractionGroup.appendChild(newDivAttraction);
+    // 5. 把 box 加入至 indexModel.attractionGroupDOM
+    indexModel.attractionGroupDOM.appendChild(newDivAttraction);
   },
 
   createAttInfo: function (nameStr = "", mrtStr = "", categoryStr = "") {
@@ -157,121 +121,68 @@ let attractionsViews = {
   },
 };
 
-function DoKeywordSearch() {
-  //controller
-  if (searchInput === undefined) return;
-  keyword = searchInput.value;
-  currentPage = 0;
-  views.removeChildElement(attractionGroup, "attraction");
-  views.removeChildElement(attractionGroup, "noResult");
-  dataController.getAttractions(getUrl(api_attractions, currentPage), keyword);
-}
-
-function IsScrollBottom() {
-  //controller
-  let rect = attractionGroup.getBoundingClientRect();
-
-  if (rect.bottom < window.innerHeight) {
-    isBottom = true; //滾到最底
-  }
-}
-
-function CheckAtTheBottom() {
-  //controller (timer)
-  loadNextID = window.setInterval(LoadNextWhenAtTheBottom, 100);
-}
-function LoadNextWhenAtTheBottom() {
-  //controller
-  if (isBottom === true && isLoadFinished === true) {
-    isBottom = false;
-    isLoadFinished = false;
-    window.clearInterval(loadNextID);
-
-    if (nextPage === currentPage) return;
-    if (nextPage !== 0 && nextPage !== null) {
-      currentPage = nextPage;
-      dataController.getAttractions(
-        getUrl(api_attractions, currentPage),
-        keyword
-      );
-    }
-  }
-}
-
-function checkFetch() {
-  //controller (timer)
-  fetchFinishedID = window.setInterval(fetchFinished, 100);
-}
-function fetchFinished() {
-  //controller
-  if (isfetchFinished === true) {
-    window.clearInterval(fetchFinishedID);
-    setNextPage(models.parsedData[0]);
-    views.renderAttractions(models.parsedData[1]);
-
-    isfetchFinished = false;
-    isLoadFinished = true;
-  }
-}
-
-let dataController = {
+let indexController = {
   init: function () {
-    this.getAttractions(getUrl(api_attractions, currentPage), undefined);
+    indexModel.init();
+    window.addEventListener(
+      "scroll",
+      () => {
+        this.isScrollBottom();
+      },
+      true
+    );
+    this.addClickEvent();
+
+    this.doRender(indexModel.currentPage, undefined);
   },
-  getAttractions: function (url = "", keyword = "") {
-    isfetchFinished = false;
-    checkFetch();
-    CheckAtTheBottom();
-    models.getAttractionsData(url, keyword).then(function () {
-      models.parseAttractionsData();
-      isfetchFinished = true;
-      navController.checkUserLogin();
+  doRender: async function (currentPage, keyword) {
+    let response = await indexApiController.doGet(currentPage, keyword);
+
+    if (indexModel.isFirst) {
+      indexModel.boundingClientRect =
+        indexModel.attractionGroupDOM.getBoundingClientRect().bottom;
+      indexModel.isFirst = false;
+    }
+    indexModel.nextPage = response[0];
+    indexView.renderAttractions(response[1]);
+
+    navController.checkUserLogin();
+  },
+  addClickEvent: function () {
+    indexModel.searchBtnDOM.addEventListener("click", () => {
+      this.doKeywordSearch();
     });
+  },
+  doKeywordSearch: async function () {
+    if (indexModel.searchInputDOM === undefined) return;
+    indexModel.keyword = indexModel.searchInputDOM.value;
+    indexModel.currentPage = 0;
+    indexView.removeChildElement(indexModel.attractionGroupDOM, "attraction");
+    indexView.removeChildElement(indexModel.attractionGroupDOM, "noResult");
+    this.doRender(indexModel.currentPage, indexModel.keyword);
+  },
+  isScrollBottom: async function () {
+    let rect = indexModel.attractionGroupDOM.getBoundingClientRect();
+    if (rect.bottom === indexModel.boundingClientRect) return;
+    if (rect.bottom < window.innerHeight) {
+      //滾到最底
+      indexModel.boundingClientRect = rect.bottom;
+
+      if (indexModel.nextPage === indexModel.currentPage) return;
+      if (indexModel.nextPage !== 0 && indexModel.nextPage !== null) {
+        indexModel.currentPage = indexModel.nextPage;
+        this.doRender(indexModel.currentPage, indexModel.keyword);
+      }
+    }
   },
 };
 
-//some useful function
-
-function createElementWithClassName(elementType = "div", className = "") {
-  let newElement = document.createElement(elementType);
-  newElement.className = className;
-  return newElement;
-}
-
-function createParagraphWithText(paragraphText = "", className = "") {
-  let newParagraph = document.createElement("p");
-  newParagraph.className = className;
-  let textNode = document.createTextNode(paragraphText);
-  newParagraph.appendChild(textNode);
-  return newParagraph;
-}
-
-function getNextPage() {
-  return nextPage;
-}
-
-function setNextPage(next) {
-  nextPage = next;
-}
-function getUrl(api = "/api/attractions?", currentPage = 0) {
-  let url = api + "page=" + currentPage;
-  return url;
-}
-
 function init() {
-  //initial
-  dataController.init();
   dialogController.init();
   navController.init();
+  indexController.init();
 }
 
 window.onload = function () {
-  attractionGroup = document.getElementById("attractionGroup");
-  searchInput = document.getElementById("searchInput");
-  searchBtn = document.getElementById("searchBtn");
-
-  window.addEventListener("scroll", IsScrollBottom, true);
-  searchBtn.addEventListener("click", DoKeywordSearch);
-
   init();
 };

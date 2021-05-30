@@ -4,7 +4,7 @@ import mysql.connector
 
 mydb = mysql.connector.connect(host="localhost",
                                user="root",
-                               password="",
+                               password="wingjan120",
                                database="taipeiattractions")
 
 #print(mydb)
@@ -49,6 +49,21 @@ mycursor = mydb.cursor()
 #                  "name VARCHAR(255) NOT NULL, " +
 #                  "email VARCHAR(255) NOT NULL, " +
 #                  "password VARCHAR(255) NOT NULL" + ")")
+
+# mycursor.execute("CREATE TABLE orders (" +
+#                  "orderid INT AUTO_INCREMENT PRIMARY KEY NOT NULL, " +
+#                  "number VARCHAR(255) NOT NULL, " +
+#                  "price INT NOT NULL, " +
+#                  "attractionID INT NOT NULL, " +
+#                  "attractionName VARCHAR(255), " +
+#                  "attractionAddress VARCHAR(255), " +
+#                  "attractionImage VARCHAR(255), " +
+#                  "date VARCHAR(255), " +
+#                  "time VARCHAR(255), " +
+#                  "contactName VARCHAR(255), " +
+#                  "contactEmail VARCHAR(255), " +
+#                  "contactPhone VARCHAR(255), " +
+#                  "status INT NOT NULL" + ")")
 
 # # Debug: Data too long
 # sql = "alter table spots change MEMO_TIME MEMO_TIME longtext"
