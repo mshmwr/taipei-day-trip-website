@@ -13,8 +13,9 @@
   display: none;
 }
 
-.bookingContent {
-  /* display: none; */
+.bookingDiv {
+  margin-top: 94px;
+  min-height: 59px;
 }
 
 .bookingSectionItem {
