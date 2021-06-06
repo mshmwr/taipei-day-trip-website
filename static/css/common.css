@@ -9,7 +9,10 @@
   --checkMark: 22px;
   --check-font-size: 16px;
 }
-
+body {
+  margin: 0;
+  padding: 0;
+}
 /* * {
   box-sizing: border-box;
 } */
@@ -39,7 +42,7 @@ nav {
   left: 18.75%;
   top: 10px;
 }
-.navDiv-logo {
+.navDiv--logo {
   position: absolute;
   width: 150px;
   height: 34px;
@@ -51,7 +54,7 @@ nav {
   color: #448899;
   cursor: pointer;
 }
-.navDiv-menu {
+.navDiv--menu {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -64,7 +67,7 @@ nav {
   right: 0px;
   bottom: 0px;
 }
-.navDiv-menu-btn-text {
+.navDiv--menu--btn-text {
   /* BUTTON */
   font-weight: normal;
   color: #666666;
@@ -72,62 +75,20 @@ nav {
   cursor: pointer;
 }
 
+/* --- footer --- */
 footer {
-  /* footer */
-
-  /* Auto Layout */
-  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 40px 43.91%; /* padding: 40px 843px; */
-
-  position: relative; /* position: absolute; */
   width: 100%;
   height: 104px;
-  /* left: 0px; */
-  /* top: 0px; */
-
-  /* Gray 700 */
-
   background: #757575;
-  flex-grow: 1;
-}
-.footerDiv {
-  /* div */
-
-  position: absolute; /* position: static; */
-  width: 235px; /* 234px會造成文字換行 */
-  height: 24px;
-  /* left: 843px;
-  top: 40px; */
-
-  /* Inside Auto Layout */
-
-  flex: none;
-  order: 0;
-  margin: 0px 0px;
 }
 
 .footer-text {
-  /* COPYRIGHT © 2021 台北一日遊 */
-
-  position: absolute;
-  width: 100%;
-  height: 14px;
-  left: 0px;
-  top: 5px;
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
   font-weight: bold;
-  font-size: 16px;
-  line-height: 13px;
-  display: flex;
-  align-items: center;
   color: #ffffff;
 }
-
 /* 4. RWD: 螢幕寬度(由大到小) 600 360*/
 @media (max-width: 600px) {
   nav {
@@ -142,7 +103,7 @@ footer {
     left: 0;
     width: 100%;
   }
-  .navDiv-logo {
+  .navDiv--logo {
     left: 2.78%;
     top: 2.78%;
   }
