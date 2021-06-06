@@ -96,7 +96,7 @@ let dialogController = {
     // login or register button
     dialogModel.dialogContentDOMs[index_button].addEventListener(
       "click",
-      () => {
+      (e) => {
         let index_login = dialogModel.getStateIndex("login");
         let isLogin =
           dialogModel.currentState === dialogModel.dialogState[index_login];
@@ -105,14 +105,35 @@ let dialogController = {
             email: dialogModel.dialogContentDOMs[index_email].value,
             password: dialogModel.dialogContentDOMs[index_password].value,
           };
-          userApiController.doPatch(data);
+
+          //check input is empty
+          let empty = document
+            .getElementById("dialogForm")
+            .querySelectorAll("[required]");
+          empty = Array.from(empty).filter((item) => {
+            return item.value === "" && item.style.display !== "none";
+          });
+          if (empty.length === 0) {
+            e.preventDefault();
+            userApiController.doPatch(data);
+          }
         } else {
           let data = {
             name: dialogModel.dialogContentDOMs[index_name].value,
             email: dialogModel.dialogContentDOMs[index_email].value,
             password: dialogModel.dialogContentDOMs[index_password].value,
           };
-          userApiController.doPost(data);
+          //check input is empty
+          let empty = document
+            .getElementById("dialogForm")
+            .querySelectorAll("[required]");
+          empty = Array.from(empty).filter((item) => {
+            return item.value === "" && item.style.display !== "none";
+          });
+          if (empty.length === 0) {
+            e.preventDefault();
+            userApiController.doPost(data);
+          }
         }
       }
     );

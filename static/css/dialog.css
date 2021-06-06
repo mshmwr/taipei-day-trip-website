@@ -72,7 +72,7 @@
   text-align: center;
   color: #666666;
 }
-.dialogBox-main input {
+.dialogBox__form__input {
   width: 100%;
   height: 47px;
   background: #ffffff;
@@ -90,7 +90,7 @@
 
   color: #666666;
 }
-.dialogBox-main button {
+.dialogBox__form__btn {
   width: 100%;
   height: 47px;
   left: 0px;
