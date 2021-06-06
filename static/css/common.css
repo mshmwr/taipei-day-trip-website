@@ -23,6 +23,9 @@ body {
   font-size: 16px;
   line-height: 13px;
 }
+.common-text-bold {
+  font-weight: bold;
+}
 
 /* --- nav --- */
 nav {

@@ -75,7 +75,7 @@ let attractionsViews = {
       window.location.href = link.toString();
     };
 
-    // 2. 建立新的 <div> 子元素: att-img, attInfo, att-border
+    // 2. 建立新的 <div> 子元素: att-img, attInfo
     let newDivAttImg = createElementWithClassName(undefined, "att-img");
     newDivAttImg.style.backgroundImage = "url(" + itemArr[index][0] + ")"; //img(the first url)
 
@@ -84,29 +84,33 @@ let attractionsViews = {
       itemArr[index][2], //MRT
       itemArr[index][3] //category
     );
-    let newDivAttBorder = createElementWithClassName(undefined, "att-border");
 
     // 4. 把 子元素 都加入至 母元素
     newDivAttraction.appendChild(newDivAttImg);
     newDivAttraction.appendChild(newDivAttInfo);
-    newDivAttraction.appendChild(newDivAttBorder);
 
     // 5. 把 box 加入至 indexModel.attractionGroupDOM
     indexModel.attractionGroupDOM.appendChild(newDivAttraction);
   },
 
   createAttInfo: function (nameStr = "", mrtStr = "", categoryStr = "") {
-    //1. 建立新的 <div> 母元素: attInfo
-    let newDivAttInfo = createElementWithClassName(undefined, "attInfo");
+    //1. 建立新的 <div> 母元素: att__info
+    let newDivAttInfo = createElementWithClassName(undefined, "att__info");
 
-    //2. 建立新的 <div> 子元素: att-name, att-MRT, att-category
-    let newDivAttName = createElementWithClassName(undefined, "att-name");
+    //2. 建立新的 <div> 子元素: att__info__name, att__info__MRT, att__info__category
+    let newDivAttName = createElementWithClassName(
+      undefined,
+      "common-text common-text-bold att__info__name"
+    );
     newDivAttName.appendChild(createParagraphWithText(nameStr, undefined));
-    let newDivAttMRT = createElementWithClassName(undefined, "att-MRT");
+    let newDivAttMRT = createElementWithClassName(
+      undefined,
+      "common-text att__info__MRT"
+    );
     newDivAttMRT.appendChild(createParagraphWithText(mrtStr, undefined));
     let newDivAttCategory = createElementWithClassName(
       undefined,
-      "att-category"
+      "common-text att__info__category"
     );
     newDivAttCategory.appendChild(
       createParagraphWithText(categoryStr, undefined)
