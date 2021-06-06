@@ -10,15 +10,9 @@
   --check-font-size: 16px;
 }
 
-body,
-p {
-  margin: 0;
-  padding: 0;
-}
-
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 .common-text {
   font-family: "Noto Sans TC";
@@ -82,7 +76,7 @@ footer {
   /* footer */
 
   /* Auto Layout */
-
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;

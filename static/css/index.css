@@ -221,7 +221,7 @@
   /* Hero section | Desktop */
 
   /* Auto Layout */
-
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
