@@ -359,7 +359,7 @@ let navModel = {
   },
   getDom: function () {
     this.navUserStateDOM = document.getElementById("userState");
-    this.navDivTextDOM = document.getElementById("navDiv-text");
+    this.navDivTextDOM = document.getElementById("navDiv-logo");
     this.navBookingDOM = document.getElementById("navBooking");
   },
 };
