@@ -19,11 +19,20 @@ let bookingModel = {
   userNameDOM: null,
   contactContentDOMs: null,
   contacts: ["name", "email", "phone"],
+  bookingSectionItemDOM: null,
+  loadingDOM: null,
+  isFirst: true,
   init: function () {
     this.getDOM();
   },
   getBookingData: async function () {
     let response = await bookingApiController.doGet();
+
+    if (bookingModel.isFirst) {
+      this.showLoading(false);
+      bookingModel.isFirst = false;
+    }
+
     if (response["success"]) {
       this.bookingData = response["message"];
       return;
@@ -44,6 +53,18 @@ let bookingModel = {
     this.userNameDOM = document.getElementById("userName");
 
     this.contactContentDOMs = document.getElementsByClassName("contactContent");
+    this.bookingSectionItemDOM = document.getElementById("bookingSectionItem");
+    this.loadingDOM = document.getElementById("loading");
+  },
+
+  showLoading: function (isShow) {
+    if (isShow === true) {
+      bookingModel.bookingSectionItemDOM.style.display = "none";
+      bookingModel.loadingDOM.style.display = "block";
+      return;
+    }
+    bookingModel.bookingSectionItemDOM.style.display = "block";
+    bookingModel.loadingDOM.style.display = "none";
   },
 };
 

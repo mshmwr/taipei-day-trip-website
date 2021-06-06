@@ -16,6 +16,9 @@ let attModels = {
   bookingButtonDOM: null,
   attractionId: null,
   calenderDOM: null,
+  attractionSectionItemDOM: null,
+  loadingDOM: null,
+  isFirst: true,
 
   init: function () {
     this.getDOM();
@@ -44,6 +47,10 @@ let attModels = {
     );
     this.bookingButtonDOM = document.getElementById("booking-button");
     this.calenderDOM = document.querySelector('input[type="date"]');
+    this.attractionSectionItemDOM = document.getElementById(
+      "attractionSectionItem"
+    );
+    this.loadingDOM = document.getElementById("loading");
   },
 };
 
@@ -56,6 +63,11 @@ let attController = {
   },
   doRender: async function (url) {
     let response = await attApiController.doGet(url);
+
+    if (attModels.isFirst) {
+      this.showLoading(false);
+      attModels.isFirst = false;
+    }
     attModels.attractionId = response[0];
     attView.renderImages(response[1]);
     attView.fillContent(response[2]);
@@ -99,6 +111,16 @@ let attController = {
         }
       }
     });
+  },
+
+  showLoading: function (isShow) {
+    if (isShow === true) {
+      attModels.attractionSectionItemDOM.style.display = "none";
+      attModels.loadingDOM.style.display = "block";
+      return;
+    }
+    attModels.attractionSectionItemDOM.style.display = "block";
+    attModels.loadingDOM.style.display = "none";
   },
 };
 

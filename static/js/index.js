@@ -17,6 +17,7 @@ let indexModel = {
   searchBtnDOM: null,
   searchInputDOM: null,
   attractionGroupDOM: null,
+  loadingDOM: null,
   init: function () {
     this.getDOM();
   },
@@ -24,6 +25,7 @@ let indexModel = {
     this.searchBtnDOM = document.getElementById("searchBtn");
     this.searchInputDOM = document.getElementById("searchInput");
     this.attractionGroupDOM = document.getElementById("attractionGroup");
+    this.loadingDOM = document.getElementById("loading");
   },
 };
 
@@ -141,6 +143,9 @@ let indexController = {
   },
   doRender: async function (currentPage, keyword) {
     let response = await indexApiController.doGet(currentPage, keyword);
+    if (indexModel.isFirst) {
+      this.showLoading(false);
+    }
 
     if (indexModel.isFirst) {
       indexModel.boundingClientRect =
@@ -178,6 +183,15 @@ let indexController = {
         this.doRender(indexModel.currentPage, indexModel.keyword);
       }
     }
+  },
+  showLoading: function (isShow) {
+    if (isShow === true) {
+      indexModel.attractionGroupDOM.style.display = "none";
+      indexModel.loadingDOM.style.display = "block";
+      return;
+    }
+    indexModel.attractionGroupDOM.style.display = "flex";
+    indexModel.loadingDOM.style.display = "none";
   },
 };
 

@@ -110,6 +110,14 @@ footer {
   font-weight: bold;
   color: #ffffff;
 }
+
+/* --- loading --- */
+.loading {
+  display: block;
+  margin-top: 94px;
+  text-align: center;
+}
+
 /* 4. RWD: 螢幕寬度(由大到小) 600 360*/
 @media (max-width: 600px) {
   nav {

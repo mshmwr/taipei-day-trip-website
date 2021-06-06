@@ -1,16 +1,20 @@
 .attractionSection {
   min-height: 882px;
   /* footer置底 */
+  margin-top: 94px;
+}
+
+.attractionSectionItem {
+  display: none;
 }
 .attraction {
   pointer-events: none;
 }
 .attractionSection__booking {
-  position: relative; /* position: absolute; */
-  width: 62.5%; /* width: 1200px; height: 400px;*/
+  position: relative;
+  width: 62.5%;
   min-height: 400px;
-  left: 18.75%; /* left: 360px; */
-  margin-top: 94px;
+  left: 18.75%;
 }
 
 .attractionSection__booking__imgSlider {
