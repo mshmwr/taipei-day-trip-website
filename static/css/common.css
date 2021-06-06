@@ -27,6 +27,24 @@ body {
   font-weight: bold;
 }
 
+.common__btn {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 20px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  background: #448899;
+  border-radius: 5px;
+  cursor: pointer;
+
+  font-size: 19px;
+  line-height: 16px;
+  color: #ffffff;
+}
 /* --- nav --- */
 nav {
   position: fixed;

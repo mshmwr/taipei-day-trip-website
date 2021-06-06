@@ -1,13 +1,11 @@
-.attractionDiv {
+.attractionSection {
   min-height: 882px;
-  /* min-height: (976-94) px */
-
   /* footer置底 */
 }
 .attraction {
   pointer-events: none;
 }
-.attraction-attSection {
+.attractionSection__booking {
   position: relative; /* position: absolute; */
   width: 62.5%; /* width: 1200px; height: 400px;*/
   min-height: 400px;
@@ -15,7 +13,7 @@
   margin-top: 94px;
 }
 
-.attraction-img {
+.attractionSection__booking__imgSlider {
   position: relative;
   width: 45%; /* width: 540px; */
   height: 400px;
@@ -65,116 +63,69 @@
   background: url(../img/btn_rightArrow.png);
 }
 
-.attraction-profile {
+.attractionSection__booking__profile {
   position: absolute;
   width: 50%; /* width: 600px; */
   min-height: 400px;
   left: 48.75%; /* left: 585px; */
   top: 0px;
 }
-.attraction-profile-title {
-  /* 平安鐘 */
-
+.attractionSection__booking__profile__title {
   position: absolute;
-  width: 100%; /* width: 600px; */
+  width: 100%;
   height: 33px;
   left: 0px;
   top: 0px;
 
-  /* Header 3 - Bold 24(24) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: bold;
   font-size: 24px;
   line-height: 24px;
-  /* or 100% */
-
   display: flex;
   align-items: center;
-
-  /* Gray 800 */
-
   color: #666666;
 }
 
-.attraction-profile-CATAndMRT {
-  /* 公共藝術 at 忠孝復興 */
-
+.attractionSection__booking__profile__CATAndMRT {
   position: absolute;
-  width: 100%; /* width: 600px; */
+  width: 100%;
   height: 22px;
   left: 0px;
   top: 48px;
 }
 
-.attraction-profile-bookingForm {
-  /* booking form */
-
+.attractionSection__booking__profile__bookingField {
   position: absolute;
-  width: 100%; /* width: 600px; */
+  width: 100%;
   height: 302px;
   left: 0px;
   top: 90px;
-
-  /* Gray 300 */
-
   background: #e8e8e8;
   border-radius: var(--borderRad);
 }
-.attraction-profile-bookingTitle {
-  /* 訂購導覽行程 */
-
+.attractionSection__booking__profile__bookingField__title {
   position: absolute;
-  width: 93.33%; /* width: 560px; */
+  width: 93.33%;
   height: 22px;
-  left: 3.33%; /* left: 20px; */
+  left: 3.33%;
   top: 15px;
-
-  /* Body - Bold 16(13.3) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 13px;
-  /* or 83% */
-
   display: flex;
   align-items: center;
-
-  /* Gray 800 */
-
   color: #666666;
 }
-.attraction-profile-bookingContent {
-  /* 以此景點為中心的一日行程，帶您探索城市角落故事 */
-
+.attractionSection__booking__profile__bookingField__description {
   position: absolute;
-  width: 93.33%; /* width: 560px; */
+  width: 93.33%;
   height: 24px;
-  left: 3.33%; /* left: 20px; */
+  left: 3.33%;
   top: 52px;
 
-  /* Body - Reg 16(13.3) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
   line-height: 23px;
-  /* or 83% */
-
   display: flex;
   align-items: center;
-
-  /* Gray 800 */
-
   color: #666666;
 }
-.attraction-profile-booking-date,
-.attraction-profile-booking-time,
-.attraction-profile-booking-price {
+.attractionSection__booking__profile__bookingField__date,
+.attractionSection__booking__profile__bookingField__time,
+.attractionSection__booking__profile__bookingField__price {
   /* Field / date, time, price */
 
   position: absolute;
@@ -182,53 +133,38 @@
   height: 35px;
   left: 3.33%; /* left: 20px; */
 }
-.attraction-profile-booking-date {
+.attractionSection__booking__profile__bookingField__date {
   top: 91px;
 }
-.attraction-profile-booking-time {
+.attractionSection__booking__profile__bookingField__time {
   top: 141px;
 }
-.attraction-profile-booking-price {
+.attractionSection__booking__profile__bookingField__price {
   top: 178px;
 }
 
-.attraction-profile-booking-dateText,
-.attraction-profile-booking-timeText,
-.attraction-profile-booking-priceText {
-  /* 選擇日期： */
-
+.attractionSection__booking__profile__bookingField__date-text,
+.attractionSection__booking__profile__bookingField__time-text,
+.attractionSection__booking__profile__bookingField__price-text {
   position: absolute;
-  width: 81px; /* width: 14.46%; */
+  width: 81px;
   left: 0px;
-
-  /* Body - Bold 16(13.3) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 13px;
-  /* or 83% */
-
   display: flex;
   align-items: center;
-
-  /* Gray 800 */
-
   color: #666666;
 }
 
-.attraction-profile-booking-dateText {
+.attractionSection__booking__profile__bookingField__date-text {
   height: 17px;
   top: 9px;
 }
-.attraction-profile-booking-timeText,
-.attraction-profile-booking-priceText {
+.attractionSection__booking__profile__bookingField__time-text,
+.attractionSection__booking__profile__bookingField__price-text {
   height: 22px;
   top: 0px;
 }
 
-.attraction-profile-booking-dateInput {
+.attractionSection__booking__profile__bookingField__date-input {
   /* input */
 
   position: absolute;
@@ -238,7 +174,7 @@
   top: 0px;
 }
 
-.attraction-profile-booking-priceContent {
+.attractionSection__booking__profile__bookingField__price-content {
   /* 新台幣 2000 元 */
 
   position: absolute;
@@ -263,63 +199,13 @@
 
   color: #666666;
 }
-
-.attraction-profile-booking-button {
-  /* Button / booking */
-
-  /* Auto Layout */
-
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 10px 20px;
-
+.attractionSection__booking__profile__bookingField__btn {
   position: absolute;
-  width: 154px;
   height: 36px;
-  left: 3.33%; /* left: 20px; */
+  left: 3.33%;
   top: 225px;
-
-  /* Cyan 800 */
-
-  background: #448899;
-  border-radius: 5px;
 }
-.attraction-profile-booking-buttonText {
-  /* BUTTON */
-
-  position: static;
-  width: 114px;
-  height: 16px;
-  left: 20px;
-  top: 10px;
-
-  /* Button - Reg 19(16) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 19px;
-  line-height: 16px;
-  /* identical to box height, or 84% */
-
-  display: flex;
-  align-items: center;
-  text-align: center;
-
-  /* White */
-
-  color: #ffffff;
-
-  /* Inside Auto Layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin: 0px 0px;
-  cursor: pointer;
-}
-.attraction-border {
+.attractionSection__border {
   /* separator / main */
 
   position: absolute;
@@ -332,7 +218,7 @@
 
   border: 1px solid #e8e8e8;
 }
-.attraction-infos {
+.attractionSection__infos {
   /* infors */
 
   /* position: relative; */
@@ -344,27 +230,19 @@
   flex-wrap: wrap;
 }
 
-.attraction-infos-commonText {
-  /* Gray 800 */
-
-  width: 98.33%; /* width: 1180px; */
+.attractionSection__infos__textBlock {
+  width: 98.33%;
   display: flex;
   color: #666666;
-  /* left: 10px; */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-size: 16px;
 }
 
-.attraction-infos-title {
+.attractionSection__infos__title {
   min-height: 32px;
   margin: 10px auto 0px auto;
-  font-weight: bold;
   line-height: 13px;
   align-items: center;
 }
-.attraction-infos-description {
+.attractionSection__infos__description {
   min-height: 96px;
   margin: 10px auto 0px auto;
 
@@ -372,13 +250,13 @@
   font-weight: normal;
   line-height: 26px;
 }
-.attraction-infos-addressContent {
+.attractionSection__infos__address {
   min-height: 24px;
   margin: 0 auto;
   font-weight: normal;
   line-height: 26px;
 }
-.attraction-infos-transportContent {
+.attractionSection__infos__transport {
   min-height: 48px;
   margin: 0 auto;
   font-weight: normal;
@@ -387,29 +265,29 @@
 
 /* 4. RWD: 螢幕寬度(由大到小) 1200 700 */
 @media (max-width: 1200px) {
-  .attraction-attSection {
+  .attractionSection__booking {
     width: 90%;
     left: 0;
     margin-left: auto;
     margin-right: auto;
     display: flex;
   }
-  .attraction-border {
+  .attractionSection__border {
     width: 90%;
     left: 5%;
   }
-  .attraction-infos {
+  .attractionSection__infos {
     width: 82.5%;
   }
 }
 @media (max-width: 700px) {
-  .attraction-attSection {
+  .attractionSection__booking {
     width: 100%;
     top: 0;
     left: 0;
     flex-wrap: wrap;
   }
-  .attraction-img {
+  .attractionSection__booking__imgSlider {
     position: relative;
     width: 100%;
     top: 0;
@@ -418,7 +296,7 @@
     flex-shrink: 0;
   }
 
-  .attraction-profile {
+  .attractionSection__booking__profile {
     width: 94.44%;
     position: relative;
     top: 0;
@@ -426,14 +304,14 @@
     margin: 20px auto 40px auto;
     min-height: 390px;
   }
-  .attraction-border {
+  .attractionSection__border {
     position: relative;
     top: 0;
     left: 0;
     width: 94.44%;
     margin: 0 auto;
   }
-  .attraction-infos {
+  .attractionSection__infos {
     width: 91.67%;
     margin: 50px 2.78% 40px 5.56%;
   }
@@ -512,7 +390,7 @@
 }
 
 /* input radio */
-.attraction-profile-booking-timeInput {
+.attractionSection__booking__profile__bookingField__time-input {
   position: absolute;
   /* width: 87px; */
   height: 22px;

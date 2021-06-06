@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/common.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/dialog.css" />
     <link
@@ -12,10 +13,10 @@
   <body>
     <script src="../static/js/components/navbar.js"></script>
 
-    <div class="attractionDiv">
+    <div class="attractionSection">
       <script src="../static/js/components/dialog.js"></script>
-      <div class="attraction-attSection">
-        <div class="attraction-img">
+      <div class="attractionSection__booking">
+        <div class="attractionSection__booking__imgSlider">
           <div class="attraction-img-slider" id="img-slider">
             <!-- <div class="mySlides fade">
               <img
@@ -47,27 +48,48 @@
             <span class="dot" onclick="currentSlide(3)"></span> -->
           </div>
         </div>
-        <div class="attraction-profile">
-          <div class="attraction-profile-title">
+        <div class="attractionSection__booking__profile">
+          <div
+            class="
+              common-text common-text-bold
+              attractionSection__booking__profile__title
+            "
+          >
             <p id="profile-title"></p>
           </div>
-          <div class="attraction-profile-CATAndMRT">
+          <div class="attractionSection__booking__profile__CATAndMRT">
             <p>
               <span id="profile-CAT"></span> at
               <span id="profile-MRT"></span>
             </p>
           </div>
-          <div class="attraction-profile-bookingForm">
-            <div class="attraction-profile-bookingTitle">
+          <div class="attractionSection__booking__profile__bookingField">
+            <div
+              class="
+                common-text common-text-bold
+                attractionSection__booking__profile__bookingField__title
+              "
+            >
               <p>訂購導覽行程</p>
             </div>
-            <div class="attraction-profile-bookingContent">
+            <div
+              class="
+                common-text common-text-bold
+                attractionSection__booking__profile__bookingField__description
+              "
+            >
               <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
             </div>
             <form id="form_attraction">
-              <div class="attraction-profile-booking-date">
+              <div
+                class="attractionSection__booking__profile__bookingField__date"
+              >
                 <label for="date">
-                  <span class="attraction-profile-booking-dateText"
+                  <span
+                    class="
+                      common-text common-text-bold
+                      attractionSection__booking__profile__bookingField__date-text
+                    "
                     >選擇日期：</span
                   >
                 </label>
@@ -76,16 +98,28 @@
                   type="date"
                   required
                   pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-                  class="attraction-profile-booking-dateInput"
+                  class="
+                    attractionSection__booking__profile__bookingField__date-input
+                  "
                 />
               </div>
-              <div class="attraction-profile-booking-time">
+              <div
+                class="attractionSection__booking__profile__bookingField__time"
+              >
                 <label for="time">
-                  <span class="attraction-profile-booking-timeText"
+                  <span
+                    class="
+                      common-text common-text-bold
+                      attractionSection__booking__profile__bookingField__time-text
+                    "
                     >選擇時間：</span
                   >
                 </label>
-                <div class="attraction-profile-booking-timeInput">
+                <div
+                  class="
+                    attractionSection__booking__profile__bookingField__time-input
+                  "
+                >
                   <label for="morning" class="container">
                     上半天
                     <input
@@ -114,49 +148,88 @@
                 </div>
               </div>
 
-              <div class="attraction-profile-booking-price">
+              <div
+                class="attractionSection__booking__profile__bookingField__price"
+              >
                 <label for="price">
-                  <span class="attraction-profile-booking-priceText"
+                  <span
+                    class="
+                      common-text common-text-bold
+                      attractionSection__booking__profile__bookingField__price-text
+                    "
                     >導覽費用：</span
                   >
                 </label>
-                <p class="attraction-profile-booking-priceContent">
+                <p
+                  class="
+                    attractionSection__booking__profile__bookingField__price-content
+                  "
+                >
                   新台幣 <span id="booking-priceContent">2000</span> 元
                 </p>
               </div>
               <div>
                 <button
                   type="button"
-                  class="attraction-profile-booking-button"
+                  class="
+                    common-text common__btn
+                    attractionSection__booking__profile__bookingField__btn
+                  "
                   id="booking-button"
                 >
-                  <p class="attraction-profile-booking-buttonText">
+                  開始預訂行程
+                  <!-- <p
+                    class="
+                      attractionSection__booking__profile__bookingField__btn-text
+                    "
+                  >
                     開始預訂行程
-                  </p>
+                  </p> -->
                 </button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="attraction-border"></div>
-      <div class="attraction-infos">
-        <div class="attraction-infos-description attraction-infos-commonText">
+      <div class="attractionSection__border"></div>
+      <div class="attractionSection__infos">
+        <div
+          class="
+            attractionSection__infos__description
+            attractionSection__infos__textBlock
+          "
+        >
           <p id="infos-description"></p>
         </div>
-        <div class="attraction-infos-title attraction-infos-commonText">
+        <div
+          class="
+            common-text-bold
+            attractionSection__infos__title attractionSection__infos__textBlock
+          "
+        >
           <p>景點地址：</p>
         </div>
         <div
-          class="attraction-infos-addressContent attraction-infos-commonText"
+          class="
+            attractionSection__infos__address
+            attractionSection__infos__textBlock
+          "
         >
           <p id="infos-addressContent"></p>
         </div>
-        <div class="attraction-infos-title attraction-infos-commonText">
+        <div
+          class="
+            common-text-bold
+            attractionSection__infos__title attractionSection__infos__textBlock
+          "
+        >
           <p>交通方式：</p>
         </div>
         <div
-          class="attraction-infos-transportContent attraction-infos-commonText"
+          class="
+            attractionSection__infos__transport
+            attractionSection__infos__textBlock
+          "
         >
           <p id="infos-transportContent"></p>
         </div>
