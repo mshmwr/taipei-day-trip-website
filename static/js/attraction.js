@@ -79,7 +79,8 @@ let attController = {
     navController.checkUserLogin();
   },
   addClickEvent: function () {
-    attModels.bookingButtonDOM.addEventListener("click", async () => {
+    attModels.bookingButtonDOM.addEventListener("click", async (e) => {
+      e.preventDefault();
       if (getData.getIsUserLogin() === false) {
         getData.getDialogDOMs()["dialogDOM"].style.display = "block";
         getData.getDialogDOMs()["dialogMessageDOM"].style.display = "none";
@@ -203,6 +204,7 @@ let attView = {
       .slice(0, -1);
     const today = localISOTime.slice(0, 10);
     attModels.calenderDOM.value = today;
+    attModels.calenderDOM.min = today;
   },
 };
 
