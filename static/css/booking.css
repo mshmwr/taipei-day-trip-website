@@ -1,3 +1,6 @@
+.booking-userContact .patternCheck:invalid {
+  color: red;
+}
 /* booking-info */
 
 .booking-info {

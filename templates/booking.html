@@ -71,17 +71,20 @@
                   placeholder="電子信箱"
                   id="contact-email"
                   class="contactContent"
+                  disabled
                 />
               </div>
               <div class="form-group">
                 <label class="common-text">手機號碼：</label>
                 <input
                   type="tel"
-                  placeholder="手機號碼"
-                  class="contactContent"
+                  placeholder="09XXXXXXXX"
+                  class="contactContent patternCheck"
                   size="10"
                   minlength="10"
                   maxlength="10"
+                  pattern="09[0-9]{8}"
+                  required
                 />
               </div>
 
@@ -150,69 +153,6 @@
     </footer>
 
     <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
-    <script>
-      let APP_ID = 20406;
-      let APP_KEY =
-        "app_RSflTqgsiw4oyTb3Dmv8MXJWtG29uLONSt20GkG77P1iM9jVgRENIkjQixBj";
-      TPDirect.setupSDK(APP_ID, APP_KEY, "sandbox");
-      // Display ccv field
-      let fields = {
-        number: {
-          // css selector
-          element: "#card-number",
-          placeholder: "**** **** **** ****",
-        },
-        expirationDate: {
-          // DOM object
-          element: document.getElementById("card-expiration-date"),
-          placeholder: "MM / YY",
-        },
-        ccv: {
-          element: "#card-ccv",
-          placeholder: "ccv",
-        },
-      };
-      TPDirect.card.setup({
-        // Display ccv field
-        fields: fields,
-        styles: {
-          // Style all elements
-          input: {
-            color: "gray",
-          },
-          // Styling ccv field
-          "input.ccv": {
-            // 'font-size': '16px'
-          },
-          // Styling expiration-date field
-          "input.expiration-date": {
-            // 'font-size': '16px'
-          },
-          // Styling card-number field
-          "input.card-number": {
-            // 'font-size': '16px'
-          },
-          // style focus state
-          ":focus": {
-            // 'color': 'black'
-          },
-          // style valid state
-          ".valid": {
-            color: "green",
-          },
-          // style invalid state
-          ".invalid": {
-            color: "red",
-          },
-          // Media queries
-          // Note that these apply to the iframe, not the root window.
-          "@media screen and (max-width: 400px)": {
-            input: {
-              color: "orange",
-            },
-          },
-        },
-      });
-    </script>
+    <script></script>
   </body>
 </html>
