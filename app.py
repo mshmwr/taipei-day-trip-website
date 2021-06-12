@@ -49,6 +49,9 @@ sandBoxUrl = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
 PARTNER_KEY = os.getenv("partner_key")
 MERCHANT_ID = os.getenv("merchant_id")
 
+# regex(validate email)
+import re
+regexEmail=re.compile(r'^\w{1,63}@[a-zA-Z0-9]{2,63}\.[a-zA-Z]{2,63}(\.[a-zA-Z]{2,63})?')
 
 # Enum
 class AttractionEnum(Enum):
@@ -270,6 +273,10 @@ def registerUser():
         if name=="" or email=="" or password=="":
             isRegisterFailed = True
             errorMsg += "Error! The column(s) is/are empty."
+        elif regexEmail.search(email) == None:
+            errorMsg += "Error! This email address is invalid."
+        elif len(name)>255 or len(password)>255:
+            errorMsg += "Error! This name or password is too long."
         else:
             # Check the email is registered or not
             sql = "SELECT * FROM users WHERE email = %s"
