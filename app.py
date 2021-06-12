@@ -42,7 +42,6 @@ cnx1 = cnxpool.get_connection()
 app.secret_key = SECRET_KEY
 
 #Tap pay
-
 import requests
 sandBoxUrl = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
 
@@ -52,6 +51,9 @@ MERCHANT_ID = os.getenv("merchant_id")
 # regex(validate email)
 import re
 regexEmail=re.compile(r'^\w{1,63}@[a-zA-Z0-9]{2,63}\.[a-zA-Z]{2,63}(\.[a-zA-Z]{2,63})?')
+
+# date check
+from datetime import date
 
 # Enum
 class AttractionEnum(Enum):
@@ -320,7 +322,6 @@ def loginUser():
         adr = (email, password)
         mycursor.execute(sql, adr)
         result = mycursor.fetchall()
-        
         cnx1.close()
         if len(result) == 1:
             session["user"] = email #use email as session content
@@ -397,23 +398,37 @@ def addBooking():
     if email:
         try:
             attractionId = request_data["attractionId"]
-            date = request_data["date"]
+            dateInput = request_data["date"]
             time = request_data["time"]
             price = request_data["price"]
             bookingData = None
-            
-            if attractionId and date and time and price:
+            bookingSuccess = False
+            errorMsg="建立失敗，輸入不正確或其他原因。"
+
+            # check date is valid
+            isDateValid=True
+            dateArr=dateInput.split("-")
+            todayDateArr = str(date.today()).split("-")
+            for i in range(len(dateArr)):
+                if int(dateArr[i])<int(todayDateArr[i]):
+                    isDateValid=False
+                    break
+
+            if not isDateValid:
+                errorMsg+="The date is invalid."
+            elif attractionId and dateInput and time and price:
                 bookingData = {
                     "attractionId":attractionId,
-                    "date":date,
+                    "date":dateInput,
                     "time":time,
                     "price":price
                 }
-            else:
+                bookingSuccess = True
+
+            if not bookingSuccess:
                 return jsonify({"error": True, "message": "建立失敗，輸入不正確或其他原因"}), 400
                 
             session["booking"] = bookingData
-
             return jsonify({"ok": True}), 200
 
         except:
