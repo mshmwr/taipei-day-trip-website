@@ -274,8 +274,10 @@ def registerUser():
             isRegisterFailed = True
             errorMsg += "Error! The column(s) is/are empty."
         elif regexEmail.search(email) == None:
+            isRegisterFailed = True
             errorMsg += "Error! This email address is invalid."
         elif len(name)>255 or len(password)>255:
+            isRegisterFailed = True
             errorMsg += "Error! This name or password is too long."
         else:
             # Check the email is registered or not
