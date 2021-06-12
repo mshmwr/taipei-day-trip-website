@@ -8,12 +8,12 @@ let dialogModel = {
   dialogMessageDOM: null,
   dialogMaskDOM: null,
   contentDOMsEnum: [
-    "title",
-    "name",
-    "email",
-    "password",
-    "button",
-    "loginRegister",
+    "title", //0
+    "name", //1
+    "email", //2
+    "password", //3
+    "button", //4
+    "loginRegister", //5
   ],
   dialogState: ["login", "register"],
   currentState: null,
@@ -175,10 +175,11 @@ let dialogController = {
   },
   fillContent: function () {
     let isLogin = true;
-    let index_login = dialogModel.getStateIndex("login");
-    let index_name = dialogModel.getEnumIndex("name");
-    let index_email = dialogModel.getEnumIndex("email");
-    let index_password = dialogModel.getEnumIndex("password");
+    const index_login = dialogModel.getStateIndex("login");
+    const index_name = dialogModel.getEnumIndex("name");
+    const index_email = dialogModel.getEnumIndex("email");
+    const index_password = dialogModel.getEnumIndex("password");
+    const index_button = dialogModel.getEnumIndex("button");
     if (dialogModel.currentState === dialogModel.dialogState[index_login]) {
       //login
       this.contentList = dialogModel.contentList[0];
@@ -193,6 +194,8 @@ let dialogController = {
         case index_password:
           dialogModel.dialogContentDOMs[i].value = "";
           break;
+        case index_button:
+          dialogModel.dialogContentDOMs[i].value = this.contentList[i];
 
         default:
           changeText(dialogModel.dialogContentDOMs[i], this.contentList[i]);
