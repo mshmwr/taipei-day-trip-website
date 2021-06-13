@@ -75,7 +75,7 @@
   left: 400px;
   top: 0px;
 
-  background-color: #448899;
+  background-color: var(--color-Cyan800);
   border: none;
   border-radius: 0 var(--borderRad) var(--borderRad) 0;
   cursor: pointer;

@@ -58,7 +58,7 @@
 }
 
 .bookingInfo__texts-title {
-  color: #448899;
+  color: var(--color-Cyan800);
 }
 .bookingInfo__texts__date {
   margin-top: 20px;
