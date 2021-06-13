@@ -85,7 +85,6 @@
   line-height: 24px;
   display: flex;
   align-items: center;
-  color: #666666;
 }
 
 .attractionSection__booking__profile__CATAndMRT {
@@ -105,130 +104,42 @@
   background: #e8e8e8;
   border-radius: var(--borderRad);
 }
-.attractionSection__booking__profile__bookingField__title {
-  position: absolute;
+
+.profile__bookingField__item {
   width: 93.33%;
-  height: 22px;
-  left: 3.33%;
-  top: 15px;
+  min-height: 24px;
+  margin: 15px auto 0px auto;
+}
+
+.profile__bookingField__formItem {
+  min-height: 35px;
   display: flex;
   align-items: center;
-  color: #666666;
 }
-.attractionSection__booking__profile__bookingField__description {
-  position: absolute;
-  width: 93.33%;
-  height: 24px;
-  left: 3.33%;
-  top: 52px;
-
-  line-height: 23px;
-  display: flex;
-  align-items: center;
-  color: #666666;
+.profile__bookingField__formItem__inputField {
+  margin-left: 5px;
 }
-.attractionSection__booking__profile__bookingField__date,
-.attractionSection__booking__profile__bookingField__time,
-.attractionSection__booking__profile__bookingField__price {
-  /* Field / date, time, price */
+.profile__bookingField__formItem label {
+  min-width: 81px;
+  text-align: center;
+}
 
-  position: absolute;
-  width: 93.33%; /* width: 560px; */
+.profile__bookingField__formItem input {
+  width: 193px;
   height: 35px;
-  left: 3.33%; /* left: 20px; */
-}
-.attractionSection__booking__profile__bookingField__date {
-  top: 91px;
-}
-.attractionSection__booking__profile__bookingField__time {
-  top: 141px;
-}
-.attractionSection__booking__profile__bookingField__price {
-  top: 178px;
-}
-
-.attractionSection__booking__profile__bookingField__date-text,
-.attractionSection__booking__profile__bookingField__time-text,
-.attractionSection__booking__profile__bookingField__price-text {
-  position: absolute;
-  width: 81px;
-  left: 0px;
-  display: flex;
-  align-items: center;
-  color: #666666;
-}
-
-.attractionSection__booking__profile__bookingField__date-text {
-  height: 17px;
-  top: 9px;
-}
-.attractionSection__booking__profile__bookingField__time-text,
-.attractionSection__booking__profile__bookingField__price-text {
-  height: 22px;
-  top: 0px;
-}
-
-.attractionSection__booking__profile__bookingField__date-input {
-  /* input */
-
-  position: absolute;
-  width: 193px; /* width: 34.46%; */
-  height: 35px;
-  left: 86px; /* left: 15.36%;  */
-  top: 0px;
-}
-
-.attractionSection__booking__profile__bookingField__price-content {
-  /* 新台幣 2000 元 */
-
-  position: absolute;
-  width: 107px;
-  height: 14px;
-  left: 86px;
-  top: 4px;
-
-  /* Body - Reg 16(13.3) */
-
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 13px;
-  /* identical to box height, or 83% */
-
-  display: flex;
-  align-items: center;
-
-  /* Gray 800 */
-
-  color: #666666;
-}
-.attractionSection__booking__profile__bookingField__btn {
-  position: absolute;
-  height: 36px;
-  left: 3.33%;
-  top: 225px;
 }
 .attractionSection__border {
-  /* separator / main */
-
   position: absolute;
-  width: 62.5%; /* width: 1200px;*/
+  width: 62.5%;
   height: 0px;
-  left: 18.75%; /* left: 360px; */
+  left: 18.75%;
   top: 534px;
-
-  /* Gray 300 */
-
   border: 1px solid #e8e8e8;
 }
 .attractionSection__infos {
-  /* infors */
-
-  /* position: relative; */
-  width: 62.5%; /* width: 1200px;*/
+  width: 62.5%;
   min-height: 362px;
-  margin: 80px auto 40px auto; /* top: 574px - 400px - 94px; */
+  margin: 80px auto 40px auto;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -237,7 +148,6 @@
 .attractionSection__infos__textBlock {
   width: 98.33%;
   display: flex;
-  color: #666666;
 }
 
 .attractionSection__infos__title {
@@ -249,21 +159,16 @@
 .attractionSection__infos__description {
   min-height: 96px;
   margin: 10px auto 0px auto;
-
-  /* Content - Reg 16(Auto) */
-  font-weight: normal;
   line-height: 26px;
 }
 .attractionSection__infos__address {
   min-height: 24px;
   margin: 0 auto;
-  font-weight: normal;
   line-height: 26px;
 }
 .attractionSection__infos__transport {
   min-height: 48px;
   margin: 0 auto;
-  font-weight: normal;
   line-height: 26px;
 }
 
@@ -394,28 +299,17 @@
 }
 
 /* input radio */
-.attractionSection__booking__profile__bookingField__time-input {
-  position: absolute;
-  /* width: 87px; */
-  height: 22px;
-  left: 86px;
-  top: 0;
-
+.profile__bookingField__formItem__radio {
+  display: inline;
   list-style-type: none;
-  margin: 0;
-  padding: 0;
 }
 /* Hide the browser's default radio button */
 .container {
   position: relative;
   padding-left: 26px;
-  margin-left: 5px;
+  margin-right: 5px;
   cursor: pointer;
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-weight: normal;
   font-size: var(--check-font-size);
-  color: #666666;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -458,5 +352,5 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background-color: #448899;
+  background-color: var(--color-Cyan800);
 }
