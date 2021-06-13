@@ -9,54 +9,60 @@
   </head>
   <body>
     <script src="../static/js/components/navbar.js"></script>
-    <div class="bookingDiv">
+    <div class="bookingSection">
       <div id="loading" class="loading">loading...</div>
       <script src="../static/js/components/dialog.js"></script>
       <div id="bookingSectionItem" class="bookingSectionItem">
-        <div class="booking-headline">
+        <div class="bookingSection__headline">
           <span>您好，</span><span id="userName"></span
           ><span>，待預訂的行程如下：</span>
         </div>
-        <div class="common-text bookingContent-noOrder" id="noOrder">
+        <div class="common-text bookingSection__noOrder" id="noOrder">
           目前沒有任何待預訂的行程
         </div>
-        <div class="bookingContent" id="bookingContent">
-          <div class="booking-info">
-            <div class="booking-info-section">
-              <div class="booking-attractionImg">
-                <img alt="attraction-img" id="attractionImg" />
-              </div>
-              <div class="booking-texts">
-                <p class="textTitle common-text">
-                  <span>台北一日遊：</span><span id="title"></span>
-                </p>
-                <p class="textDate common-text">
-                  <span class="info">日期：</span>
-                  <span id="date"></span>
-                </p>
-                <p class="textTime common-text">
-                  <span class="info">時間：</span><span id="time"></span>
-                </p>
-                <p class="textPrice common-text">
-                  <span class="info">費用：</span>
-                  <span id="price"></span>
-                </p>
-                <p class="textAddress common-text">
-                  <span class="info">地點：</span>
-                  <span id="address"></span>
-                </p>
-              </div>
+        <div class="bookingSection__content" id="bookingContent">
+          <div class="bookingInfo">
+            <div class="bookingInfo__attractionImg">
+              <img alt="attraction-img" id="attractionImg" />
+            </div>
+            <div class="bookingInfo__texts">
+              <p class="common-text common-text-bold bookingInfo__texts-title">
+                <span>台北一日遊：</span><span id="title"></span>
+              </p>
+              <p class="common-text bookingInfo__texts__date">
+                <span class="common-text-bold">日期：</span>
+                <span id="date"></span>
+              </p>
+              <p class="common-text bookingInfo__texts__time">
+                <span class="common-text-bold bookingInfo__texts-info"
+                  >時間：</span
+                ><span id="time"></span>
+              </p>
+              <p class="common-text bookingInfo__texts__price">
+                <span class="common-text-bold bookingInfo__texts-info"
+                  >費用：</span
+                >
+                <span id="price"></span>
+              </p>
+              <p class="common-text bookingInfo__texts__address">
+                <span class="common-text-bold bookingInfo__texts-info"
+                  >地點：</span
+                >
+                <span id="address"></span>
+              </p>
+            </div>
 
-              <div class="booking-deleteImg">
-                <img alt="delete-icon" id="delete-icon" />
-              </div>
+            <div class="bookingInfo__texts__deleteImg">
+              <img alt="delete-icon" id="delete-icon" />
             </div>
           </div>
-          <div class="booking-border"></div>
-          <div class="booking-userContact">
-            <p class="common-text booking-title">您的聯絡資訊</p>
+          <div class="bookingBorder"></div>
+          <div class="bookingUserContact">
+            <p class="common-text common-text-bold booking-title">
+              您的聯絡資訊
+            </p>
             <form>
-              <div class="form-group">
+              <div class="bookingFormGroup">
                 <label class="common-text">聯絡姓名：</label>
                 <input
                   type="text"
@@ -64,7 +70,7 @@
                   class="contactContent"
                 />
               </div>
-              <div class="form-group">
+              <div class="bookingFormGroup">
                 <label class="common-text">連絡信箱：</label>
                 <input
                   type="email"
@@ -74,7 +80,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group">
+              <div class="bookingFormGroup">
                 <label class="common-text">手機號碼：</label>
                 <input
                   type="tel"
@@ -88,21 +94,23 @@
                 />
               </div>
 
-              <p class="common-text notice">
+              <p class="common-text common-text-bold bookingFormGroup__notice">
                 請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
               </p>
             </form>
           </div>
-          <div class="booking-border"></div>
-          <div class="booking-userPayment">
-            <p class="common-text booking-title">信用卡付款資訊</p>
-            <div class="form-group">
+          <div class="bookingBorder"></div>
+          <div class="bookingUserPayment">
+            <p class="common-text common-text-bold booking-title">
+              信用卡付款資訊
+            </p>
+            <div class="bookingFormGroup">
               <label for="card-number" class="common-text"
                 ><span id="cardtype"></span>卡片號碼：</label
               >
               <div class="tpfield paymentContent" id="card-number"></div>
             </div>
-            <div class="form-group">
+            <div class="bookingFormGroup">
               <label for="card-number" class="common-text"
                 ><span id="cardtype"></span>過期時間：</label
               >
@@ -111,38 +119,22 @@
                 id="card-expiration-date"
               ></div>
             </div>
-            <div class="form-group">
+            <div class="bookingFormGroup">
               <label for="card-number" class="common-text"
                 ><span id="cardtype"></span>驗證密碼：</label
               >
               <div class="tpfield paymentContent" id="card-ccv"></div>
             </div>
-
-            <!-- <form>
-            <span class="common-text">卡片號碼：</span>
-            <input
-              type="cc-number"
-              placeholder="**** **** **** ****"
-              class="paymentContent"
-            />
-            <br />
-            <span class="common-text">過期時間：</span>
-            <input type="cc-exp" placeholder="MM / YY" class="paymentContent" />
-            <br />
-            <span class="common-text">驗證密碼：</span>
-            <input type="cc-csc" placeholder="CVV" class="paymentContent" />
-          </form> -->
           </div>
-          <div class="booking-border"></div>
-          <div class="booking-confirm">
-            <div class="common-text booking-confirmText">
+          <div class="bookingBorder"></div>
+          <div class="bookingConfirm">
+            <div class="common-text common-text-bold bookingConfirm-text">
               總價：<span>新台幣2000元</span>
             </div>
-            <div class="booking-confirmButton">
-              <button type="button" id="confirmButton">
-                <p class="dialogContent">確認訂購並付款</p>
-              </button>
-            </div>
+
+            <button type="button" id="confirmButton" class="common__btn">
+              確認訂購並付款
+            </button>
           </div>
         </div>
       </div>
@@ -153,6 +145,5 @@
     </footer>
 
     <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
-    <script></script>
   </body>
 </html>
