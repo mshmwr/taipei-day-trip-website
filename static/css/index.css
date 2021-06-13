@@ -1,0 +1,328 @@
+.indexDiv {
+  /* min-height: 922px;  */
+  /* min-height: (1080-104-54) px */
+
+  /* footer置底 */
+}
+
+/* --- slogan --- */
+.sloganSection {
+  /* slogan */
+
+  /* Auto Layout */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+
+  position: absolute;
+  width: 62.5%; /* width: 1200px; */
+  height: 169px;
+  left: 18.75%; /* left: 360px; */
+  top: 129px;
+}
+.sloganSection__slogan {
+  /* slogan */
+
+  position: absolute;
+  width: 98.33%; /* width: 1180px; */
+  height: 78px;
+  left: 0px;
+  top: 0px;
+}
+.sloganSection__slogan__title {
+  width: 100%;
+  height: 41px;
+  display: flex;
+  align-items: center;
+}
+.sloganSection__slogan__title-text {
+  font-size: 28px;
+  line-height: 24px;
+  color: #f8f8f8;
+  text-shadow: 0px 0px 30px #aabbcc;
+}
+
+.sloganSection__slogan__subTitle {
+  position: absolute;
+  width: 100%;
+  height: 22px;
+  left: 0px;
+  top: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.sloganSection__slogan__subTitle-text {
+  font-weight: normal;
+  color: #f8f8f8;
+}
+
+.sloganSection__search {
+  /* Search | Desktop */
+
+  position: absolute;
+  width: 460px; /* width: 38.98%; */
+  height: 46px;
+  left: 0px;
+  top: 103px;
+}
+.sloganSection__search__btn {
+  position: absolute;
+  width: 60px;
+  height: 46px;
+  left: 400px;
+  top: 0px;
+
+  background-color: var(--color-Cyan800);
+  border: none;
+  border-radius: 0 var(--borderRad) var(--borderRad) 0;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sloganSection__search__btn-icon {
+  width: 30px;
+  height: 30px;
+  background: url(../img/icon_search.png);
+}
+.sloganSection__search__input {
+  position: absolute;
+  width: 87.95%;
+  height: 46px;
+  left: 0px;
+  top: 0px;
+
+  filter: drop-shadow(0px 0px 20px #aabbcc);
+  padding: 15px;
+  border: none;
+  outline: none;
+  border-radius: var(--borderRad) 0 0 var(--borderRad);
+}
+
+/* ---hero section--- */
+.heroSection {
+  /* Hero section | Desktop */
+
+  /* Auto Layout */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  /* padding: 0px 232px; */
+  padding: 0 12.08%;
+
+  /* position: absolute; */
+  margin-top: 54px;
+  width: 100%;
+  height: 320px;
+  right: 0px;
+  /* bottom: 1000px; */
+  /* top: 54px; */
+
+  /* Light | Cyan Gradient (135deg) */
+
+  background: linear-gradient(135deg, #aaddee 0%, #66aabb 100%);
+}
+.heroSection__img {
+  flex: none;
+  position: static;
+  width: 650px;
+  height: 320px;
+  left: 1038px;
+  top: 0px;
+
+  background: url(../img/welcome.png);
+}
+.welcome1 {
+  /* welcome 1 */
+
+  position: static;
+  width: 650px;
+  height: 320px;
+  left: 1038px;
+  top: 0px;
+
+  background: url(../img/welcome.png);
+}
+
+/* --- attractions --- */
+.attractionsSection {
+  position: relative;
+  width: 62.5%;
+  left: 18.75%;
+  top: 20px;
+  margin-bottom: 40px;
+}
+
+.attractionsSection__group {
+  position: relative;
+  width: 97.5%;
+  left: 1.25%;
+  top: 15px;
+  margin: 1.25% 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.attraction {
+  display: flex;
+  position: relative;
+  width: 22.5%;
+  height: 242px;
+  margin-bottom: 30px;
+  background: #ffffff;
+  border-radius: var(--borderRad);
+  cursor: pointer;
+
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+}
+
+.att-img {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  left: 0px;
+  top: 0px;
+
+  background-size: cover;
+  background-position: 50% 50%;
+  border-radius: var(--borderRad) var(--borderRad) 0 0;
+}
+
+.att__info {
+  position: absolute;
+  width: 92.59%;
+  height: 62px;
+  left: 3.7%;
+  top: 173px;
+}
+.att__info__name {
+  position: absolute;
+  width: 100%;
+  height: 22px;
+  left: 0px;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  color: #757575;
+}
+
+.att__info__MRT {
+  position: absolute;
+  width: 46.3%;
+  height: 20px;
+  left: 0;
+  top: 37px;
+  display: flex;
+  align-items: center;
+  color: #757575;
+}
+
+.att__info__category {
+  position: absolute;
+  width: 46.3%;
+  height: 20px;
+  left: 50%;
+  top: 37px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #757575;
+}
+
+/* 4. RWD: 螢幕寬度(由大到小) 1200 600 360*/
+@media (max-width: 1200px) {
+  .attractionsSection {
+    width: 90%;
+    left: 5%;
+  }
+  .attraction {
+    width: 48%;
+  }
+  .att__info {
+    position: absolute;
+    width: 92.59%;
+    height: 62px;
+    left: 3.7%;
+    top: 173px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sloganSection {
+    width: 94.44%;
+    height: 169px;
+    left: 2.78%;
+    top: 111px;
+  }
+  .sloganSection__slogan {
+    width: 100%;
+  }
+  .sloganSection__search {
+    width: 100.625%;
+    border-radius: 10px;
+  }
+  .sloganSection__search__input {
+    width: 71.43%;
+  }
+
+  .sloganSection__search__btn {
+    left: 71.43%;
+  }
+  .heroSection {
+    align-items: flex-end;
+    padding: 0px;
+    height: 280px;
+    margin-top: 56px;
+  }
+  .heroSection__img {
+    position: relative;
+    width: 212px;
+    height: 148px;
+    left: 0px;
+    bottom: 0px;
+    background: url(../img/welcome1.png);
+  }
+
+  .attractionsSection {
+    width: 97.78%;
+    left: 1.11%;
+  }
+}
+
+@media (max-width: 360px) {
+  .attraction {
+    width: 89.44%;
+    margin-left: 5.55%;
+  }
+
+  .attraction {
+    height: 280px;
+  }
+
+  .att-img {
+    height: 202px;
+  }
+  .att__info {
+    position: absolute;
+    width: 94.375%;
+    height: 62px;
+    left: 3.125%;
+    top: 210px;
+  }
+  .att__info__MRT {
+    width: 41.39%;
+  }
+  .att__info__category {
+    width: 41.39%;
+    left: 58.61%;
+  }
+}

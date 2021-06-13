@@ -8,12 +8,12 @@ let dialogModel = {
   dialogMessageDOM: null,
   dialogMaskDOM: null,
   contentDOMsEnum: [
-    "title",
-    "name",
-    "email",
-    "password",
-    "button",
-    "loginRegister",
+    "title", //0
+    "name", //1
+    "email", //2
+    "password", //3
+    "button", //4
+    "loginRegister", //5
   ],
   dialogState: ["login", "register"],
   currentState: null,
@@ -56,12 +56,11 @@ let dialogModel = {
 };
 
 let dialogView = {
-  showNameInput: function (isShow = true) {
-    let index = dialogModel.getEnumIndex("name");
+  showNameInput: function (isShow = true, index_name) {
     if (isShow) {
-      dialogModel.dialogContentDOMs[index].style.display = "none";
+      dialogModel.dialogContentDOMs[index_name].style.display = "none";
     } else {
-      dialogModel.dialogContentDOMs[index].style.display = "block";
+      dialogModel.dialogContentDOMs[index_name].style.display = "block";
     }
   },
 };
@@ -69,96 +68,38 @@ let dialogView = {
 let dialogController = {
   contentList: null,
   index_login: dialogModel.getStateIndex("login"),
+  index_register: dialogModel.getStateIndex("register"),
   index_name: dialogModel.getEnumIndex("name"),
   index_email: dialogModel.getEnumIndex("email"),
   index_password: dialogModel.getEnumIndex("password"),
+  index_loginRegister: dialogModel.getEnumIndex("loginRegister"),
+  index_button: dialogModel.getEnumIndex("button"),
   init: function () {
     dialogModel.init();
     this.addClickEvent();
     this.fillContent();
   },
   addClickEvent: function () {
-    //get index
-    let index_name = dialogModel.getEnumIndex("name");
-    let index_email = dialogModel.getEnumIndex("email");
-    let index_password = dialogModel.getEnumIndex("password");
-    let index_button = dialogModel.getEnumIndex("button");
-    let index_loginRegister = dialogModel.getEnumIndex("loginRegister");
-
-    //close dialog
-    dialogModel.closeIconDOM.addEventListener("click", function () {
-      dialogModel.dialogDOM.style.display = "none";
-    });
-    dialogModel.dialogMaskDOM.addEventListener("click", function () {
-      dialogModel.dialogDOM.style.display = "none";
-    });
-
-    // login or register button
-    dialogModel.dialogContentDOMs[index_button].addEventListener(
-      "click",
-      () => {
-        let index_login = dialogModel.getStateIndex("login");
-        let isLogin =
-          dialogModel.currentState === dialogModel.dialogState[index_login];
-        if (isLogin) {
-          let data = {
-            email: dialogModel.dialogContentDOMs[index_email].value,
-            password: dialogModel.dialogContentDOMs[index_password].value,
-          };
-          userApiController.doPatch(data);
-        } else {
-          let data = {
-            name: dialogModel.dialogContentDOMs[index_name].value,
-            email: dialogModel.dialogContentDOMs[index_email].value,
-            password: dialogModel.dialogContentDOMs[index_password].value,
-          };
-          userApiController.doPost(data);
-        }
-      }
-    );
-
-    //change to login/register
-    dialogModel.dialogContentDOMs[index_loginRegister].addEventListener(
-      "click",
-      () => {
-        this.switchDialogState();
-        this.fillContent();
-      }
-    );
-
-    //click to hide dialogMessage
-
-    let doms = [
-      dialogModel.dialogContentDOMs[index_name],
-      dialogModel.dialogContentDOMs[index_email],
-      dialogModel.dialogContentDOMs[index_password],
-      dialogModel.dialogContentDOMs[index_loginRegister],
-    ];
-    doms.forEach(function (dom) {
-      dom.addEventListener("click", function () {
-        dialogModel.dialogMessageDOM.style.display = "none";
-      });
-    });
+    this.clickEvent_closeDialog();
+    this.clickEvent_loginRegisterButton();
+    this.clickEvent_changeNavLoginRegister();
+    this.clickEvent_hideDialogMessage();
   },
   switchDialogState: function () {
-    let index_login = dialogModel.getStateIndex("login");
-    let index_register = dialogModel.getStateIndex("register");
     switch (dialogModel.currentState) {
-      case dialogModel.dialogState[index_login]:
-        dialogModel.currentState = dialogModel.dialogState[index_register];
+      case dialogModel.dialogState[this.index_login]:
+        dialogModel.currentState = dialogModel.dialogState[this.index_register];
         break;
-      case dialogModel.dialogState[index_register]:
-        dialogModel.currentState = dialogModel.dialogState[index_login];
+      case dialogModel.dialogState[this.index_register]:
+        dialogModel.currentState = dialogModel.dialogState[this.index_login];
         break;
     }
   },
   fillContent: function () {
     let isLogin = true;
-    let index_login = dialogModel.getStateIndex("login");
-    let index_name = dialogModel.getEnumIndex("name");
-    let index_email = dialogModel.getEnumIndex("email");
-    let index_password = dialogModel.getEnumIndex("password");
-    if (dialogModel.currentState === dialogModel.dialogState[index_login]) {
+    if (
+      dialogModel.currentState === dialogModel.dialogState[this.index_login]
+    ) {
       //login
       this.contentList = dialogModel.contentList[0];
     } else {
@@ -167,18 +108,127 @@ let dialogController = {
     }
     for (let i = 0; i < this.contentList.length; i++) {
       switch (i) {
-        case index_name:
-        case index_email:
-        case index_password:
+        case this.index_name:
+        case this.index_email:
+        case this.index_password:
           dialogModel.dialogContentDOMs[i].value = "";
           break;
+        case this.index_button:
+          dialogModel.dialogContentDOMs[i].value = this.contentList[i];
 
         default:
           changeText(dialogModel.dialogContentDOMs[i], this.contentList[i]);
           break;
       }
     }
-    dialogView.showNameInput(isLogin);
+    dialogView.showNameInput(isLogin, this.index_name);
+  },
+  clickEvent_closeDialog: function () {
+    //close dialog
+    dialogModel.closeIconDOM.addEventListener("click", function () {
+      dialogModel.dialogDOM.style.display = "none";
+    });
+    dialogModel.dialogMaskDOM.addEventListener("click", function () {
+      dialogModel.dialogDOM.style.display = "none";
+    });
+  },
+  clickEvent_loginRegisterButton: function () {
+    // login or register button
+    dialogModel.dialogContentDOMs[this.index_button].addEventListener(
+      "click",
+      async (e) => {
+        let isLogin =
+          dialogModel.currentState ===
+          dialogModel.dialogState[this.index_login];
+        if (isLogin) {
+          let data = {
+            email: dialogModel.dialogContentDOMs[this.index_email].value,
+            password: dialogModel.dialogContentDOMs[this.index_password].value,
+          };
+
+          //check form input is empty
+          let empty = document
+            .getElementById("dialogForm")
+            .querySelectorAll("[required]");
+          empty = Array.from(empty).filter((item) => {
+            return item.value === "" && item.style.display !== "none";
+          });
+          if (empty.length === 0) {
+            e.preventDefault();
+            let parsedData = await userApiController.doPatch(data);
+            if (parsedData["ok"]) {
+              dialogModel.dialogMessageDOM.style.display = "block";
+              dialogModel.dialogMessageDOM.style.color = "#32cd32";
+              changeText(dialogModel.dialogMessageDOM, "登入成功");
+              navController.checkUserLogin();
+              location.reload();
+            } else if (parsedData["error"]) {
+              dialogModel.dialogMessageDOM.style.display = "block";
+              dialogModel.dialogMessageDOM.style.color = "#ff0000";
+              changeText(dialogModel.dialogMessageDOM, parsedData["message"]);
+            } else {
+              console.log(
+                "Oh No! Something went wrong with the server or at the 'doPatch' state"
+              );
+            }
+          }
+        } else {
+          let data = {
+            name: dialogModel.dialogContentDOMs[this.index_name].value,
+            email: dialogModel.dialogContentDOMs[this.index_email].value,
+            password: dialogModel.dialogContentDOMs[this.index_password].value,
+          };
+          //check input is empty
+          let empty = document
+            .getElementById("dialogForm")
+            .querySelectorAll("[required]");
+          empty = Array.from(empty).filter((item) => {
+            return item.value === "" && item.style.display !== "none";
+          });
+          if (empty.length === 0) {
+            e.preventDefault();
+            let parsedData = await userApiController.doPost(data);
+            if (parsedData["ok"]) {
+              dialogModel.dialogMessageDOM.style.display = "block";
+              dialogModel.dialogMessageDOM.style.color = "#32cd32";
+              changeText(dialogModel.dialogMessageDOM, "註冊成功");
+            } else if (parsedData["error"]) {
+              dialogModel.dialogMessageDOM.style.display = "block";
+              dialogModel.dialogMessageDOM.style.color = "#ff0000";
+              changeText(dialogModel.dialogMessageDOM, parsedData["message"]);
+            } else {
+              console.log(
+                "Oh No! Something went wrong with the server or at the 'doPost' state"
+              );
+            }
+          }
+        }
+      }
+    );
+  },
+  clickEvent_changeNavLoginRegister: function () {
+    //change nav button text to login/register
+    dialogModel.dialogContentDOMs[this.index_loginRegister].addEventListener(
+      "click",
+      () => {
+        this.switchDialogState();
+        this.fillContent();
+      }
+    );
+  },
+  clickEvent_hideDialogMessage: function () {
+    //click to hide dialogMessage
+    let doms = [
+      dialogModel.dialogContentDOMs[this.index_name],
+      dialogModel.dialogContentDOMs[this.index_email],
+      dialogModel.dialogContentDOMs[this.index_password],
+      dialogModel.dialogContentDOMs[this.index_loginRegister],
+    ];
+    doms.forEach(function (dom) {
+      dom.addEventListener("click", function () {
+        dialogModel.dialogMessageDOM.style.display = "none";
+      });
+    });
   },
 };
 
@@ -292,58 +342,23 @@ let userApiController = {
     });
     return isGet;
   },
-  doPost: function (data = {}) {
-    userApiModel.apiPost(data).then(function () {
+  doPost: async function (data = {}) {
+    await userApiModel.apiPost(data).then(function () {
       userApiModel.parsePostData();
-      let parsedData = userApiModel.parsedData;
-      if (parsedData["ok"]) {
-        dialogModel.dialogMessageDOM.style.display = "block";
-        dialogModel.dialogMessageDOM.style.color = "#32cd32";
-        changeText(dialogModel.dialogMessageDOM, "註冊成功");
-      } else if (parsedData["error"]) {
-        dialogModel.dialogMessageDOM.style.display = "block";
-        dialogModel.dialogMessageDOM.style.color = "#ff0000";
-        changeText(dialogModel.dialogMessageDOM, parsedData["message"]);
-      } else {
-        console.log(
-          "Oh No! Something went wrong with the server or at the 'doPost' state"
-        );
-      }
     });
+    return userApiModel.parsedData;
   },
-  doPatch: function (data = {}) {
-    userApiModel.apiPatch(data).then(function () {
+  doPatch: async function (data = {}) {
+    await userApiModel.apiPatch(data).then(function () {
       userApiModel.parsePatchData();
-      let parsedData = userApiModel.parsedData;
-      if (parsedData["ok"]) {
-        dialogModel.dialogMessageDOM.style.display = "block";
-        dialogModel.dialogMessageDOM.style.color = "#32cd32";
-        changeText(dialogModel.dialogMessageDOM, "登入成功");
-        navController.checkUserLogin();
-        location.reload();
-      } else if (parsedData["error"]) {
-        dialogModel.dialogMessageDOM.style.display = "block";
-        dialogModel.dialogMessageDOM.style.color = "#ff0000";
-        changeText(dialogModel.dialogMessageDOM, parsedData["message"]);
-      } else {
-        console.log(
-          "Oh No! Something went wrong with the server or at the 'doPatch' state"
-        );
-      }
     });
+    return userApiModel.parsedData;
   },
-  doDelete: function () {
-    userApiModel.apiDelete().then(function () {
+  doDelete: async function () {
+    await userApiModel.apiDelete().then(function () {
       userApiModel.parseDeleteData();
-      let parsedData = userApiModel.parsedData;
-      if (parsedData["ok"]) {
-        location.reload();
-      } else {
-        console.log(
-          "Oh No! Something went wrong with the server or at the 'doDelete' state"
-        );
-      }
     });
+    return userApiModel.parsedData;
   },
 };
 
@@ -359,7 +374,7 @@ let navModel = {
   },
   getDom: function () {
     this.navUserStateDOM = document.getElementById("userState");
-    this.navDivTextDOM = document.getElementById("navDiv-text");
+    this.navDivTextDOM = document.getElementById("navDiv-logo");
     this.navBookingDOM = document.getElementById("navBooking");
   },
 };
@@ -378,18 +393,31 @@ let navController = {
     changeText(navModel.navUserStateDOM, navModel.userStateTexts[index]);
   },
   addClickEvent: function () {
-    //nav: show dialog and hide dialogMessage
-    navModel.navUserStateDOM.addEventListener("click", function () {
+    this.clickEvent_logout();
+    this.clickEvent_navBooking();
+    this.clickEvent_logo();
+  },
+  clickEvent_logout: function () {
+    navModel.navUserStateDOM.addEventListener("click", async () => {
       if (navModel.isUserLogin === false) {
         dialogModel.dialogDOM.style.display = "block";
       } else {
         //logout
-        userApiController.doDelete();
+        let parsedData = await userApiController.doDelete();
+        if (parsedData["ok"]) {
+          location.reload();
+        } else {
+          console.log(
+            "Oh No! Something went wrong with the server or at the 'doDelete' state"
+          );
+        }
+
         navController.checkUserLogin();
       }
       dialogModel.dialogMessageDOM.style.display = "none";
     });
-
+  },
+  clickEvent_navBooking: function () {
     navModel.navBookingDOM.addEventListener("click", function () {
       if (navModel.isUserLogin === false) {
         dialogModel.dialogDOM.style.display = "block";
@@ -398,8 +426,9 @@ let navController = {
         document.location.assign("/booking");
       }
     });
-
-    navModel.navDivTextDOM.addEventListener("click", function () {
+  },
+  clickEvent_logo: function () {
+    navModel.navDivTextDOM.addEventListener("click", () => {
       document.location.assign("/");
     });
   },

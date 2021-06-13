@@ -19,11 +19,20 @@ let bookingModel = {
   userNameDOM: null,
   contactContentDOMs: null,
   contacts: ["name", "email", "phone"],
+  bookingSectionItemDOM: null,
+  loadingDOM: null,
+  isFirst: true,
   init: function () {
     this.getDOM();
   },
   getBookingData: async function () {
     let response = await bookingApiController.doGet();
+
+    if (bookingModel.isFirst) {
+      this.showLoading(false);
+      bookingModel.isFirst = false;
+    }
+
     if (response["success"]) {
       this.bookingData = response["message"];
       return;
@@ -44,6 +53,18 @@ let bookingModel = {
     this.userNameDOM = document.getElementById("userName");
 
     this.contactContentDOMs = document.getElementsByClassName("contactContent");
+    this.bookingSectionItemDOM = document.getElementById("bookingSectionItem");
+    this.loadingDOM = document.getElementById("loading");
+  },
+
+  showLoading: function (isShow) {
+    if (isShow === true) {
+      bookingModel.bookingSectionItemDOM.style.display = "none";
+      bookingModel.loadingDOM.style.display = "block";
+      return;
+    }
+    bookingModel.bookingSectionItemDOM.style.display = "block";
+    bookingModel.loadingDOM.style.display = "none";
   },
 };
 
@@ -208,11 +229,77 @@ window.onload = function () {
   init();
 };
 
-//-------------------------------
+//Tappay
 
-function onSubmit(event) {
-  // event.preventDefault();
+let APP_ID = 20406;
+let APP_KEY =
+  "app_RSflTqgsiw4oyTb3Dmv8MXJWtG29uLONSt20GkG77P1iM9jVgRENIkjQixBj";
+TPDirect.setupSDK(APP_ID, APP_KEY, "sandbox");
+// Display ccv field
+let fields = {
+  number: {
+    // css selector
+    element: "#card-number",
+    placeholder: "**** **** **** ****",
+  },
+  expirationDate: {
+    // DOM object
+    element: document.getElementById("card-expiration-date"),
+    placeholder: "MM / YY",
+  },
+  ccv: {
+    element: "#card-ccv",
+    placeholder: "ccv",
+  },
+};
+TPDirect.card.setup({
+  // Display ccv field
+  fields: fields,
+  styles: {
+    // Style all elements
+    input: {
+      color: "gray",
+    },
+    // Styling ccv field
+    "input.ccv": {
+      // 'font-size': '16px'
+    },
+    // Styling expiration-date field
+    "input.expiration-date": {
+      // 'font-size': '16px'
+    },
+    // Styling card-number field
+    "input.card-number": {
+      // 'font-size': '16px'
+    },
+    // style focus state
+    ":focus": {
+      // 'color': 'black'
+    },
+    // style valid state
+    ".valid": {
+      color: "green",
+    },
+    // style invalid state
+    ".invalid": {
+      color: "red",
+    },
+    // Media queries
+    // Note that these apply to the iframe, not the root window.
+    "@media screen and (max-width: 400px)": {
+      input: {
+        color: "orange",
+      },
+    },
+  },
+});
 
+function onSubmit() {
+  const patternCheck = document.querySelector(".patternCheck");
+  if (!patternCheck.checkValidity()) {
+    alert("輸入資訊有誤或缺失");
+    return;
+  }
   // 取得 TapPay Fields 的 status
   const tappayStatus = TPDirect.card.getTappayFieldsStatus();
 

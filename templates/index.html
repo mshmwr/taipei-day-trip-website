@@ -1,6 +1,8 @@
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/dialog.css" />
     <script type="module" src="../static/js/index.js"></script>
   </head>
@@ -13,45 +15,49 @@
       <script src="../static/js/components/dialog.js"></script>
       <!-- heroSection -->
       <div class="heroSection">
-        <div class="heroDiv">
-          <div class="welcome1"></div>
-        </div>
+        <div class="heroSection__img"></div>
       </div>
-      <div class="sloganBlock">
-        <div class="sloganDiv">
-          <div class="slogan">
-            <div class="sloganTitle">輕鬆享受台北一日悠閒</div>
-            <div class="sloganSubTitle">
-              探索每個角落，體驗城市的深度旅遊行程
-            </div>
+      <div class="sloganSection">
+        <div class="sloganSection__slogan">
+          <div
+            class="
+              common-text common-text-bold
+              sloganSection__slogan__title sloganSection__slogan__title-text
+            "
+          >
+            輕鬆享受台北一日悠閒
           </div>
-          <div class="search">
-            <div class="searchBlock">
-              <input
-                type="text"
-                id="searchInput"
-                class="searchInput"
-                placeholder="輸入景點名稱查詢"
-              />
+          <div
+            class="
+              common-text
+              sloganSection__slogan__subTitle
+              sloganSection__slogan__subTitle-text
+            "
+          >
+            探索每個角落，體驗城市的深度旅遊行程
+          </div>
+        </div>
+        <div class="sloganSection__search">
+          <input
+            type="text"
+            id="searchInput"
+            class="common-text sloganSection__search__input common-text-bold"
+            placeholder="輸入景點名稱查詢"
+          />
 
-              <button id="searchBtn" class="searchBtn">
-                <div class="searchBtn-icon">
-                  <div class="icon-search"></div>
-                </div>
-              </button>
-            </div>
-          </div>
+          <button id="searchBtn" class="sloganSection__search__btn">
+            <div class="sloganSection__search__btn-icon"></div>
+          </button>
         </div>
       </div>
       <!-- attractions -->
-      <div class="attractions">
-        <div id="attractionGroup" class="attractionGroup"></div>
+      <div class="attractionsSection">
+        <div id="loading" class="loading">loading...</div>
+        <div id="attractionGroup" class="attractionsSection__group"></div>
       </div>
     </div>
     <footer>
-      <div class="footerDiv">
-        <div class="footer-text">COPYRIGHT © 2021 台北一日遊</div>
-      </div>
+      <div class="common-text footer-text">COPYRIGHT © 2021 台北一日遊</div>
     </footer>
   </body>
 </html>
