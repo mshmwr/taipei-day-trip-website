@@ -11,15 +11,12 @@
 
   --color-Gray800: #666666;
   --color-Cyan800: #448899;
+  --color-Cyan800-light: #66aabb;
 }
 body {
   margin: 0;
   padding: 0;
 }
-/* * {
-  box-sizing: border-box;
-} */
-
 .common-text {
   font-family: "Noto Sans TC";
   font-style: normal;
@@ -34,15 +31,13 @@ body {
 .common__btn {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   padding: 0px 20px;
   height: 36px;
-
-  display: flex;
   align-items: center;
   text-align: center;
 
   background: var(--color-Cyan800);
+  /* border-color: var(--color-Cyan800); */
   border-radius: 5px;
   cursor: pointer;
 
@@ -50,6 +45,11 @@ body {
   line-height: 16px;
   color: #ffffff;
 }
+
+.common__btn:hover {
+  background: var(--color-Cyan800-light);
+}
+
 /* --- nav --- */
 nav {
   position: fixed;
