@@ -1,9 +1,9 @@
 # taipei-day-trip-website
-## introducion
+## Introducion
 實作旅遊行程預訂平台，透過串接政府景點API和第三方金流(TapPay)，實現旅遊景點的搜尋、瀏覽和訂購的功能。
 此外，加上了頁面無限捲動、圖片輪播、loading效果，以及會員系統的實作。
 
-## feature
+## Features
 
 ### 無限捲動
 
