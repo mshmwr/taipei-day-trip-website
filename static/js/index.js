@@ -79,7 +79,8 @@ let attractionsViews = {
 
     // 2. 建立新的 <div> 子元素: att-img, attInfo
     let newDivAttImg = createElementWithClassName(undefined, "att-img");
-    newDivAttImg.style.backgroundImage = "url(" + itemArr[index][0] + ")"; //img(the first url)
+    const imgUrl = itemArr[index][0].replace("http://", "https://");
+    newDivAttImg.style.backgroundImage = "url(" + imgUrl + ")"; //img(the first url)
 
     let newDivAttInfo = this.createAttInfo(
       itemArr[index][1], //name

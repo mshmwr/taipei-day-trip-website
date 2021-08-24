@@ -142,7 +142,8 @@ let attView = {
 
     //create img: src=url
     let imgElement = document.createElement("img");
-    imgElement.src = url;
+
+    imgElement.src = url.replace("http://", "https://");
 
     //appendChild
     imgDivElement.appendChild(imgElement);

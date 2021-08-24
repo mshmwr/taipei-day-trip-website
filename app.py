@@ -131,8 +131,7 @@ def attractions():
         startID = page * spotNumInPage
 
         numInPage = spotNumInPage if (
-            (startID + spotNumInPage + 1) < spotCount) else (spotCount -
-                                                             startID)
+            (startID + spotNumInPage + 1) < spotCount) else (spotCount - startID)
 
         if keyword == None:
             sql = "SELECT * FROM spots ORDER BY spotid LIMIT %s,%s"
@@ -246,7 +245,7 @@ def getUser():
         cnx1.close()
 
         id = result[0][0] #id
-        name = result[0][1] #id
+        name = result[0][1] #name
         userData =  {
                 "id": id,
                 "name": name,
@@ -667,5 +666,5 @@ def addOrder():
         return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
 
 
-app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
-# app.run(port=3000)
+# app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+app.run(port=3000)
