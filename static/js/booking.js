@@ -87,7 +87,7 @@ let bookingView = {
       let data_attraction = datas["attraction"];
       let data_name = data_attraction["name"];
       let data_address = data_attraction["address"];
-      let data_image = data_attraction["images"];
+      let data_image = data_attraction["images"].replace("http://", "https://");
 
       let data_date = datas["date"];
       let data_time =

@@ -142,7 +142,8 @@ let attView = {
 
     //create img: src=url
     let imgElement = document.createElement("img");
-    imgElement.src = url;
+
+    imgElement.src = url.replace("http://", "https://");
 
     //appendChild
     imgDivElement.appendChild(imgElement);
@@ -157,7 +158,6 @@ let attView = {
     let len = contentList.length;
     for (let i = 0; i < len; i++) {
       changeText(attModels.attDomList[i], contentList[i]);
-      // attModels.attDomList[i].innerHTML = contentList[i];
     }
   },
   renderDot: function (index = 0) {

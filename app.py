@@ -131,8 +131,7 @@ def attractions():
         startID = page * spotNumInPage
 
         numInPage = spotNumInPage if (
-            (startID + spotNumInPage + 1) < spotCount) else (spotCount -
-                                                             startID)
+            (startID + spotNumInPage + 1) < spotCount) else (spotCount - startID)
 
         if keyword == None:
             sql = "SELECT * FROM spots ORDER BY spotid LIMIT %s,%s"
@@ -246,7 +245,7 @@ def getUser():
         cnx1.close()
 
         id = result[0][0] #id
-        name = result[0][1] #id
+        name = result[0][1] #name
         userData =  {
                 "id": id,
                 "name": name,

@@ -373,9 +373,28 @@ let navModel = {
     this.getDom();
   },
   getDom: function () {
-    this.navUserStateDOM = document.getElementById("userState");
-    this.navDivTextDOM = document.getElementById("navDiv-logo");
-    this.navBookingDOM = document.getElementById("navBooking");
+    // 新舊相容: 有 Web Component 版 和 document.write版
+
+    /* logo */
+    const navDivTextRoot = document.querySelector("my-logo");
+    this.navDivTextDOM =
+      navDivTextRoot === null
+        ? document.querySelector("#navDiv-logo")
+        : navDivTextRoot.shadowRoot.querySelector("#navDiv-logo");
+
+    /* navBooking */
+    const navBookingRoot = document.querySelectorAll("my-button")[0];
+    this.navBookingDOM =
+      navBookingRoot === undefined
+        ? document.querySelector("#navBooking")
+        : navBookingRoot.shadowRoot.querySelector("#navBooking");
+
+    /* userState */
+    const navUserStateRoot = document.querySelectorAll("my-button")[1];
+    this.navUserStateDOM =
+      navUserStateRoot === undefined
+        ? document.querySelector("#userState")
+        : navUserStateRoot.shadowRoot.querySelector("#userState");
   },
 };
 

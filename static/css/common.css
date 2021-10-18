@@ -122,6 +122,10 @@ footer {
   /* margin-top: 94px; */
   text-align: center;
 }
+.loadingMorePage {
+  display: none;
+  text-align: center;
+}
 
 /* 4. RWD: 螢幕寬度(由大到小) 600 360*/
 @media (max-width: 600px) {

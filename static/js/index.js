@@ -18,6 +18,7 @@ let indexModel = {
   searchInputDOM: null,
   attractionGroupDOM: null,
   loadingDOM: null,
+  loadingMorePageDOM: null,
   init: function () {
     this.getDOM();
   },
@@ -26,6 +27,7 @@ let indexModel = {
     this.searchInputDOM = document.getElementById("searchInput");
     this.attractionGroupDOM = document.getElementById("attractionGroup");
     this.loadingDOM = document.getElementById("loading");
+    this.loadingMorePageDOM = document.getElementById("loadingMorePage");
   },
 };
 
@@ -79,7 +81,8 @@ let attractionsViews = {
 
     // 2. 建立新的 <div> 子元素: att-img, attInfo
     let newDivAttImg = createElementWithClassName(undefined, "att-img");
-    newDivAttImg.style.backgroundImage = "url(" + itemArr[index][0] + ")"; //img(the first url)
+    const imgUrl = itemArr[index][0].replace("http://", "https://");
+    newDivAttImg.style.backgroundImage = "url(" + imgUrl + ")"; //img(the first url)
 
     let newDivAttInfo = this.createAttInfo(
       itemArr[index][1], //name
@@ -127,19 +130,33 @@ let attractionsViews = {
   },
 };
 
+async function isScrollBottom() {
+  let rect = indexModel.attractionGroupDOM.getBoundingClientRect();
+  if (rect.bottom < window.innerHeight) {
+    //滾到最底
+    indexModel.boundingClientRect = rect.bottom;
+    if (indexModel.nextPage === null) {
+      window.removeEventListener("scroll", isScrollBottom, true);
+      return;
+    }
+    if (indexModel.nextPage === indexModel.currentPage) return;
+    if (indexModel.nextPage !== 0) {
+      indexController.showLoadingMorePage(true);
+      indexModel.currentPage = indexModel.nextPage;
+      indexController.doRender(indexModel.currentPage, indexModel.keyword);
+    }
+  } else {
+    indexController.showLoadingMorePage(false);
+  }
+}
+
 let indexController = {
   init: function () {
     indexModel.init();
-    window.addEventListener(
-      "scroll",
-      () => {
-        this.isScrollBottom();
-      },
-      true
-    );
+    window.addEventListener("scroll", isScrollBottom, true);
     this.addClickEvent();
-
     this.doRender(indexModel.currentPage, undefined);
+    indexController.showLoadingMorePage(false);
   },
   doRender: async function (currentPage, keyword) {
     let response = await indexApiController.doGet(currentPage, keyword);
@@ -160,6 +177,7 @@ let indexController = {
   addClickEvent: function () {
     indexModel.searchBtnDOM.addEventListener("click", () => {
       this.doKeywordSearch();
+      window.addEventListener("scroll", isScrollBottom, true);
     });
   },
   doKeywordSearch: async function () {
@@ -170,20 +188,6 @@ let indexController = {
     indexView.removeChildElement(indexModel.attractionGroupDOM, "noResult");
     this.doRender(indexModel.currentPage, indexModel.keyword);
   },
-  isScrollBottom: async function () {
-    let rect = indexModel.attractionGroupDOM.getBoundingClientRect();
-    if (rect.bottom === indexModel.boundingClientRect) return;
-    if (rect.bottom < window.innerHeight) {
-      //滾到最底
-      indexModel.boundingClientRect = rect.bottom;
-
-      if (indexModel.nextPage === indexModel.currentPage) return;
-      if (indexModel.nextPage !== 0 && indexModel.nextPage !== null) {
-        indexModel.currentPage = indexModel.nextPage;
-        this.doRender(indexModel.currentPage, indexModel.keyword);
-      }
-    }
-  },
   showLoading: function (isShow) {
     if (isShow === true) {
       indexModel.attractionGroupDOM.style.display = "none";
@@ -192,6 +196,13 @@ let indexController = {
     }
     indexModel.attractionGroupDOM.style.display = "flex";
     indexModel.loadingDOM.style.display = "none";
+  },
+  showLoadingMorePage: function (isShow) {
+    if (isShow === true) {
+      indexModel.loadingMorePageDOM.style.display = "block";
+      return;
+    }
+    indexModel.loadingMorePageDOM.style.display = "none";
   },
 };
 
