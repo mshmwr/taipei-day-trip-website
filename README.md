@@ -2,7 +2,8 @@
 
 <p align="center">
   <img src="./readmeImages/taipei-day-2.png" width="400px" height="400px" alt="protfolio image">
-  <p>Demo: http://18.189.165.179:3000/</p>
+  <br/>
+  Demo: http://18.189.165.179:3000/
 </p>
 
 ## Introducion
