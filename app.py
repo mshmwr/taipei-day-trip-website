@@ -666,5 +666,5 @@ def addOrder():
         return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
 
 
-app.run(host="0.0.0.0", port=3000)  #伺服器能夠自動綁到公開的 IP 上
+app.run(host="0.0.0.0", port=8080)  #伺服器能夠自動綁到公開的 IP 上
 # app.run(port=3000)
